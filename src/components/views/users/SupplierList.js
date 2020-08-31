@@ -1,0 +1,67 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchSuppliers } from "../../../actions"
+class SupplierList extends React.Component {
+    componentDidMount() {
+        this.props.fetchSuppliers()
+    }
+
+    renderList() {
+        return this.props.supplier.map(supplier => {
+            return (
+                <tr key={supplier.id}>
+                    <td>
+                        <h4 className="ui image header">
+                            <div className="content">
+                                {supplier.customerName}
+                                <div className="sub header">{supplier.companyName}
+                                </div>
+                            </div>
+                        </h4></td>
+                    <td>
+                        {supplier.mobileNo}
+                    </td>
+                    <td>
+                        {supplier.fax}
+                    </td>
+                    <td>
+                        {supplier.email}
+                    </td>
+                    <td>{supplier.registerNo}
+                    </td>
+                    <td>
+                        <Link to={`/supplier-profile/${supplier.id}`} className="ui blue button">View</Link>
+                    </td>
+                </tr>
+            )
+        })
+    }
+    render() {
+        return (
+            <div className="pusher">
+                <div className="ui basic segment" id="basic-segment">
+                    <h4>All Suppliers</h4>
+                    <table className="ui very basic collapsing celled table">
+                        <thead>
+                            <tr><th>Customer Name</th>
+                                <th>Contact Number</th>
+                                <th>Fax</th>
+                                <th>Email</th>
+                                <th>Registration Number</th>
+                            </tr></thead>
+                        <tbody>
+                            {this.renderList()}                   
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        )
+    }
+}
+const mapToSatate = (state) => {
+    console.log(state)
+    const supplier = Object.values(state.supplier)
+    return { supplier: supplier };
+}
+export default connect(mapToSatate, { fetchSuppliers })(SupplierList);
