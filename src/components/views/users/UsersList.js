@@ -48,7 +48,7 @@ class UsersList extends React.Component {
 const mapToSatate = (state) => {
 
     const users = Object.values(state.users)
-    console.log(users)
+    console.log(state.users)
     return { users: users };
 }
 export default connect(mapToSatate, { fetchUsers })(UsersList);

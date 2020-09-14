@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchSuppliers, createRawMaterial } from '../../../../actions';
 import history from '../../../history';
 
-class NewRawMaterial extends React.Component {
+class NewPackingMaterial extends React.Component {
     componentDidMount() {
         this.props.fetchSuppliers()
     }
@@ -43,7 +43,7 @@ class NewRawMaterial extends React.Component {
         // //delete formValues.suppliers;
         // console.log(values)
         //this.props.createRawMaterial(values)
-        history.push("/material-mrp-one")
+        history.push("/packing-material-mrp-one")
     }
     renderSuppliers() {
         return this.props.supplier.map(supplier => {
@@ -57,7 +57,7 @@ class NewRawMaterial extends React.Component {
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
-                    <h3>Create Raw Material</h3>
+                    <h3>Create Packing Material</h3>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="eight wide field">
@@ -137,6 +137,6 @@ const mapStateToProps = (state) => {
     return { supplier: supplier };
 }
 const formWrapped = reduxForm({
-    form: 'newRawMaterial'
-})(NewRawMaterial);
+    form: 'newPackingMaterial'
+})(NewPackingMaterial);
 export default connect(mapStateToProps, { fetchSuppliers, createRawMaterial })(formWrapped);

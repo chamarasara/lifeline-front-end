@@ -27,8 +27,22 @@ import DeleteSupplier from './views/users/DeleteSupplier';
 import DeleteUser from './views/users/DeleteUser';
 
 import { PrivateRoute } from './PrivateRoute';
-import RawMaterialDashboard from './views/masterdata/rawmaterial/RawMaterialDashboard';
+import RawMaterialDashboard from './views/masterdata/rawmaterial/PackingMaterialDashboard';
 import NewRawMaterial from './views/masterdata/rawmaterial/NewRawMaterial';
+import RawMaterialMrpOne from './views/masterdata/rawmaterial/RawMaterialMrpOne';
+import RawMaterialMrpTwo from './views/masterdata/rawmaterial/RawMaterialMrpTwo';
+import RawMaterialMrpThree from './views/masterdata/rawmaterial/RawMaterialMrpThree';
+import RawMaterialMrpFour from './views/masterdata/rawmaterial/RawMaterialMrpFour';
+import RawMaterialPlantDataOne from './views/masterdata/rawmaterial/RawMaterialPlantDataOne';
+import RawMaterialPlantDataTwo from './views/masterdata/rawmaterial/RawMaterialPlantDataTwo';
+import NewPackingMaterial from './views/masterdata/packingmaterial/NewPackingMaterial';
+import PackingMaterialDashboard from './views/masterdata/rawmaterial/PackingMaterialDashboard';
+import PackingMaterialMrpOne from './views/masterdata/packingmaterial/PackingMaterialMrpOne';
+import PackingMaterialMrpTwo from './views/masterdata/packingmaterial/PackingMaterialMrpTwo';
+import PackingMaterialMrpThree from './views/masterdata/packingmaterial/PackingMaterialMrpThree';
+import PackingMaterialMrpFour from './views/masterdata/packingmaterial/PackingMaterialMrpFour';
+import PackingMaterialPlantDataOne from './views/masterdata/packingmaterial/PackingMaterialPlantDataOne';
+import PackingMaterialPlantDataTwo from './views/masterdata/packingmaterial/PackingMaterialPlantDataTwo';
 
 class App extends React.Component {
 
@@ -70,7 +84,21 @@ class App extends React.Component {
                     <PrivateRoute path="/delete-supplier/:id" component={DeleteSupplier} />                    
                     <PrivateRoute path="/settings" component={Settings} />    
                     <PrivateRoute path="/raw-material" component={RawMaterialDashboard} />        
-                    <PrivateRoute path="/new-raw-material" component={NewRawMaterial} />              
+                    <PrivateRoute path="/new-raw-material" component={NewRawMaterial} />  
+                    <PrivateRoute path="/material-mrp-one" component={RawMaterialMrpOne} /> 
+                    <PrivateRoute path="/material-mrp-two" component={RawMaterialMrpTwo} />   
+                    <PrivateRoute path="/material-mrp-three" component={RawMaterialMrpThree} />      
+                    <PrivateRoute path="/material-mrp-four" component={RawMaterialMrpFour} />      
+                    <PrivateRoute path="/material-plant-data-one" component={RawMaterialPlantDataOne} />      
+                    <PrivateRoute path="/material-plant-data-two" component={RawMaterialPlantDataTwo} /> 
+                    <PrivateRoute path="/packing-material" component={PackingMaterialDashboard} /> 
+                    <PrivateRoute path="/new-packing-material" component={NewPackingMaterial} />
+                    <PrivateRoute path="/packing-material-mrp-one" component={PackingMaterialMrpOne} /> 
+                    <PrivateRoute path="/packing-material-mrp-two" component={PackingMaterialMrpTwo} /> 
+                    <PrivateRoute path="/packing-material-mrp-three" component={PackingMaterialMrpThree} /> 
+                    <PrivateRoute path="/packing-material-mrp-four" component={PackingMaterialMrpFour} /> 
+                    <PrivateRoute path="/packing-material-plant-data-one" component={PackingMaterialPlantDataOne} /> 
+                    <PrivateRoute path="/packing-material-plant-data-two" component={PackingMaterialPlantDataTwo} /> 
                 </Router>
             </div>
         ) 

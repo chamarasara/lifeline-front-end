@@ -43,6 +43,7 @@ export const createUser = formValues => async dispatch => {
     const response = await api.post('/user/create-employee', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_USER, payload: response.data });
+    history.push('/employee');
     //window.location.reload();
 };
 //List all users
@@ -100,6 +101,7 @@ export const deleteUser = (id) => async dispatch => {
 
 //create user role
 export const createUserRole = formValues => async dispatch => {
+    console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -107,7 +109,7 @@ export const createUserRole = formValues => async dispatch => {
             'Authorization': 'Bearer ' + token
         }
     };
-    const response = await api.post('/user/create-user-type', { formValues }, header);
+    const response = await api.post('/user/create-user-type', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_USER_ROLE, payload: response.data });
     history.push('/employee');
@@ -148,7 +150,7 @@ export const editUserRole = (id, formValues) => async dispatch => {
             'Authorization': 'Bearer ' + token
         }
     };
-    const response = await api.patch(`/user/get-user-type-by-id/${id}`, { formValues }, header);
+    const response = await api.patch(`/user/get-user-type-by-id/${id}`, { ...formValues }, header);
     console.log(formValues)
     dispatch({ type: EDIT_USER_ROLE, payload: id });
     window.location.reload()
@@ -215,7 +217,7 @@ export const editCustomer = (id, formValues) => async dispatch => {
             'Authorization': 'Bearer ' + token
         }
     };
-    const response = await api.patch(`/users/${id}`, { formValues }, header);
+    const response = await api.patch(`/users/${id}`, { ...formValues }, header);
     console.log(formValues)
     dispatch({ type: EDIT_CUSTOMER, payload: id });
     window.location.reload()
@@ -283,7 +285,7 @@ export const editSupplier = (id, formValues) => async dispatch => {
             'Authorization': 'Bearer ' + token
         }
     };
-    const response = await api.patch(`/users/${id}`, { formValues }, header);
+    const response = await api.patch(`/users/${id}`, { ...formValues }, header);
     console.log(formValues)
     dispatch({ type: EDIT_SUPPLIER, payload: id });
 
@@ -352,7 +354,7 @@ export const editRawMaterial = (id, formValues) => async dispatch => {
             'Authorization': 'Bearer ' + token
         }
     };
-    const response = await api.patch(`/users/${id}`, { formValues }, header);
+    const response = await api.patch(`/users/${id}`, { ...formValues }, header);
     console.log(formValues)
     dispatch({ type: EDIT_SUPPLIER, payload: id });
 
