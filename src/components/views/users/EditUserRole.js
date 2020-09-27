@@ -55,7 +55,7 @@ class EditUserRole extends React.Component{
         return(
             <div className="pusher">
                 <div className="ui basic segment" id="user-role">
-                    <h5>Edit User Role {this.props.userRole.userTypename}</h5>
+                    <h5>Edit User Role {this.props.userRole.userTypeName}</h5>
                     <div className="column">
                         <form onSubmit={this.props.handleSubmit(this.submit)} className="ui mini form">
                             <div className="fields">
@@ -67,10 +67,10 @@ class EditUserRole extends React.Component{
                                     />
                                 </div>
                                 <div className="six wide field">
-                                    <Field name="userTypename"
+                                    <Field name="userTypeName"
                                         component={this.renderInput} 
                                         type="text"
-                                        placeholder={this.props.userRole.userTypename}
+                                        placeholder={this.props.userRole.userTypeName}
                                     />
                                 </div>
                             </div>

@@ -55,7 +55,7 @@ class UserProfile extends React.Component {
                                 </Link>
                                 <Link className="item">
                                     <div className="ui horizontal label">User Role</div>
-                                    {this.props.user.userType.userTypename}
+                                    {this.props.user.userType.userTypeName}
                                 </Link>
                                 <Link className="item">
                                     <div className="ui horizontal label">Username</div>

@@ -25,7 +25,7 @@ class DeleteUserRole extends React.Component{
         if (!this.props.userRole) {
             return 'Are you sure about deleting this User Role ? '
         }
-        return `Are you sure about deleting User Role: ${this.props.userRole.userTypename}`
+        return `Are you sure about deleting User Role: ${this.props.userRole.userTypeName}`
     }
     render() {
         return (

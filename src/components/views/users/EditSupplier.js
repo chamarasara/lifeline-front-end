@@ -24,7 +24,7 @@ class EditSupplier extends React.Component {
     usersType = {
         id: "",
         userTypeCode: "",
-        userTypename: "",
+        userTypeName: "",
         permissions: []
     }
     renderError({ error, touched }) {
@@ -62,7 +62,7 @@ class EditSupplier extends React.Component {
     renderRolesList() {
         return this.props.userRoles.map(userRoles => {
             return (
-                <option key={userRoles.userTypeCode} value={userRoles.userTypename}>{userRoles.userTypename}</option>
+                <option key={userRoles.userTypeCode} value={userRoles.userTypeName}>{userRoles.userTypeName}</option>
             )
         })
     }

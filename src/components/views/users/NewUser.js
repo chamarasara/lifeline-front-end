@@ -17,7 +17,7 @@ class NewUser extends React.Component{
     usersType = {
         id: 0,
         userTypeCode: "",
-        userTypename: "",
+        userTypeName: "",
         permissions:[]
     }
     renderError({ error, touched }) {
@@ -57,7 +57,7 @@ class NewUser extends React.Component{
         return this.props.userRoles.map(userRoles => {
             console.log(userRoles.id)
             return (
-                <option key={userRoles.id} value={parseInt(userRoles.id)}>{userRoles.userTypename}</option>
+                <option key={userRoles.id} value={parseInt(userRoles.id)}>{userRoles.userTypeName}</option>
             )
         })
     }

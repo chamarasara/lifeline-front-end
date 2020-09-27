@@ -124,7 +124,7 @@ export const fetchUsersRoles = () => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get('/user/get-all-user-type', header);
+    const response = await api.get('/api/user-roles/all-user-roles', header);
     console.log(response)
     console.log(response.data)
     dispatch({ type: FETCH_USERS_ROLES, payload: response.data });

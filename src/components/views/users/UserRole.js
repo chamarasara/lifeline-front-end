@@ -58,7 +58,7 @@ class UserRole extends React.Component {
                     <div className="ui cards">
                         <div className="card">
                             <div className="content" style={{marginLeft:"30px",marginTop:"20px", marginBottom:"20px" }}>
-                                <div className="header">{this.props.userRole.userTypename}</div>
+                                <div className="header">{this.props.userRole.userTypeName}</div>
                                 <div className="meta">{this.props.userRole.userTypeCode}</div>
                                 <div className="description">
                                     Permissions:

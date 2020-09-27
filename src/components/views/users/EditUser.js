@@ -14,7 +14,7 @@ class EditUser extends React.Component {
     usersType = {
         id: 0,
         userTypeCode: "",
-        userTypename: "",
+        userTypeName: "",
         permissions: []
     }
     componentDidMount(){

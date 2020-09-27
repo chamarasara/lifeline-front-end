@@ -21,7 +21,7 @@ class NewSupplier extends React.Component {
     usersType = {
         id: "",
         userTypeCode: "",
-        userTypename: "",
+        userTypeName: "",
         permissions: []
     }
     renderError({ error, touched }) {
