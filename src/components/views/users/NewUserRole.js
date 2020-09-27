@@ -5,6 +5,16 @@ import { createUserRole } from '../../../actions';
 
 class NewUserRole extends React.Component{
     
+    permissions = {
+        inventory: false,
+        sales: false,
+        production: false,
+        quality: false,
+        costing: false,
+        accounting: false,
+        hr : false,
+        admin: false
+    }
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -53,7 +63,7 @@ class NewUserRole extends React.Component{
                                     />                                    
                                 </div>
                                 <div className="six wide field">
-                                    <Field name="userTypename"
+                                    <Field name="userTypeName"
                                         component="input"
                                         type="text"
                                         placeholder="User Role Name"
@@ -63,10 +73,10 @@ class NewUserRole extends React.Component{
                             <h5>Permissions</h5>
                             <div className="fields">                            
                                 <div className="two wide field">
-                                    <label htmlFor="inventory">Inventory</label>
+                                    <label htmlFor="permissions.inventory">Inventory</label>
                                 </div>  
                                 <div className="two wide field">
-                                    <Field name="inventory" id="inventory" component="input" type="checkbox" />
+                                    <Field name="permissions.inventory" id="inventory" component="input" type="checkbox" />
                                 </div> 
                             </div>
                             <div className="fields">
@@ -74,7 +84,7 @@ class NewUserRole extends React.Component{
                                     <label htmlFor="sales">Sales</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="sales" id="sales" component="input" type="checkbox" />
+                                    <Field name="permissions.sales" id="sales" component="input" type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -82,7 +92,7 @@ class NewUserRole extends React.Component{
                                     <label htmlFor="production">Production</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="production" id="production" component="input" type="checkbox" />
+                                    <Field name="permissions.production" id="production" component="input" type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -90,7 +100,7 @@ class NewUserRole extends React.Component{
                                     <label htmlFor="quality">Quality</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="quality" id="quality" component="input" type="checkbox" />
+                                    <Field name="permissions.quality" id="quality" component="input" type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -98,7 +108,7 @@ class NewUserRole extends React.Component{
                                     <label htmlFor="costing">Costing</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="costing" id="costing" component="input" type="checkbox" />
+                                    <Field name="permissions.costing" id="costing" component="input" type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -106,7 +116,7 @@ class NewUserRole extends React.Component{
                                     <label htmlFor="accounting">Accounting</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="accounting" id="accounting" component="input" type="checkbox" />
+                                    <Field name="permissions.accounting" id="accounting" component="input" type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -114,7 +124,15 @@ class NewUserRole extends React.Component{
                                     <label htmlFor="hr">HR</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="hr" id="hr" component="input" type="checkbox" />
+                                    <Field name="permissions.hr" id="hr" component="input" type="checkbox" />
+                                </div>
+                            </div>
+                            <div className="fields">
+                                <div className="two wide field">
+                                    <label htmlFor="admin">Admin Previlages</label>
+                                </div>
+                                <div className="two wide field">
+                                    <Field name="permissions.admin" id="admin" component="input" type="checkbox" />
                                 </div>
                             </div>
                             <button type="submit" className="ui primary button">Create</button>

@@ -37,7 +37,7 @@ export const createUser = formValues => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.post('/user/create-employee', { ...formValues }, header);
@@ -52,7 +52,7 @@ export const fetchUsers = () => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get('/user/get-all-employee', header);
@@ -65,7 +65,7 @@ export const fetchUser = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get(`/user/get-employee/${id}`, header);
@@ -77,7 +77,7 @@ export const editUser = (id, formValues) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.patch(`/users/${id}`, { formValues }, header);
@@ -91,7 +91,7 @@ export const deleteUser = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     await api.delete(`/user/delete-employee/${id}`, header);
@@ -102,14 +102,14 @@ export const deleteUser = (id) => async dispatch => {
 //create user role
 export const createUserRole = formValues => async dispatch => {
     console.log(formValues)
-    const token = sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('user');    
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
-    const response = await api.post('/user/create-user-type', { ...formValues }, header);
+    const response = await api.post('/api/user-roles/new-user-role', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_USER_ROLE, payload: response.data });
     history.push('/employee');
@@ -121,7 +121,7 @@ export const fetchUsersRoles = () => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get('/user/get-all-user-type', header);
@@ -135,7 +135,7 @@ export const fetchUserRole = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get(`/user/get-user-type-by-id/${id}`, header);
@@ -147,7 +147,7 @@ export const editUserRole = (id, formValues) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.patch(`/user/get-user-type-by-id/${id}`, { ...formValues }, header);
@@ -161,7 +161,7 @@ export const deleteUserRole = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     await api.delete(`/user/delete-user-type/${id}`, header);
@@ -175,7 +175,7 @@ export const createCustomer = formValues => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.post('/user/create-customer', { ...formValues }, header);
@@ -189,7 +189,7 @@ export const fetchCustomers = () => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get('/user/get-all-customer', header);
@@ -202,7 +202,7 @@ export const fetchCustomer = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get(`/user/get-customer/${id}`, header);
@@ -214,7 +214,7 @@ export const editCustomer = (id, formValues) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.patch(`/users/${id}`, { ...formValues }, header);
@@ -228,7 +228,7 @@ export const deleteCustomer = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     await api.delete(`/user/delete-customer/${id}`, header);
@@ -242,7 +242,7 @@ export const createSupplier = formValues => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.post('/user/create-supplier', { ...formValues }, header);
@@ -256,7 +256,7 @@ export const fetchSuppliers = () => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get('/user/get-all-supplier', header);
@@ -269,7 +269,7 @@ export const fetchSupplier = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get(`/user/get-supplier/${id}`, header);
@@ -282,7 +282,7 @@ export const editSupplier = (id, formValues) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.patch(`/users/${id}`, { ...formValues }, header);
@@ -297,7 +297,7 @@ export const deleteSupplier = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     await api.delete(`/user/delete-supplier/${id}`, header);
@@ -311,7 +311,7 @@ export const createRawMaterial = formValues => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.post('/material/create', { ...formValues }, header);
@@ -325,7 +325,7 @@ export const fetchRawMaterials = () => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get('/user/get-all-supplier', header);
@@ -338,7 +338,7 @@ export const fetchRawMaterial = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.get(`/user/get-supplier/${id}`, header);
@@ -351,7 +351,7 @@ export const editRawMaterial = (id, formValues) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     const response = await api.patch(`/users/${id}`, { ...formValues }, header);
@@ -366,7 +366,7 @@ export const deleteRawMaterial = (id) => async dispatch => {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': token
         }
     };
     await api.delete(`/user/delete-supplier/${id}`, header);
@@ -374,10 +374,17 @@ export const deleteRawMaterial = (id) => async dispatch => {
     history.push('/supplier')
 };
 //Autheticate User
-export function signInAction({ username, password }, history) {
+export function signInAction({ userName, password }, history) {
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            //'Access-Control-Allow-Origin': '*'
+        }
+    };
     return async (dispatch) => {
         try {
-            const res = await api.post('/authenticate', { username, password });
+            const res = await api.post('/api/auth/login', { userName, password }, header);
+            console.log(res)
             dispatch({ type: AUTHENTICATED, payload: res.data });
             history.push('/');
             window.location.reload();

@@ -43,6 +43,19 @@ import PackingMaterialMrpThree from './views/masterdata/packingmaterial/PackingM
 import PackingMaterialMrpFour from './views/masterdata/packingmaterial/PackingMaterialMrpFour';
 import PackingMaterialPlantDataOne from './views/masterdata/packingmaterial/PackingMaterialPlantDataOne';
 import PackingMaterialPlantDataTwo from './views/masterdata/packingmaterial/PackingMaterialPlantDataTwo';
+import FinishGoodsDashboard from './views/masterdata/finishgoods/FinishGoodsDashboard';
+import NewFinishGood from './views/masterdata/finishgoods/NewFinishGood';
+import FinishGoodMrpOne from './views/masterdata/finishgoods/FinishGoodMrpOne';
+import FinishGoodMrpTwo from './views/masterdata/finishgoods/FinishGoodMrpTwo';
+import FinishGoodMrpThree from './views/masterdata/finishgoods/FinishGoodMrpThree';
+import FinishGoodlMrpFour from './views/masterdata/finishgoods/FinishGoodlMrpFour';
+import FinishGoodPlantDataOne from './views/masterdata/finishgoods/FinishGoodPlantDataOne';
+import FinishGoodPlantDataTwo from './views/masterdata/finishgoods/FinishGoodPlantDataTwo';
+import SalesDashboard from './views/sales/SalesDashboard';
+import NewPurchaseOrder from './views/sales/NewPurchaseOrder';
+import NewInvoice from './views/sales/NewInvoice';
+import PurchaseOrderDashboard from './views/sales/PurchaseOrderDashboard';
+import InvoiceDashboard from './views/sales/InvoiceDashboard';
 
 class App extends React.Component {
 
@@ -99,6 +112,19 @@ class App extends React.Component {
                     <PrivateRoute path="/packing-material-mrp-four" component={PackingMaterialMrpFour} /> 
                     <PrivateRoute path="/packing-material-plant-data-one" component={PackingMaterialPlantDataOne} /> 
                     <PrivateRoute path="/packing-material-plant-data-two" component={PackingMaterialPlantDataTwo} /> 
+                    <PrivateRoute path="/finish-goods" component={FinishGoodsDashboard} /> 
+                    <PrivateRoute path="/new-finish-good" component={NewFinishGood} />  
+                    <PrivateRoute path="/finish-good-mrp-one" component={FinishGoodMrpOne} />  
+                    <PrivateRoute path="/finish-good-mrp-two" component={FinishGoodMrpTwo} />  
+                    <PrivateRoute path="/finish-good-mrp-three" component={FinishGoodMrpThree} />
+                    <PrivateRoute path="/finish-good-mrp-four" component={FinishGoodlMrpFour} />
+                    <PrivateRoute path="/finish-good-plant-data-one" component={FinishGoodPlantDataOne} />
+                    <PrivateRoute path="/finish-good-plant-data-two" component={FinishGoodPlantDataTwo} />
+                    <PrivateRoute path="/sales-dashboard" component={SalesDashboard} />
+                    <PrivateRoute path="/purchase-order-dashboard" component={PurchaseOrderDashboard} />
+                    <PrivateRoute path="/invoice-dashboard" component={InvoiceDashboard} />
+                    <PrivateRoute path="/new-purchase-order" component={NewPurchaseOrder} />
+                    <PrivateRoute path="/new-invoice" component={NewInvoice} />
                 </Router>
             </div>
         ) 

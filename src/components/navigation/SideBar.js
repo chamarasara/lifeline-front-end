@@ -21,6 +21,10 @@ class SideBar extends React.Component {
                         <i className="user circle icon"></i>
                         Users
                     </Link>
+                    <Link to={"/sales-dashboard"} className="item">
+                        <i className="cogs icon"></i>
+                        Sales
+                    </Link>
                     <Link to={"/settings"} className="item">
                         <i className="cogs icon"></i>
                         Settings

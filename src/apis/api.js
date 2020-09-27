@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'https://life-line-erp.herokuapp.com/'
+    baseURL: 'https://lifeguardmfg-api.herokuapp.com/'
 });

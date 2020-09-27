@@ -7,7 +7,7 @@ import { signInAction } from '../../../actions';
 class Login extends React.Component{
 
     submit = (values) => {
-        this.props.signInAction(values, this.props.history);       
+        this.props.signInAction(values, this.props.history);      
     }
 
     errorMessage() {
@@ -30,7 +30,7 @@ class Login extends React.Component{
                             <h2>Sign In</h2>
                             <form onSubmit={handleSubmit(this.submit)} className="ui mini form">
                                 <div className="field">
-                                    <Field name="username"
+                                    <Field name="userName"
                                         component="input"
                                         type="text"
                                         placeholder="Username"
