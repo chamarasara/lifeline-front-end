@@ -73,6 +73,8 @@ export const fetchUser = (id) => async dispatch => {
 };
 //Edit user
 export const editUser = (id, formValues) => async dispatch => {
+    console.log(id)
+    console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -80,10 +82,10 @@ export const editUser = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/users/${id}`, { formValues }, header);
+    const response = await api.patch(`/api/users/update-user/${id}`, { formValues }, header);
     console.log(formValues)
-    dispatch({ type: EDIT_USER, payload: id });
-    window.location.reload()
+    dispatch({ type: EDIT_USER, payload: response.data });
+    //window.location.reload()
 };
 //Delete user
 export const deleteUser = (id) => async dispatch => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { fetchUser, fetchUsersRoles } from '../../../actions';
+import { fetchUser, fetchUsersRoles, editUser } from '../../../actions';
 
 class EditUser extends React.Component {
     address = {
@@ -11,7 +11,7 @@ class EditUser extends React.Component {
         no: "",
         postalCode: ""
     }
-    usersType = {
+    userRole = {
         id: 0,
         userTypeCode: "",
         userTypeName: "",
@@ -51,14 +51,14 @@ class EditUser extends React.Component {
     }
     renderUserRolesList(){
         return this.props.userRoles.map(userRoles => {
-            console.log(userRoles._id)
             return (
-                <option key={userRoles._id} value={parseInt(userRoles._id)}>{userRoles.userTypeName}</option>
+                <option key={userRoles._id} value={userRoles._id}>{userRoles.userTypeName}</option>
             )
         })
     }
-    submit = (values) => {
-
+    submit = (formValues) => {
+        this.props.editUser(this.props.match.params.id, formValues)
+        console.log(formValues)
     }
     render() {
         if (!this.props.user) {
@@ -68,7 +68,7 @@ class EditUser extends React.Component {
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <h5>Edit Profile</h5>
-                    <form className="ui mini form error" >
+                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.submit)}>
                         <div className="fields">
                             <div className="six wide field">
                                 <Field name="firstName" component={this.renderInput} label="First Name" placeholder={this.props.user.firstName} type="text" />
@@ -131,7 +131,7 @@ class EditUser extends React.Component {
                         <div className="fields">
                             <div className="four wide field">
                                 <label>User Role</label>
-                                <Field name="userType.id" component="select" label="User Role" placeholder={this.props.user.userType}>
+                                <Field name="userRole.id" component="select" label="User Role" placeholder={this.props.user.userType}>
                                     <option>-Select User Role-</option>
                                     {this.renderUserRolesList()}
                                 </Field>
@@ -161,31 +161,31 @@ class EditUser extends React.Component {
     }
 }
 //Form input validation
-const validate = (formValues) => {
-    const errors = {}
-    if (!formValues.firstName) {
-        errors.firstName = 'Please enter First Name';
-    }
-    if (!formValues.lastName) {
-        errors.lastName = 'Please enter Last Name';
-    }
-    if (!formValues.address) {
-        errors.address = 'Please enter the Number of the Address';
-    }
-    if (!formValues.nic) {
-        errors.nic = 'Please enter the ID Nummber';
-    }
-    if (!formValues.mobileNo) {
-        errors.mobileNo = 'Please enter Phone Number';
-    }
-    if (!formValues.email) {
-        errors.email = 'Please enter Email';
-    }
-    if (!formValues.gender) {
-        errors.gender = 'Please enter the Gender';
-    }
-    return errors;
-}
+// const validate = (formValues) => {
+//     const errors = {}
+//     if (!formValues.firstName) {
+//         errors.firstName = 'Please enter First Name';
+//     }
+//     if (!formValues.lastName) {
+//         errors.lastName = 'Please enter Last Name';
+//     }
+//     if (!formValues.address) {
+//         errors.address = 'Please enter the Number of the Address';
+//     }
+//     if (!formValues.nic) {
+//         errors.nic = 'Please enter the ID Nummber';
+//     }
+//     if (!formValues.mobileNo) {
+//         errors.mobileNo = 'Please enter Phone Number';
+//     }
+//     if (!formValues.email) {
+//         errors.email = 'Please enter Email';
+//     }
+//     if (!formValues.gender) {
+//         errors.gender = 'Please enter the Gender';
+//     }
+//     return errors;
+// }
 const mapStateToProps = (state, ownPorps) => {
     console.log(state)
     const userRoles = Object.values(state.userRoles)
@@ -193,6 +193,6 @@ const mapStateToProps = (state, ownPorps) => {
 }
 const formWrapped = reduxForm({
     form: 'editUser',
-    validate: validate
+    //validate: validate
 })(EditUser);
-export default connect(mapStateToProps, { fetchUser, fetchUsersRoles })(formWrapped);
+export default connect(mapStateToProps, { fetchUser, fetchUsersRoles, editUser })(formWrapped);
