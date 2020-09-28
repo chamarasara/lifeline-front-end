@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { createUser, fetchUsersRoles } from '../../../actions';
 
 class NewUser extends React.Component{
@@ -14,8 +15,8 @@ class NewUser extends React.Component{
         no: "",
         postalCode:""
     }
-    usersType = {
-        id: 0,
+    userRole = {
+        id: "",
         userTypeCode: "",
         userTypeName: "",
         permissions:[]
@@ -49,15 +50,13 @@ class NewUser extends React.Component{
         );
     }
     onSubmit = (formValues ) => {
-        formValues.userType.id = parseInt(formValues.userType.id)
+        //formValues.userType.id = parseInt(formValues.userType.id)
         this.props.createUser(formValues)
     }
     renderRolesList(){
-        
         return this.props.userRoles.map(userRoles => {
-            console.log(userRoles.id)
             return (
-                <option key={userRoles.id} value={parseInt(userRoles.id)}>{userRoles.userTypeName}</option>
+                <option key={userRoles._id} value={userRoles._id}>{userRoles.userTypeName}</option>
             )
         })
     }
@@ -127,7 +126,7 @@ class NewUser extends React.Component{
                         </div>
                         <div className="fields">   
                             <div className="four wide field">
-                                <Field name="userType.id" component="select" label="User Role" placeholder="User Role" type="number">
+                                <Field name="userRole.id" component="select" label="User Role" placeholder="User Role" type="number">
                                     <option>-Select User Role-</option>
                                     {this.renderRolesList()}
                                 </Field>
@@ -142,6 +141,7 @@ class NewUser extends React.Component{
                             </div>                            
                         </div>
                         <div className="field">
+                            <Link to={"employee"} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Add New User</button>
                         </div>
                     </form>

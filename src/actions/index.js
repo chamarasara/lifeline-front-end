@@ -40,11 +40,11 @@ export const createUser = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('/user/create-employee', { ...formValues }, header);
+    const response = await api.post('/api/users/newuser', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_USER, payload: response.data });
-    history.push('/employee');
-    //window.location.reload();
+    //history.push('/employee');
+    window.location.reload();
 };
 //List all users
 export const fetchUsers = () => async dispatch => {
@@ -55,7 +55,7 @@ export const fetchUsers = () => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get('/user/get-all-employee', header);
+    const response = await api.get('/api/users/all-users', header);
     console.log(response)
     dispatch({ type: FETCH_USERS, payload: response.data });
 };
@@ -68,7 +68,7 @@ export const fetchUser = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get(`/user/get-employee/${id}`, header);
+    const response = await api.get(`/api/users/single-user/${id}`, header);
     dispatch({ type: FETCH_USER, payload: response.data });
 };
 //Edit user
@@ -138,7 +138,7 @@ export const fetchUserRole = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get(`/user/get-user-type-by-id/${id}`, header);
+    const response = await api.get(`api/user-roles/single-user_role/${id}`, header);
     dispatch({ type: FETCH_USER_ROLE, payload: response.data });
 };
 //edit user role

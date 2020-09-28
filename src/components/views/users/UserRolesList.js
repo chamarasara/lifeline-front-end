@@ -12,8 +12,8 @@ class UserRolesList extends React.Component {
             return (
                 <div className="item">
                     <i className="large user icon middle aligned icon"></i>
-                <div className="content" key={userRoles.id}>
-                        <Link to={`/user-role/${userRoles.id}`} className="header">{userRoles.userTypeName}</Link>
+                <div className="content" key={userRoles._id}>
+                        <Link to={`/user-role/${userRoles._id}`} className="header">{userRoles.userTypeName}</Link>
                         <div className="description">{userRoles.userTypeCode}</div>
                 </div>
                 </div>

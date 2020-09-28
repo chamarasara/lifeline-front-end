@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { fetchUser } from '../../../actions';
+import { fetchUser, fetchUsersRoles } from '../../../actions';
 
 class EditUser extends React.Component {
     address = {
@@ -19,7 +19,8 @@ class EditUser extends React.Component {
     }
     componentDidMount(){
         this.props.fetchUser(this.props.match.params.id)
-    }
+        this.props.fetchUsersRoles()
+    }    
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -47,6 +48,14 @@ class EditUser extends React.Component {
                 {this.renderError(meta)}
             </div>
         );
+    }
+    renderUserRolesList(){
+        return this.props.userRoles.map(userRoles => {
+            console.log(userRoles._id)
+            return (
+                <option key={userRoles._id} value={parseInt(userRoles._id)}>{userRoles.userTypeName}</option>
+            )
+        })
     }
     submit = (values) => {
 
@@ -124,13 +133,7 @@ class EditUser extends React.Component {
                                 <label>User Role</label>
                                 <Field name="userType.id" component="select" label="User Role" placeholder={this.props.user.userType}>
                                     <option>-Select User Role-</option>
-                                    <option value="Revenue Generator-Inventory">Revenue Generator-Inventory</option>
-                                    <option value="Revenue Generator-Sales">Revenue Generator-Sales</option>
-                                    <option value="Value Additiionar-Production">Value Additiionar-Production</option>
-                                    <option value="Value Additiionar-Quality">Value Additiionar-Quality</option>
-                                    <option value="Back Bone-Costing">Back Bone-Costing</option>
-                                    <option value="Back Bone-Accounting">Back Bone-Accounting</option>
-                                    <option value="Support-HR">Support-HR</option>
+                                    {this.renderUserRolesList()}
                                 </Field>
                             </div>
                         </div>
@@ -185,10 +188,11 @@ const validate = (formValues) => {
 }
 const mapStateToProps = (state, ownPorps) => {
     console.log(state)
-    return { errorMessage: state, user: state.users[ownPorps.match.params.id] };
+    const userRoles = Object.values(state.userRoles)
+    return { errorMessage: state, user: state.users[ownPorps.match.params.id], userRoles: userRoles };
 }
 const formWrapped = reduxForm({
     form: 'editUser',
     validate: validate
 })(EditUser);
-export default connect(mapStateToProps, { fetchUser })(formWrapped);
+export default connect(mapStateToProps, { fetchUser, fetchUsersRoles })(formWrapped);

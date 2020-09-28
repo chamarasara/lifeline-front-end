@@ -1,12 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ProfilePic from "./elyse.png";
 import { Link } from 'react-router-dom';
-import {fetchUser} from '../../../actions';
+import { fetchUser, fetchUserRole } from '../../../actions';
 
 class UserProfile extends React.Component {
     componentDidMount() {
-        this.props.fetchUser(this.props.match.params.id)
+        this.props.fetchUser(this.props.match.params._id)
+        this.props.fetchUserRole(this.props.match.params.id)
+    }
+    renderUserType() {
+        if (!this.props.userRole) {
+            return<div>Something went wrong</div>
+        }
+        return(
+            <Link to="" className="item">
+                <div className="ui horizontal label">User Role</div>
+                {this.props.userRole.userTypeName}
+            </Link>
+        )
     }
     render() {
         if (!this.props.user) {
@@ -19,53 +30,53 @@ class UserProfile extends React.Component {
                         <div className="four wide column" style={{ marginTop: "50px" }}>
                             <div className="ui card">
                                 <div className="image">
-                                    <img src={ProfilePic} alt={"user profile"}/>
+                                    <img src={this.props.user.avatar} alt={"user profile"} />
                                 </div>
                             </div>
                         </div>
                         <div className="ten wide column" style={{ marginTop: "30px" }}>
                             <div className="ui divided selection list">
-                                <Link className="item">
+                                <Link to="" className="item">
                                     <div className="ui horizontal label">Full Name</div>
                                     {this.props.user.firstName} {this.props.user.lastName}
                                 </Link>
-                                <Link className="item">
+                                <Link to="" className="item">
                                     <div className="ui horizontal label">Contact Number</div>
                                     {this.props.user.mobileNo}
                                 </Link>
-                                <Link className="item">
+                                <Link to="" className="item">
                                     <div className="ui horizontal label">NIC</div>
                                     {this.props.user.nic}
                                 </Link>
-                                <Link className="item">
+                                <Link to="" className="item">
                                     <div className="ui horizontal label">Email</div>
                                     {this.props.user.email}
                                 </Link>
-                                <Link className="item">
+                                <Link to="" className="item">
                                     <div className="ui horizontal label">Birthday</div>
                                     {this.props.user.birthDay}
                                 </Link>
-                                <Link className="item">
+                                <Link to="" className="item">
                                     <div className="ui horizontal label">Gender</div>
                                     {this.props.user.gender}
                                 </Link>
-                                <Link className="item">
+                                <Link to="" className="item">
                                     <div className="ui horizontal label">Address</div>
                                     {this.props.user.address.no}, {this.props.user.address.lane}, {this.props.user.address.city}, {this.props.user.address.country}, {this.props.user.address.postalCode}
                                 </Link>
-                                <Link className="item">
-                                    <div className="ui horizontal label">User Role</div>
-                                    {this.props.user.userType.userTypeName}
-                                </Link>
-                                <Link className="item">
+                                {this.renderUserType()}
+                                <Link to="" className="item">
                                     <div className="ui horizontal label">Username</div>
                                     {this.props.user.userName}
                                 </Link>
                             </div>
-                            <Link to={`/edituser/${this.props.user.id}`} className="ui primary button">
+                            <Link to={`/employee`} className="ui button">
+                                Back
+                            </Link>
+                            <Link to={`/edituser/${this.props.user._id}`} className="ui primary button">
                                 Edit
                             </Link>
-                            <Link to={`/delete-user/${this.props.user.id}`} className="ui red button">
+                            <Link to={`/delete-user/${this.props.user._id}`} className="ui red button">
                                 Delete
                             </Link>
                         </div>
@@ -76,7 +87,6 @@ class UserProfile extends React.Component {
     }
 }
 const mapToSatate = (state, ownPorps) => {
-    console.log(state)
-    return { user: state.users[ownPorps.match.params.id] };
+    return { user: state.users[ownPorps.match.params._id], userRole: state.userRoles[ownPorps.match.params.id] };
 }
-export default connect(mapToSatate, { fetchUser })(UserProfile);
+export default connect(mapToSatate, { fetchUser, fetchUserRole })(UserProfile);

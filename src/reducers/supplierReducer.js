@@ -11,13 +11,13 @@ import {
 export default (state = {}, action) => {
     switch (action.type) {
         case FETCH_SUPPLIERS:
-            return { ...state, ..._.mapKeys(action.payload, 'id') };
+            return { ...state, ..._.mapKeys(action.payload, '_id') };
         case FETCH_SUPPLIER:
-            return { ...state, [action.payload.id]: action.payload };
+            return { ...state, [action.payload._id]: action.payload };
         case CREATE_SUPPLIER:
-            return { ...state, [action.payload.id]: action.payload };
+            return { ...state, [action.payload._id]: action.payload };
         case EDIT_SUPPLIER:
-            return { ...state, [action.payload.id]: action.payload };
+            return { ...state, [action.payload._id]: action.payload };
         case DELETE_SUPPLIER:
             return _.omit(state.action);
         default:

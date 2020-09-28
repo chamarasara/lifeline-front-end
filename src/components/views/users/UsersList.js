@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ProfilePic1 from "./kapila.jpeg";
 import { Link } from 'react-router-dom';
 import './user.css';
-import {fetchUsers} from '../../../actions';
+import { fetchUsers, fetchUsersRoles} from '../../../actions';
 
 
 class UsersList extends React.Component {
     componentDidMount(){
         this.props.fetchUsers()
+        this.props.fetchUsersRoles()
     }
     renderList() {
         if (!this.props.users) {
@@ -17,12 +17,12 @@ class UsersList extends React.Component {
         return this.props.users.map(users => {
             return (
                 <div className="column">
-                    <Link to={`/userprofile/${users.id}`} className="ui link fluid card">
+                    <Link to={`/userprofile/${users._id}/${users.userRole.id}`} className="ui link fluid card">
                         <div className="image">
-                            <img src={ProfilePic1} alt={"user profile"}/>
+                            <img src={users.avatar} alt={"user profile"}/>
                         </div>
                         <div className="content">
-                            <Link to={`/userprofile/${users.id}`} className="header">{users.userName}</Link>
+                            <Link to={`/userprofile/${users._id}/${users.userRole.id}`} className="header">{users.userName}</Link>
                         </div>
                     </Link>
                 </div> 
@@ -51,4 +51,4 @@ const mapToSatate = (state) => {
     console.log(state.users)
     return { users: users };
 }
-export default connect(mapToSatate, { fetchUsers })(UsersList);
+export default connect(mapToSatate, { fetchUsers, fetchUsersRoles })(UsersList);

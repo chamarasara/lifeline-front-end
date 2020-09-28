@@ -1,13 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchUserRole } from "../../../actions";
+
 class EditUserRole extends React.Component{
     componentDidMount() {
-        //this.props.fetchUsersRoles()
-        
         this.props.fetchUserRole(this.props.match.params.id)
-        console.log(this.props.match.params.id)
     }
     renderError({ error, touched }) {
         if (touched && error) {
@@ -51,7 +50,6 @@ class EditUserRole extends React.Component{
         if (!this.props.userRole) {
             return <div>User Role not selected. Please select a User Role from the list</div>
         }     
-        console.log(this.props.userRole.quality)
         return(
             <div className="pusher">
                 <div className="ui basic segment" id="user-role">
@@ -80,7 +78,7 @@ class EditUserRole extends React.Component{
                                     <label htmlFor="inventory">Inventory</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="inventory" id="inventory" component={this.renderInput} checked={this.props.userRole.inventory} type="checkbox" />
+                                    <Field name="inventory" id="inventory" component={this.renderInput} checked={this.props.userRole.permissions.inventory} type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -88,7 +86,7 @@ class EditUserRole extends React.Component{
                                     <label htmlFor="sales">Sales</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="sales" id="sales" component={this.renderInput} checked={this.props.userRole.sales} type="checkbox" />
+                                    <Field name="sales" id="sales" component={this.renderInput} checked={this.props.userRole.permissions.sales} type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -96,7 +94,7 @@ class EditUserRole extends React.Component{
                                     <label htmlFor="production">Production</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="production" id="production" component={this.renderInput} checked={this.props.userRole.production} type="checkbox" />
+                                    <Field name="production" id="production" component={this.renderInput} checked={this.props.userRole.permissions.production} type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -104,7 +102,7 @@ class EditUserRole extends React.Component{
                                     <label htmlFor="quality">Quality</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="quality" id="quality" component="input" checked={this.props.userRole.quality} type="checkbox" />
+                                    <Field name="quality" id="quality" component="input" checked={this.props.userRole.permissions.quality} type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -112,7 +110,7 @@ class EditUserRole extends React.Component{
                                     <label htmlFor="costing">Costing</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="costing" id="costing" component="input" checked={this.props.userRole.costing} type="checkbox" />
+                                    <Field name="costing" id="costing" component="input" checked={this.props.userRole.permissions.costing} type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -120,7 +118,7 @@ class EditUserRole extends React.Component{
                                     <label htmlFor="accounting">Accounting</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="accounting" id="accounting" component="input" checked={this.props.userRole.accounting} type="checkbox" />
+                                    <Field name="accounting" id="accounting" component="input" checked={this.props.userRole.permissions.accounting} type="checkbox" />
                                 </div>
                             </div>
                             <div className="fields">
@@ -128,9 +126,18 @@ class EditUserRole extends React.Component{
                                     <label htmlFor="hr">HR</label>
                                 </div>
                                 <div className="two wide field">
-                                    <Field name="hr" id="hr" component="input" checked={this.props.userRole.hr} type="checkbox" />
+                                    <Field name="hr" id="hr" component="input" checked={this.props.userRole.permissions.hr} type="checkbox" />
                                 </div>
                             </div>
+                            <div className="fields">
+                                <div className="two wide field">
+                                    <label htmlFor="admin">Admin</label>
+                                </div>
+                                <div className="two wide field">
+                                    <Field name="admin" id="admin" component="input" checked={this.props.userRole.permissions.admin} type="checkbox" />
+                                </div>
+                            </div>
+                            <Link to={`/user-role/${this.props.match.params.id}`} className="ui button">Back   </Link>
                             <button type="submit" className="ui primary button">Update   </button>
                         </form>
                     </div>
@@ -140,9 +147,7 @@ class EditUserRole extends React.Component{
     }
 }
 
-const mapStateToProps = (state, ownPorps) => {
-    console.log(state.userRoles[ownPorps.match.params.id])
-    
+const mapStateToProps = (state, ownPorps) => {    
     return {  userRole: state.userRoles[ownPorps.match.params.id] };
 }
 const formWrapped = reduxForm({
