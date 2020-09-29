@@ -8,15 +8,15 @@ import { deleteUser, fetchUser } from "../../../actions";
 class DeleteUser extends React.Component {
 
     componentDidMount() {
-        console.log(this.props)
-        this.props.fetchUser(this.props.match.params.id);
+        console.log(this.props.match.params._id)
+        this.props.fetchUser(this.props.match.params._id);
     }
     renderActions() {
-        const { id } = this.props.match.params;
+       
         return (
             <React.Fragment>
-                <button onClick={() => this.props.deleteUser(id)} className="ui red button">Delete</button>
-                <Link to={`/userprofile/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
+                <button onClick={() => this.props.deleteUser(this.props.match.params._id)} className="ui red button">Delete</button>
+                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
             </React.Fragment>
         );
     }
@@ -29,12 +29,12 @@ class DeleteUser extends React.Component {
     }
     render() {
         return (
-            <Modal header="Delete User" content={this.renderContent()} actions={this.renderActions()} onDismiss={() => history.push(`/userprofile/${ this.props.match.params.id }`)} />
+            <Modal header="Delete User" content={this.renderContent()} actions={this.renderActions()} onDismiss={() => history.push(`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`)} />
         );
     }
 }
 
 const mapToSatate = (state, ownPorps) => {
-    return { user: state.users[ownPorps.match.params.id] };
+    return { user: state.users[ownPorps.match.params._id] };
 }
 export default connect(mapToSatate, { deleteUser, fetchUser })(DeleteUser);

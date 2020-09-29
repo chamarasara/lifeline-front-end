@@ -69,6 +69,7 @@ export const fetchUser = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/users/single-user/${id}`, header);
+    console.log(response)
     dispatch({ type: FETCH_USER, payload: response.data });
 };
 //Edit user
@@ -82,10 +83,10 @@ export const editUser = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/api/users/update-user/${id}`, { formValues }, header);
-    console.log(formValues)
+    const response = await api.patch(`/api/users/update-user/${id}`, { ...formValues }, header);
+    console.log(response)
     dispatch({ type: EDIT_USER, payload: response.data });
-    //window.location.reload()
+    window.location.reload()
 };
 //Delete user
 export const deleteUser = (id) => async dispatch => {
@@ -96,15 +97,15 @@ export const deleteUser = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    await api.delete(`/user/delete-employee/${id}`, header);
+    await api.delete(`/api/users/delete-user/${id}`, header);
     dispatch({ type: DELETE_USER, payload: id });
-    history.push('/users');
+    history.push('/employee');
 };
 
 //create user role
 export const createUserRole = formValues => async dispatch => {
     console.log(formValues)
-    const token = sessionStorage.getItem('user');    
+    const token = sessionStorage.getItem('user');
     const header = {
         headers: {
             'Content-Type': 'application/json',

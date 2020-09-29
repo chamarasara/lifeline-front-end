@@ -13,7 +13,7 @@ class UserProfile extends React.Component {
             return<div>Something went wrong</div>
         }
         return(
-            <Link to="" className="item">
+            <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                 <div className="ui horizontal label">User Role</div>
                 {this.props.userRole.userTypeName}
             </Link>
@@ -36,36 +36,36 @@ class UserProfile extends React.Component {
                         </div>
                         <div className="ten wide column" style={{ marginTop: "30px" }}>
                             <div className="ui divided selection list">
-                                <Link to="" className="item">
+                                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                                     <div className="ui horizontal label">Full Name</div>
                                     {this.props.user.firstName} {this.props.user.lastName}
                                 </Link>
-                                <Link to="" className="item">
+                                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                                     <div className="ui horizontal label">Contact Number</div>
                                     {this.props.user.mobileNo}
                                 </Link>
-                                <Link to="" className="item">
+                                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                                     <div className="ui horizontal label">NIC</div>
                                     {this.props.user.nic}
                                 </Link>
-                                <Link to="" className="item">
+                                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                                     <div className="ui horizontal label">Email</div>
                                     {this.props.user.email}
                                 </Link>
-                                <Link to="" className="item">
+                                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                                     <div className="ui horizontal label">Birthday</div>
                                     {this.props.user.birthDay}
                                 </Link>
-                                <Link to="" className="item">
+                                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                                     <div className="ui horizontal label">Gender</div>
                                     {this.props.user.gender}
                                 </Link>
-                                <Link to="" className="item">
+                                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                                     <div className="ui horizontal label">Address</div>
                                     {this.props.user.address.no}, {this.props.user.address.lane}, {this.props.user.address.city}, {this.props.user.address.country}, {this.props.user.address.postalCode}
                                 </Link>
                                 {this.renderUserType()}
-                                <Link to="" className="item">
+                                <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="item">
                                     <div className="ui horizontal label">Username</div>
                                     {this.props.user.userName}
                                 </Link>
@@ -73,10 +73,10 @@ class UserProfile extends React.Component {
                             <Link to={`/employee`} className="ui button">
                                 Back
                             </Link>
-                            <Link to={`/edituser/${this.props.user._id}`} className="ui primary button">
+                            <Link to={`/edituser/${this.props.user._id}/${this.props.match.params.id}`} className="ui primary button">
                                 Edit
                             </Link>
-                            <Link to={`/delete-user/${this.props.user._id}`} className="ui red button">
+                            <Link to={`/delete-user/${this.props.match.params._id}/${this.props.match.params.id}`} className="ui red button">
                                 Delete
                             </Link>
                         </div>

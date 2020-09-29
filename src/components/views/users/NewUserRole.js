@@ -1,6 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { createUserRole } from '../../../actions';
 
 class NewUserRole extends React.Component{
@@ -135,6 +136,7 @@ class NewUserRole extends React.Component{
                                     <Field name="permissions.admin" id="admin" component="input" type="checkbox" />
                                 </div>
                             </div>
+                            <Link to={"/employee"} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Create</button>
                         </form>                       
                     </div>

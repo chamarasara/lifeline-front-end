@@ -1,6 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
+import ImageUploader from 'react-images-upload';
 import { fetchUser, fetchUsersRoles, editUser } from '../../../actions';
 
 class EditUser extends React.Component {
@@ -17,8 +19,18 @@ class EditUser extends React.Component {
         userTypeName: "",
         permissions: []
     }
+    constructor(props) {
+        super(props);
+        this.state = { pictures: [] };
+        this.onDrop = this.onDrop.bind(this);
+    }
+    onDrop(picture) {
+        this.setState({
+            pictures: this.state.pictures.concat(picture),
+        });
+    }
     componentDidMount(){
-        this.props.fetchUser(this.props.match.params.id)
+        this.props.fetchUser(this.props.match.params._id)
         this.props.fetchUsersRoles()
     }    
     renderError({ error, touched }) {
@@ -32,7 +44,6 @@ class EditUser extends React.Component {
     }
     errorMessage() {
         if (this.props.errorMessage) {
-            console.log(this.props)
             return (
                 <div className="ui error message">
                     {this.props.errorMessage}
@@ -57,8 +68,10 @@ class EditUser extends React.Component {
         })
     }
     submit = (formValues) => {
-        this.props.editUser(this.props.match.params.id, formValues)
         console.log(formValues)
+        debugger;
+        this.props.editUser(this.props.match.params._id, formValues)
+        
     }
     render() {
         if (!this.props.user) {
@@ -148,10 +161,18 @@ class EditUser extends React.Component {
                         <div className="fields">                            
                             <div className="four wide field">  
                                 <label>Upload Profile Picture</label>                             
-                                <input type="file" id="file" style={{ display: "hidden" }} onChange={this.onChange} />
+                                <ImageUploader
+                                    withIcon={false}
+                                    className="avatar"
+                                    buttonText='Choose image'
+                                    onChange={this.onDrop}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                />
                             </div>
                         </div>
                         <div className="field">
+                            <Link to={`/userprofile/${this.props.match.params._id}/${this.props.match.params.id}`} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Update User</button>
                         </div>
                     </form>
@@ -187,9 +208,8 @@ class EditUser extends React.Component {
 //     return errors;
 // }
 const mapStateToProps = (state, ownPorps) => {
-    console.log(state)
     const userRoles = Object.values(state.userRoles)
-    return { errorMessage: state, user: state.users[ownPorps.match.params.id], userRoles: userRoles };
+    return { errorMessage: state, user: state.users[ownPorps.match.params._id], userRoles: userRoles };
 }
 const formWrapped = reduxForm({
     form: 'editUser',

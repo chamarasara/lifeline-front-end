@@ -78,8 +78,8 @@ class App extends React.Component {
                     <PrivateRoute path="/users"  component={UserDashboard} />
                     <PrivateRoute path="/createuser" component={NewUser} />
                     <PrivateRoute path="/userprofile/:_id/:id" component={UserProfile} />
-                    <PrivateRoute path="/edituser/:id" component={EditUser} />
-                    <PrivateRoute path="/delete-user/:id" component={DeleteUser} />
+                    <PrivateRoute path="/edituser/:_id/:id" component={EditUser} />
+                    <PrivateRoute path="/delete-user/:_id/:id" component={DeleteUser} />
                     <PrivateRoute path="/createuserrole" component={NewUserRole} />
                     <PrivateRoute path="/edit-user-role/:id" component={EditUserRole} />
                     <PrivateRoute path="/delete-user-role/:id" component={DeleteUserRole} />
