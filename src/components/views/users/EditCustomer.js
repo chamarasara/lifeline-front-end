@@ -1,7 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { fetchCustomer } from '../../../actions';
+import { Link } from 'react-router-dom';
+import { fetchCustomer, editCustomer } from '../../../actions';
 class EditCustomer extends React.Component {
     componentDidMount() {
         this.props.fetchCustomer(this.props.match.params.id);
@@ -14,18 +15,13 @@ class EditCustomer extends React.Component {
         postalCode: ""
     }
     registerAddress = {
-        city: "",
-        country: "",
-        lane: "",
-        no: "",
-        postalCode: ""
+        city2: "",
+        country2: "",
+        lane2: "",
+        no2: "",
+        postalCode2: ""
     }
-    usersType = {
-        id: "",
-        userTypeCode: "",
-        userTypeName: "",
-        permissions: []
-    }
+   
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -55,7 +51,7 @@ class EditCustomer extends React.Component {
         );
     }
     onSubmit = (formValues) => {
-        this.props.createUser(formValues)
+        this.props.editCustomer(this.props.customer._id,formValues)
         console.log(formValues)
     }  
     render() {
@@ -118,19 +114,19 @@ class EditCustomer extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="two wide field">
-                                <Field name="registerAddress.no" component={this.renderInput} placeholder={this.props.customer.registerAddress.no} type="text" />
+                                <Field name="registerAddress.no2" component={this.renderInput} placeholder={this.props.customer.registerAddress.no} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.lane" component={this.renderInput} placeholder={this.props.customer.registerAddress.lane} type="text" />
+                                <Field name="registerAddress.lane2" component={this.renderInput} placeholder={this.props.customer.registerAddress.lane} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.city" component={this.renderInput} placeholder={this.props.customer.registerAddress.city} type="text" />
+                                <Field name="registerAddress.city2" component={this.renderInput} placeholder={this.props.customer.registerAddress.city} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.postalCode" component={this.renderInput} placeholder={this.props.customer.registerAddress.postalCode} type="text" />
+                                <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder={this.props.customer.registerAddress.postalCode} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.country" component="select" placeholder={this.props.customer.registerAddress.country} type="text" >
+                                <Field name="registerAddress.country2" component="select" placeholder={this.props.customer.registerAddress.country} type="text" >
                                     <option>-Select Country-</option>
                                     <option value="Sri Lanka">Sri Lanka</option>
                                 </Field>
@@ -154,6 +150,9 @@ class EditCustomer extends React.Component {
                             </div>
                         </div>
                         <div className="field">
+                            <Link to={`/customer-profile/${this.props.customer._id}`} className="ui button">
+                                Back
+                            </Link>
                             <button type="submit" className="ui primary button">Update</button>
                         </div>
                     </form>
@@ -196,4 +195,4 @@ const formWrapped = reduxForm({
     form: 'editCustomer'
     //validate: validate
 })(EditCustomer);
-export default connect(mapStateToProps, { fetchCustomer })(formWrapped);
+export default connect(mapStateToProps, { fetchCustomer, editCustomer })(formWrapped);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createCustomer } from '../../../actions';
 class NewCustomer extends React.Component {
@@ -12,18 +13,18 @@ class NewCustomer extends React.Component {
         postalCode: ""
     }
     registerAddress = {
-        city: "",
-        country: "",
-        lane: "",
-        no: "",
-        postalCode: ""
+        city2: "",
+        country2: "",
+        lane2: "",
+        no2: "",
+        postalCode2: ""
     }
-    usersType = {
-        id: "",
-        userTypeCode: "",
-        userTypeName: "",
-        permissions: []
-    }
+    // usersType = {
+    //     id: "",
+    //     userTypeCode: "",
+    //     userTypeName: "",
+    //     permissions: []
+    // }
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -126,19 +127,19 @@ class NewCustomer extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="two wide field">
-                                <Field name="registerAddress.no" component={this.renderInput} required placeholder="No" type="text" />
+                                <Field name="registerAddress.no2" component={this.renderInput} required placeholder="No" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.lane" component={this.renderInput} placeholder="Lane" type="text" />
+                                <Field name="registerAddress.lane2" component={this.renderInput} placeholder="Lane" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.city" component={this.renderInput} placeholder="City" type="text" />
+                                <Field name="registerAddress.city2" component={this.renderInput} placeholder="City" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.postalCode" component={this.renderInput} placeholder="Postal Code" type="text" />
+                                <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder="Postal Code" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.country" component="select" placeholder="Country" type="text" >
+                                <Field name="registerAddress.country2" component="select" placeholder="Country" type="text" >
                                     <option>-Select Country-</option>
                                     <option value="Sri Lanka">Sri Lanka</option>
                                 </Field>
@@ -162,6 +163,7 @@ class NewCustomer extends React.Component {
                             </div>
                         </div>
                         <div className="field">
+                            <Link to={"/customer"} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Add New Customer</button>
                         </div>
                     </form>

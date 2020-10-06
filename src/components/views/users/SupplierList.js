@@ -10,11 +10,11 @@ class SupplierList extends React.Component {
     renderList() {
         return this.props.supplier.map(supplier => {
             return (
-                <tr key={supplier.id}>
+                <tr key={supplier._id}>
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
-                                {supplier.customerName}
+                                {supplier.supplierName}
                                 <div className="sub header">{supplier.companyName}
                                 </div>
                             </div>
@@ -31,7 +31,7 @@ class SupplierList extends React.Component {
                     <td>{supplier.registerNo}
                     </td>
                     <td>
-                        <Link to={`/supplier-profile/${supplier.id}`} className="ui blue button">View</Link>
+                        <Link to={`/supplier-profile/${supplier._id}`} className="ui blue button">View</Link>
                     </td>
                 </tr>
             )

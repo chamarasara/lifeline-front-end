@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchUserRole } from "../../../actions";
+import { fetchUserRole, editUserRole } from "../../../actions";
 
 class EditUserRole extends React.Component{
     componentDidMount() {
@@ -42,9 +42,9 @@ class EditUserRole extends React.Component{
             </div>
         );
     }
-    submit = (values) => {
-        this.props.createUserRole(values)
-        console.log(values)
+    submit = (formValues) => {
+        this.props.editUserRole(this.props.match.params.id,formValues)
+        console.log(formValues, this.props.match.params.id)
     }
     render(){   
         if (!this.props.userRole) {
@@ -153,4 +153,4 @@ const mapStateToProps = (state, ownPorps) => {
 const formWrapped = reduxForm({
     form: 'editUserRole',
 })(EditUserRole);
-export default connect(mapStateToProps, { fetchUserRole })(formWrapped);
+export default connect(mapStateToProps, { fetchUserRole, editUserRole })(formWrapped);

@@ -35,9 +35,6 @@ class DeleteUserRole extends React.Component{
 }
 
 const mapToSatate = (state, ownPorps) => {
-    console.log(ownPorps.match.params.id)
-    console.log(state)
-    console.log(ownPorps)
     return { userRole: state.userRoles[ownPorps.match.params.id] };
 }
 export default connect(mapToSatate, { deleteUserRole, fetchUserRole })(DeleteUserRole);

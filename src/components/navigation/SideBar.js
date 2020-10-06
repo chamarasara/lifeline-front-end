@@ -22,7 +22,7 @@ class SideBar extends React.Component {
                         Users
                     </Link>
                     <Link to={"/sales-dashboard"} className="item">
-                        <i className="cogs icon"></i>
+                        <i className="bullhorn icon"></i>
                         Sales
                     </Link>
                     <Link to={"/settings"} className="item">

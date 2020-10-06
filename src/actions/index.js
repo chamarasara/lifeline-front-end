@@ -153,9 +153,10 @@ export const editUserRole = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/user/get-user-type-by-id/${id}`, { ...formValues }, header);
+    console.log(id)
+    const response = await api.patch(`api/user-roles/update-user-role/${id}`, { ...formValues }, header);
     console.log(formValues)
-    dispatch({ type: EDIT_USER_ROLE, payload: id });
+    dispatch({ type: EDIT_USER_ROLE, payload: response.data });
     window.location.reload()
 };
 //delete user role
@@ -167,7 +168,7 @@ export const deleteUserRole = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    await api.delete(`/user/delete-user-type/${id}`, header);
+    await api.delete(`api/user-roles/delete-user-role/${id}`, header);
     dispatch({ type: DELETE_USER_ROLE, payload: id });
     history.push('/employee');
 };
@@ -181,7 +182,7 @@ export const createCustomer = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('/user/create-customer', { ...formValues }, header);
+    const response = await api.post('/api/master-data/customer-master/new-customer', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_CUSTOMER, payload: response.data });
     history.push('/customer');
@@ -195,7 +196,7 @@ export const fetchCustomers = () => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get('/user/get-all-customer', header);
+    const response = await api.get('/api/master-data/customer-master/all-customers', header);
     console.log(response)
     dispatch({ type: FETCH_CUSTOMERS, payload: response.data });
 };
@@ -208,7 +209,7 @@ export const fetchCustomer = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get(`/user/get-customer/${id}`, header);
+    const response = await api.get(`/api/master-data/customer-master/single-customer/${id}`, header);
     dispatch({ type: FETCH_CUSTOMER, payload: response.data });
 };
 //Edit customer
@@ -220,9 +221,9 @@ export const editCustomer = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/users/${id}`, { ...formValues }, header);
+    const response = await api.patch(`/api/master-data/customer-master/update-customer/${id}`, { ...formValues }, header);
     console.log(formValues)
-    dispatch({ type: EDIT_CUSTOMER, payload: id });
+    dispatch({ type: EDIT_CUSTOMER, payload: response.data });
     window.location.reload()
 };
 //Delete customer
@@ -234,7 +235,7 @@ export const deleteCustomer = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    await api.delete(`/user/delete-customer/${id}`, header);
+    await api.delete(`/api/master-data/customer-master/delete-customer/${id}`, header);
     dispatch({ type: DELETE_CUSTOMER, payload: id });
     history.push('/customer');
 };
@@ -248,10 +249,10 @@ export const createSupplier = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('/user/create-supplier', { ...formValues }, header);
+    const response = await api.post('api/master-data/supplier-master/new-supplier', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_SUPPLIER, payload: response.data });
-    history.push('/supplier');
+    //history.push('/supplier');
 };
 //List all customers
 export const fetchSuppliers = () => async dispatch => {
@@ -262,8 +263,8 @@ export const fetchSuppliers = () => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get('/user/get-all-supplier', header);
-
+    const response = await api.get('api/master-data/supplier-master/all-suppliers', header);
+    console.log(response)
     dispatch({ type: FETCH_SUPPLIERS, payload: response.data });
 };
 //View single supplier
@@ -275,7 +276,7 @@ export const fetchSupplier = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get(`/user/get-supplier/${id}`, header);
+    const response = await api.get(`/api/master-data/supplier-master/single-supplier/${id}`, header);
     console.log(response)
     dispatch({ type: FETCH_SUPPLIER, payload: response.data });
 };
@@ -288,11 +289,10 @@ export const editSupplier = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/users/${id}`, { ...formValues }, header);
-    console.log(formValues)
-    dispatch({ type: EDIT_SUPPLIER, payload: id });
-
-    history.push(`/customer-profile/${id}`);
+    const response = await api.patch(`/api/master-data/supplier-master/update-supplier/${id}`, { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: EDIT_SUPPLIER, payload: response });
+    history.push(`/supplier-profile/${id}`);
 };
 //Delete supplier
 export const deleteSupplier = (id) => async dispatch => {
@@ -303,7 +303,7 @@ export const deleteSupplier = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    await api.delete(`/user/delete-supplier/${id}`, header);
+    await api.delete(`/api/master-data/supplier-master/delete-supplier/${id}`, header);
     dispatch({ type: DELETE_SUPPLIER, payload: id });
     history.push('/supplier')
 };

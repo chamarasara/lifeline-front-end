@@ -60,13 +60,16 @@ class CustomerProfile extends React.Component {
                                 </div>
                                 <div className="item">
                                     <div className="ui horizontal label">Coummunication Address</div>
-                                    {this.props.customer.registerAddress.no}, {this.props.customer.registerAddress.lane}, {this.props.customer.registerAddress.city}, {this.props.customer.registerAddress.postalCode}, {this.props.customer.registerAddress.country}.
+                                    {this.props.customer.registerAddress.no2}, {this.props.customer.registerAddress.lane2}, {this.props.customer.registerAddress.city2}, {this.props.customer.registerAddress.postalCode2}, {this.props.customer.registerAddress.country}.
                                 </div>
                             </div>
-                            <Link to={`/edit-customer/${this.props.customer.id}`} className="ui primary button">
+                            <Link to={"/customer"} className="ui button">
+                                Back
+                            </Link>
+                            <Link to={`/edit-customer/${this.props.customer._id}`} className="ui primary button">
                                 Edit
                             </Link>
-                            <Link to={`/delete-customer/${this.props.customer.id}`} className="ui red button">
+                            <Link to={`/delete-customer/${this.props.customer._id}`} className="ui red button">
                                 Delete
                             </Link>
                         </div>

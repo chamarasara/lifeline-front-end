@@ -12,7 +12,7 @@ class DeleteSupplier extends React.Component {
         this.props.fetchSupplier(this.props.match.params.id);
     }
     renderActions() {
-        const { id } = this.props.match.params;
+        const id  = this.props.match.params.id;
         return (
             <React.Fragment>
                 <button onClick={() => this.props.deleteSupplier(id)} className="ui red button">Delete</button>

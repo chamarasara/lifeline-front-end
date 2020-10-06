@@ -68,8 +68,6 @@ class EditUser extends React.Component {
         })
     }
     submit = (formValues) => {
-        console.log(formValues)
-        debugger;
         this.props.editUser(this.props.match.params._id, formValues)
         
     }

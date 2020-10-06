@@ -10,7 +10,7 @@ class CustomerList extends React.Component {
     renderList() {
         return this.props.customers.map(customer => {
             return (
-                <tr key={ customer.id }>
+                <tr key={ customer._id }>
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
@@ -31,7 +31,7 @@ class CustomerList extends React.Component {
                     <td>{customer.registerNo}
                                 </td>
                     <td>
-                        <Link to={`/customer-profile/${customer.id}`} className="ui blue button">View</Link>
+                        <Link to={`/customer-profile/${customer._id}`} className="ui blue button">View</Link>
                     </td>
                 </tr>
             )

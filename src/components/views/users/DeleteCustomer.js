@@ -11,7 +11,7 @@ class DeleteCustomer extends React.Component {
         this.props.fetchCustomer(this.props.match.params.id);
     }
     renderActions() {
-        const { id } = this.props.match.params;
+        const  id  = this.props.match.params.id;
         return (
             <React.Fragment>
                 <button onClick={() => this.props.deleteCustomer(id)} className="ui red button">Delete</button>
@@ -34,6 +34,7 @@ class DeleteCustomer extends React.Component {
 }
 
 const mapToSatate = (state, ownPorps) => {
+    console.log(ownPorps)
     return { customer: state.customer[ownPorps.match.params.id] };
 }
 export default connect(mapToSatate, { deleteCustomer, fetchCustomer })(DeleteCustomer);

@@ -8,6 +8,7 @@ class Supplier extends React.Component {
             <div className="pusher">
                 <div className="ui basic segment" id="basic-segment">
                     <div className="column" style={{ paddingTop: "70px" }}>
+                        <Link to={"/settings"} className="ui button">Back</Link>
                         <Link to={"/new-supplier"} className="ui blue button">New Suplier</Link>
                     </div>
                 </div>

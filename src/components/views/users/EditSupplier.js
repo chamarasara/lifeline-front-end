@@ -1,10 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchSupplier, editSupplier } from '../../../actions';
 
 class EditSupplier extends React.Component {
     componentDidMount() {
+        console.log(this.props.match.params.id)
         this.props.fetchSupplier(this.props.match.params.id);
     }
     communicationAddress = {
@@ -15,18 +17,13 @@ class EditSupplier extends React.Component {
         postalCode: ""
     }
     registerAddress = {
-        city: "",
-        country: "",
-        lane: "",
-        no: "",
-        postalCode: ""
+        city2: "",
+        country2: "",
+        lane2: "",
+        no2: "",
+        postalCode2: ""
     }
-    usersType = {
-        id: "",
-        userTypeCode: "",
-        userTypeName: "",
-        permissions: []
-    }
+    
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -56,7 +53,7 @@ class EditSupplier extends React.Component {
         );
     }
     onSubmit = (formValues) => {
-        this.props.editSupplier(formValues)
+        this.props.editSupplier(this.props.match.params.id, formValues)
         console.log(formValues)
     }
     renderRolesList() {
@@ -119,6 +116,7 @@ class EditSupplier extends React.Component {
                                 </Field>
                             </div>
                         </div>
+                        
                         <div className="fields">
                             <div className="five wide field">
                                 <label>Registered Address- </label>
@@ -126,19 +124,19 @@ class EditSupplier extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="two wide field">
-                                <Field name="registerAddress.no" component={this.renderInput} placeholder={this.props.supplier.registerAddress.no} type="text" />
+                                <Field name="registerAddress.no2" component={this.renderInput} placeholder={this.props.supplier.registerAddress.no2} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.lane" component={this.renderInput} placeholder={this.props.supplier.registerAddress.lane} type="text" />
+                                <Field name="registerAddress.lane2" component={this.renderInput} placeholder={this.props.supplier.registerAddress.lane2} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.city" component={this.renderInput} placeholder={this.props.supplier.registerAddress.city} type="text" />
+                                <Field name="registerAddress.city2" component={this.renderInput} placeholder={this.props.supplier.registerAddress.city2} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.postalCode" component={this.renderInput} placeholder={this.props.supplier.registerAddress.postalCode} type="text" />
+                                <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder={this.props.supplier.registerAddress.postalCode2} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.country" component="select" placeholder={this.props.supplier.registerAddress.country} type="text" >
+                                <Field name="registerAddress.country2" component="select" placeholder={this.props.supplier.registerAddress.country2} type="text" >
                                     <option>-Select Country-</option>
                                     <option value="Sri Lanka">Sri Lanka</option>
                                 </Field>
@@ -165,6 +163,7 @@ class EditSupplier extends React.Component {
                             </div>
                         </div>  
                         <div className="field">
+                            <Link to={`/supplier-profile/${this.props.supplier._id}`} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Update</button>
                         </div>
                     </form>
@@ -200,7 +199,7 @@ class EditSupplier extends React.Component {
 //     return errors;
 // }
 const mapStateToProps = (state, ownPorps) => {
-    console.log(state.supplier[ownPorps.match.params.id])
+    //console.log(state.supplier[ownPorps.match.params.id])
     return { supplier: state.supplier[ownPorps.match.params.id] };
 }
 const formWrapped = reduxForm({
