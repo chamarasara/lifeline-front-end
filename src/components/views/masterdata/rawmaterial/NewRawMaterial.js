@@ -1,19 +1,13 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
-import { fetchSuppliers, createRawMaterial } from '../../../../actions';
-import history from '../../../history';
+import { fetchSuppliers } from '../../../../actions';
+import { Link } from 'react-router-dom'
+
 
 class NewRawMaterial extends React.Component {
     componentDidMount() {
         this.props.fetchSuppliers()
-    }
-
-    suppliers = {
-        supplierOne: null,
-        supplierTwo: null,
-        supplierThree: null,
-        supplierFour: null,
     }
 
     renderError({ error, touched }) {
@@ -34,17 +28,7 @@ class NewRawMaterial extends React.Component {
             </div>
         );
     }
-    onSubmit = (formValues) => {
-        console.log(formValues)
-        // const suppliers = [];
-        // suppliers.push({ id: parseInt(formValues.suppliers.supplierOne) }, { id: parseInt(formValues.suppliers.supplierTwo) }, { id: parseInt(formValues.suppliers.supplierThree) }, { id: parseInt(formValues.suppliers.supplierFour)})
-        // console.log(suppliers)      
-        // const values = {...formValues, suppliers}
-        // //delete formValues.suppliers;
-        // console.log(values)
-        //this.props.createRawMaterial(values)
-        history.push("/material-mrp-one")
-    }
+
     renderSuppliers() {
         return this.props.supplier.map(supplier => {
             return (
@@ -52,13 +36,40 @@ class NewRawMaterial extends React.Component {
             )
         })
     }
+    renderSupplierDropDown = ({ fields }) =>{
+        return(
+            <div>
+                <ul>
+                    {fields.map((suppliers, index) => <li key={index}>
+                        <label htmlFor={suppliers}>Supplier #{index + 1}</label>
+                        <div className="fields">
+                        <div className="eight wide field">
+                                <Field name={suppliers} type="text" component="select" >
+                                    <option>-Select Supplier-</option>
+                                    {this.renderSuppliers()}
+                                </Field>
+                        </div>
+                        <div className="eight wide field">
+                                <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
+                        </div>
+                        </div>                                                
+                    </li>)}
+                </ul>
+                <button className="mini ui primary button" type="button"onClick={() => fields.push()}>Add Suppliers</button>
+                
+            </div>
+        )
+    }
+        
+
     render() {
+        const { handleSubmit } = this.props
 
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <h3>Create Raw Material</h3>
-                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                    <form className="ui mini form error" onSubmit={handleSubmit}>
                         <div className="fields">
                             <div className="eight wide field">
                                 <Field name="materialName" component={this.renderInput} placeholder="Material Name" type="text" />
@@ -86,42 +97,19 @@ class NewRawMaterial extends React.Component {
                                 <Field name="materialState" component="select" type="text" >
                                     <option>-Select Material Status-</option>
                                     <option value="enabled">Enabled</option>
-                                    <option value="desabled">Desabled</option>
+                                    <option value="disabled">Disabled</option>
                                 </Field>
-                            </div>                            
-                        </div>                        
+                            </div>
+                        </div>
+                       
                         <div className="fields">
                             <div className="five wide field">
                                 <label>Suppliers- </label>
-                            </div>
-                        </div>
-                        <div className="fields">
-                            <div className="four wide field">
-                                <Field name="suppliers.supplierOne" component="select" type="text" >
-                                    <option>-Select Supplier-</option>
-                                    {this.renderSuppliers()}
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="suppliers.supplierTwo" component="select" type="text" >
-                                    <option>-Select Supplier-</option>
-                                    {this.renderSuppliers()}
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="suppliers.supplierThree" component="select" type="text" >
-                                    <option>-Select Supplier-</option>
-                                    {this.renderSuppliers()}
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="suppliers.supplierFour" component="select" type="text" >
-                                    <option>-Select Supplier-</option>
-                                    {this.renderSuppliers()}
-                                </Field>
+                                <FieldArray name="suppliers" component={this.renderSupplierDropDown} />
                             </div>
                         </div>
                         <div className="field">
+                            <Link to={"/raw-material"} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Next</button>
                         </div>
                     </form>
@@ -133,10 +121,11 @@ class NewRawMaterial extends React.Component {
 
 const mapStateToProps = (state) => {
     const supplier = Object.values(state.supplier)
-    console.log(supplier)
     return { supplier: supplier };
 }
 const formWrapped = reduxForm({
-    form: 'newRawMaterial'
+    form: 'newRawMaterial',
+    destroyOnUnmount: false, // <------ preserve form data
+    forceUnregisterOnUnmount: true
 })(NewRawMaterial);
-export default connect(mapStateToProps, { fetchSuppliers, createRawMaterial })(formWrapped);
+export default connect(mapStateToProps, { fetchSuppliers })(formWrapped);

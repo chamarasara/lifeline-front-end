@@ -1,29 +1,10 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createSupplier } from '../../../actions';
 class NewSupplier extends React.Component {
    
-    communicationAddress = {
-        city: "",
-        country: "",
-        lane: "",
-        no: "",
-        postalCode: ""
-    }
-    registerAddress = {
-        city2: "",
-        country2: "",
-        lane2: "",
-        no2: "",
-        postalCode2: ""
-    }
-    // usersType = {
-    //     id: "",
-    //     userTypeCode: "",
-    //     userTypeName: "",
-    //     permissions: []
-    // }
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -85,6 +66,9 @@ class NewSupplier extends React.Component {
                         <div className="fields">
                             <div className="ten wide field">
                                 <Field name="companyName" component={this.renderInput} placeholder="Company Name" type="text" />
+                            </div>
+                            <div className="four wide field">
+                                <Field name="creditPeriod" component={this.renderInput} placeholder="Credit Period" type="number" />
                             </div>
                         </div>
                         <div className="fields">
@@ -153,12 +137,10 @@ class NewSupplier extends React.Component {
                                     <option value="USD">USD</option>
                                     <option value="INR">INR</option>
                                 </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="creditPeriod" component={this.renderInput} placeholder="Credit Period" type="number" />
-                            </div>
+                            </div>                            
                         </div>                                            
                         <div className="field">
+                            <Link to={"/supplier"} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Add New Supplier</button>
                         </div>
                     </form>

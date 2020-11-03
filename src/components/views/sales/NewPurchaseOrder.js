@@ -1,64 +1,72 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { fetchCustomers, fetchProductsMaster, createPurchaseOrder } from '../../../actions';
 
 class NewPurchaseOrder extends React.Component {
 
     componentDidMount() {
-       
+        this.props.fetchCustomers()
+        this.props.fetchProductsMaster()
     }
-    productOne = {
-        id: "", quantity:""
-    }
-    productTwo = {
-        id: "", quantity: ""
-    }
-    productThree = {
-        id: "", quantity: ""
-    }
-    productFour = {
-        id: "", quantity: ""
-    }
-    productFive = {
-        id: "", quantity: ""
-    }
-    productSix = {
-        id: "", quantity: ""
-    }
-    
-    renderError({ error, touched }) {
-        if (touched && error) {
+
+    renderCustomers() {
+        return this.props.customers.map(customer => {
             return (
-                <div className="ui error message">
-                    <div className="Header">{error}</div>
-                </div>
-            );
-        }
+                <option key={customer._id} value={customer.id}>{customer.customerName}</option>
+            )
+        })
     }
-    errorMessage() {
-        if (this.props.errorMessage) {
-            console.log(this.props)
-            return (
-                <div className="ui error message">
-                    {this.props.errorMessage}
-                </div>
-            );
-        }
-    }
+
     renderInput = ({ input, label, placeholder, type, meta }) => {
         return (
             <div className="field">
                 <label>{label}</label>
                 <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
-                {this.renderError(meta)}
             </div>
         );
     }
+    renderProducts() {
+        return this.props.products.map(product => {
+            return (
+                <option key={product._id} value={product.id}>{product.productName}</option>
+            )
+        })
+    }
+    renderProductsDropDown = ({ fields }) => {
+        return (
+            <div>
+                <ul>
+                    {fields.map((products, index) => <li key={index}>
+                        <label htmlFor={products}>Product #{index + 1}</label>
+                        <div className="fields">
+                            <div className="eight wide field">
+                                <Field name={`${products}.id`} type="text" required component="select" >
+                                    <option>-Select Product-</option>
+                                    {this.renderProducts()}
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                <Field name={`${products}.quantity`} type="number" required component="input" placeholder="Quantity" >
+                                </Field>
+                            </div>
+                            <div className="eight wide field">
+                                <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
+                            </div>
+                        </div>
+                    </li>)}
+                </ul>
+                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Product</button>
+
+            </div>
+        )
+    }
     onSubmit = (formValues) => {
         console.log(formValues)
+        this.props.createPurchaseOrder(formValues)
     }
-    
+
     render() {
         return (
             <div className="pusher">
@@ -68,81 +76,16 @@ class NewPurchaseOrder extends React.Component {
                         <div className="six wide field">
                             <Field name="customerId" component="select" placeholder="" type="text" >
                                 <option>-Select Customer-</option>
-                                <option value="Customer">Customer</option>
+                                {this.renderCustomers()}
                             </Field>
                         </div>
                         <div className="fields">
-                            <div className="six wide field">
-                            <label>Select Product One</label>
-                            <Field name="productOne.id" component="select" placeholder="" type="text" >
-                                <option>-Select Product-</option>
-                                <option value="Customer">Product One</option>
-                            </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="productOne.quantity" component={this.renderInput} placeholder="Prouct Quantity" label="Quantity" type="number" />
-                            </div>                            
-                        </div>  
-                        <div className="fields">
-                            <div className="six wide field">
-                                <label>Select Product Two</label>
-                                <Field name="productTwo.id" component="select" placeholder="" type="text" >
-                                    <option>-Select Product-</option>
-                                    <option value="Customer">Product One</option>
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="productTwo.quantity" component={this.renderInput} placeholder="Prouct Quantity" label="Quantity" type="number" />
+                            <div className="sixteen wide field">
+                                <label>Products- </label>
+                                <FieldArray name="products" component={this.renderProductsDropDown} />
                             </div>
                         </div>
-                        <div className="fields">
-                            <div className="six wide field">
-                            <label>Select Product Three</label>
-                                <Field name="productThree.id" component="select" placeholder="" type="text" >
-                                <option>-Select Product-</option>
-                                <option value="Customer">Product One</option>
-                            </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="productThree.quantity" component={this.renderInput} placeholder="Prouct Quantity" label="Quantity" type="number" />
-                            </div>                            
-                        </div>
-                        <div className="fields">
-                            <div className="six wide field">
-                                <label>Select Product Four</label>
-                                <Field name="productFour.id" component="select" placeholder="" type="text" >
-                                    <option>-Select Product-</option>
-                                    <option value="Customer">Product One</option>
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="productFour.quantity" component={this.renderInput} placeholder="Prouct Quantity" label="Quantity" type="number" />
-                            </div>
-                        </div>
-                        <div className="fields">
-                            <div className="six wide field">
-                                <label>Select Product Five</label>
-                                <Field name="productFive.id" component="select" placeholder="" type="text" >
-                                    <option>-Select Product-</option>
-                                    <option value="Customer">Product One</option>
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="productFive.quantity" component={this.renderInput} placeholder="Prouct Quantity" label="Quantity" type="number" />
-                            </div>
-                        </div>
-                        <div className="fields">
-                            <div className="six wide field">
-                                <label>Select Product Six</label>
-                                <Field name="productSix.id" component="select" placeholder="" type="text" >
-                                    <option>-Select Product-</option>
-                                    <option value="Customer">Product One</option>
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name="productSix.quantity" component={this.renderInput} placeholder="Prouct Name" label="Quantity" type="number" />
-                            </div>
-                        </div>                                                                     
+
                         <div className="field">
                             <Link to={"/purchase-order-dashboard"} type="button" className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>
@@ -154,40 +97,42 @@ class NewPurchaseOrder extends React.Component {
     }
 }
 //Form input validation
-const validate = (formValues) => {
-    const errors = {}
-    if (!formValues.firstName) {
-        errors.firstName = 'Please enter First Name';
-    }
-    if (!formValues.lastName) {
-        errors.lastName = 'Please enter Last Name';
-    }
-    if (!formValues.address) {
-        errors.address = 'Please enter the Number of the Address';
-    }
-    if (!formValues.nic) {
-        errors.nic = 'Please enter the ID Nummber';
-    }
-    if (!formValues.mobileNo) {
-        errors.mobileNo = 'Please enter Phone Number';
-    }
-    if (!formValues.email) {
-        errors.email = 'Please enter Email';
-    }
-    if (!formValues.gender) {
-        errors.gender = 'Please enter the Gender';
-    }
-    return errors;
-}
+// const validate = (formValues) => {
+//     const errors = {}
+//     if (!formValues.firstName) {
+//         errors.firstName = 'Please enter First Name';
+//     }
+//     if (!formValues.lastName) {
+//         errors.lastName = 'Please enter Last Name';
+//     }
+//     if (!formValues.address) {
+//         errors.address = 'Please enter the Number of the Address';
+//     }
+//     if (!formValues.nic) {
+//         errors.nic = 'Please enter the ID Nummber';
+//     }
+//     if (!formValues.mobileNo) {
+//         errors.mobileNo = 'Please enter Phone Number';
+//     }
+//     if (!formValues.email) {
+//         errors.email = 'Please enter Email';
+//     }
+//     if (!formValues.gender) {
+//         errors.gender = 'Please enter the Gender';
+//     }
+//     return errors;
+// }
 const mapStateToProps = (state) => {
     console.log(state)
-    const userRoles = Object.values(state.userRoles)
-    console.log(userRoles)
-    return { errorMessage: state, userRoles: userRoles };
+    const customers = Object.values(state.customer)
+    const products = Object.values(state.productMaster)
+    console.log(products)
+    return { errorMessage: state, customers: customers, products: products };
 }
 const formWrapped = reduxForm({
     form: 'newPurchaseOrder',
-    validate: validate
+    destroyOnUnmount: false, // <------ preserve form data
+    forceUnregisterOnUnmount: true
 })(NewPurchaseOrder);
 
-export default connect(mapStateToProps, {})(formWrapped);
+export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, createPurchaseOrder })(formWrapped);

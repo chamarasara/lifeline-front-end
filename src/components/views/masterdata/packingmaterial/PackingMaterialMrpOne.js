@@ -1,11 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { createRawMaterial } from '../../../../actions';
-import history from '../../../history';
-import { Link } from 'react-router-dom';
+
 
 class PackingMaterialMrpOne extends React.Component{
+
+    renderError = ({ meta: { touched, error } }) =>
+        touched && error ? <span>{error}</span> : false
 
     renderInput = ({ input, label, placeholder, type, meta, required }) => {
         return (
@@ -26,24 +27,14 @@ class PackingMaterialMrpOne extends React.Component{
             lotSize: "", minimumLotSize: "", maximumLotSize: "", talkTime: "", roundingProfile: "", roundingValue: "", unitOfMeasureGroup: ""
         }
     }
-    onSubmit = (formValues) => {
-        console.log(formValues)
-        // const suppliers = [];
-        // suppliers.push({ id: parseInt(formValues.suppliers.supplierOne) }, { id: parseInt(formValues.suppliers.supplierTwo) }, { id: parseInt(formValues.suppliers.supplierThree) }, { id: parseInt(formValues.suppliers.supplierFour)})
-        // console.log(suppliers)      
-        // const values = {...formValues, suppliers}
-        // //delete formValues.suppliers;
-        // console.log(values)
-        //this.props.createRawMaterial(values)
-        history.push("/packing-material-mrp-two")
-    }
+   
     render() {
-
+        const { handleSubmit, previousPage } = this.props
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <h3>Create MRP 1</h3>
-                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                    <form className="ui mini form error" onSubmit={handleSubmit}>
                     <h4>General Data</h4>
                         <div className="fields">
                             <div className="three wide field">
@@ -64,7 +55,7 @@ class PackingMaterialMrpOne extends React.Component{
                         </div>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="mrpOne.mrpProcedure.validFrom" component={this.renderInput} placeholder="Valid from" label="Valid from" type="date" />
+                                <Field name="mrpOne.generalData.validFrom" component={this.renderInput} placeholder="Valid from" label="Valid from" type="date" />
                             </div> 
                         </div>
                         <h4>MRP Procedure</h4>
@@ -116,7 +107,7 @@ class PackingMaterialMrpOne extends React.Component{
                         </div>
 
                         <div className="field">
-                            <Link to={"/new-packing-material"} className="ui  button">Previous</Link>
+                            <button type="button" className="ui  button" onClick={previousPage}>Previous</button>
                             <button type="submit" className="ui primary button">Next</button>
                         </div>
                     </form>
@@ -126,11 +117,12 @@ class PackingMaterialMrpOne extends React.Component{
     }
 }
 const mapStateToProps = (state) => {
-    const supplier = Object.values(state.supplier)
-    console.log(supplier)
-    return { supplier: supplier };
+    //console.log(state)
+    return { state: state };
 }
 const formWrapped = reduxForm({
-    form: 'packingMaterialMrpOne'
+    form: 'newPackingMaterial',
+    destroyOnUnmount: false,
+    forceUnregisterOnUnmount: true
 })(PackingMaterialMrpOne);
-export default connect(mapStateToProps, { createRawMaterial})(formWrapped);
+export default connect(mapStateToProps, { })(formWrapped);

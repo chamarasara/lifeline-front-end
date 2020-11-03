@@ -2,8 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { createRawMaterial } from '../../../../actions';
-import history from '../../../history';
-import { Link } from 'react-router-dom';
+
 
 class RawMaterialPlantDataOne extends React.Component {
 
@@ -11,69 +10,53 @@ class RawMaterialPlantDataOne extends React.Component {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder}  type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
             </div>
         );
     }
-    plantDataOne = {
-        generalData: {
-            selectionMethod: "", individual: "", componentScrap: "", requirementsGroup: "", depRequirements: ""
-        },
-        shelfLifeData: {
-            discontinuedInd: "", effOut: "", followUpMaterial: ""
-        }
-    }
-    onSubmit = (formValues) => {
-        console.log(formValues)
-        // const suppliers = [];
-        // suppliers.push({ id: parseInt(formValues.suppliers.supplierOne) }, { id: parseInt(formValues.suppliers.supplierTwo) }, { id: parseInt(formValues.suppliers.supplierThree) }, { id: parseInt(formValues.suppliers.supplierFour)})
-        // console.log(suppliers)      
-        // const values = {...formValues, suppliers}
-        // //delete formValues.suppliers;
-        // console.log(values)
-        //this.props.createRawMaterial(values)
-        history.push("/material-plant-data-two")
-    }
+
+   
     render() {
+        const { handleSubmit, previousPage } = this.props
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <h3>Plant Data/Store One</h3>
-                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                    <form className="ui mini form error" onSubmit={handleSubmit}>
                         <h4>General Data</h4>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.baseUnit" component={this.renderInput} placeholder="Base Unit of Measure" type="text" />
+                                <Field name="plantDataOne.generalData.baseUnitPlant" component={this.renderInput} placeholder="Base Unit of Measure" type="text" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.unitOfIssue" component={this.renderInput} placeholder="Unit of Issue" type="text" />
+                                <Field name="plantDataOne.generalData.unitOfIssue" component={this.renderInput} placeholder="Unit of Issue" type="text" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.tempConditions" component={this.renderInput} placeholder="Temp. Conditions" type="text" />
+                                <Field name="plantDataOne.generalData.tempConditions" component={this.renderInput} placeholder="Temp. Conditions" type="text" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.storageConditiions" component={this.renderInput} placeholder="Storage Conditions" type="text" />
+                                <Field name="plantDataOne.generalData.storageConditions" component={this.renderInput} placeholder="Storage Conditions" type="text" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.containerRequirements" component={this.renderInput} placeholder="Container Requirements" type="text" />
+                                <Field name="plantDataOne.generalData.containerRequirements" component={this.renderInput} placeholder="Container Requirements" type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.hazMaterialNumber" component={this.renderInput} placeholder="Haz. Material Number" type="text" />
+                                <Field name="plantDataOne.generalData.hazMaterialNumber" component={this.renderInput} placeholder="Haz. Material Number" type="text" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.ccPhysInvInd" component={this.renderInput} placeholder="CC Phys.Inv.Ind" type="text" />
+                                <Field name="plantDataOne.generalData.ccPhysInvInd" component={this.renderInput} placeholder="CC Phys.Inv.Ind" type="text" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.grSlips" component={this.renderInput} placeholder="Number of GR Slips" type="text" />
+                                <Field name="plantDataOne.generalData.grSlips" component={this.renderInput} placeholder="Number of GR Slips" type="text" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.labelType" component={this.renderInput} placeholder="Label Type" type="text" />
-                            </div>  
+                                <Field name="plantDataOne.generalData.labelType" component={this.renderInput} placeholder="Label Type" type="text" />
+                            </div>
                             <div className="three wide field">
-                                <Field name="plantDataOne.plantDataOne.labelFrom" component={this.renderInput} placeholder="Label From" type="text" />
-                            </div>                          
+                                <Field name="plantDataOne.generalData.labelFrom" component={this.renderInput} placeholder="Label From" type="text" />
+                            </div>
                         </div>
                         <h4>Shelf Life Data</h4>
                         <div className="fields">
@@ -97,7 +80,9 @@ class RawMaterialPlantDataOne extends React.Component {
                             </div>
                         </div>
                         <div className="field">
-                            <Link to={"/material-mrp-four"} className="ui  button">Previous</Link>
+                            <button type="button" className="ui  button" onClick={previousPage}>
+                                Previous
+                            </button>
                             <button type="submit" className="ui primary button">Next</button>
                         </div>
                     </form>
@@ -107,11 +92,12 @@ class RawMaterialPlantDataOne extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    const supplier = Object.values(state.supplier)
-    console.log(supplier)
-    return { supplier: supplier };
+    //console.log(state)
+    return { state: state };
 }
 const formWrapped = reduxForm({
-    form: 'rawMaterialPlantDataOne'
+    form: 'newRawMaterial',
+    destroyOnUnmount: false,
+    forceUnregisterOnUnmount: true
 })(RawMaterialPlantDataOne);
 export default connect(mapStateToProps, { createRawMaterial })(formWrapped);

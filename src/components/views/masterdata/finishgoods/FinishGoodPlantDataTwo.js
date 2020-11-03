@@ -1,45 +1,27 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { createRawMaterial } from '../../../../actions';
-import history from '../../../history';
-import { Link } from 'react-router-dom';
 
-class PackingMaterialPlantDataTwo extends React.Component {
+
+class FinishGoodPlantDataTwo extends React.Component {
 
     renderInput = ({ input, label, placeholder, type, meta, required }) => {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder}  type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder} required type={type} autoComplete="off" />
             </div>
         );
     }
-    plantDataTwo = {
-        weight: {
-            grossWeight: "", weightUnit: "", netWeight: "", volume: "", volumeUnit: "", dimensions:""
-        },
-        generalParameters: {
-            seriolNumberProfile: "", profitCenter: "", logHandlingGroup: "", distributorProfile: "", stockDetermGroup: "", serLevel: ""
-        }
-    }
-    onSubmit = (formValues) => {
-        console.log(formValues)
-        // const suppliers = [];
-        // suppliers.push({ id: parseInt(formValues.suppliers.supplierOne) }, { id: parseInt(formValues.suppliers.supplierTwo) }, { id: parseInt(formValues.suppliers.supplierThree) }, { id: parseInt(formValues.suppliers.supplierFour)})
-        // console.log(suppliers)      
-        // const values = {...formValues, suppliers}
-        // //delete formValues.suppliers;
-        // console.log(values)
-        //this.props.createRawMaterial(values)
-        history.push("/finish-goods")
-    }
+   
+
     render() {
+        const { handleSubmit, pristine, previousPage, submitting } = this.props
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <h3>Plant Data/Store Two</h3>
-                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                    <form className="ui mini form error" onSubmit={handleSubmit}>
                         <h4>Weight/Volume</h4>
                         <div className="fields">
                             <div className="three wide field">
@@ -61,7 +43,7 @@ class PackingMaterialPlantDataTwo extends React.Component {
                         <div className="fields">
                             <div className="four wide field">
                                 <Field name="plantDataTwo.weight.dimensions" component={this.renderInput} placeholder="Size/Dimensions" type="text" />
-                            </div>                            
+                            </div>
                         </div>
                         <h4>General Plant Parameters</h4>
                         <div className="fields">
@@ -85,8 +67,10 @@ class PackingMaterialPlantDataTwo extends React.Component {
                             </div>
                         </div>
                         <div className="field">
-                            <Link to={"/finish-good-plant-data-one"} className="ui  button">Previous</Link>
-                            <button type="submit" className="ui primary button">Next</button>
+                            <button type="button" className="ui  button" onClick={previousPage}>
+                                Previous
+                            </button>
+                            <button type="submit" disabled={pristine || submitting} className="ui primary button">Save</button>
                         </div>
                     </form>
                 </div>
@@ -95,11 +79,12 @@ class PackingMaterialPlantDataTwo extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    const supplier = Object.values(state.supplier)
-    console.log(supplier)
-    return { supplier: supplier };
+    console.log(state)
+    return { state: state };
 }
 const formWrapped = reduxForm({
-    form: 'packingMaterialPlantDatatwo'
-})(PackingMaterialPlantDataTwo);
-export default connect(mapStateToProps, { createRawMaterial })(formWrapped);
+    form: 'newFinishGood',
+    destroyOnUnmount: false,
+    forceUnregisterOnUnmount: true
+})(FinishGoodPlantDataTwo);
+export default connect(mapStateToProps, {  })(formWrapped);

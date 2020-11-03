@@ -6,19 +6,6 @@ import ImageUploader from 'react-images-upload';
 import { fetchUser, fetchUsersRoles, editUser } from '../../../actions';
 
 class EditUser extends React.Component {
-    address = {
-        city: "",
-        country: "",
-        lane: "",
-        no: "",
-        postalCode: ""
-    }
-    userRole = {
-        id: 0,
-        userTypeCode: "",
-        userTypeName: "",
-        permissions: []
-    }
     constructor(props) {
         super(props);
         this.state = { pictures: [] };
@@ -207,7 +194,7 @@ class EditUser extends React.Component {
 // }
 const mapStateToProps = (state, ownPorps) => {
     const userRoles = Object.values(state.userRoles)
-    return { errorMessage: state, user: state.users[ownPorps.match.params._id], userRoles: userRoles };
+    return { errorMessage: state, user: state.users[ownPorps.match.params._id], userRoles: userRoles, initialValues: state.users[ownPorps.match.params._id] };
 }
 const formWrapped = reduxForm({
     form: 'editUser',

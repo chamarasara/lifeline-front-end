@@ -28,7 +28,37 @@ import {
     EDIT_RAW_MATERIAL,
     FETCH_RAW_MATERIAL,
     FETCH_RAW_MATERIALS,
-    DELETE_RAW_MATERIAL
+    DELETE_RAW_MATERIAL,
+    CREATE_PACKING_MATERIAL,
+    EDIT_PACKING_MATERIAL,
+    FETCH_PACKING_MATERIAL,
+    FETCH_PACKING_MATERIALS,
+    DELETE_PACKING_MATERIAL,
+    CREATE_SFG_MATERIAL,
+    EDIT_SFG_MATERIAL,
+    FETCH_SFG_MATERIAL,
+    FETCH_SFG_MATERIALS,
+    DELETE_SFG_MATERIAL,
+    CREATE_FG_MATERIAL,
+    EDIT_FG_MATERIAL,
+    FETCH_FG_MATERIAL,
+    FETCH_FG_MATERIALS,
+    DELETE_FG_MATERIAL,
+    CREATE_PRODUCT_MASTER,
+    EDIT_PRODUCT_MASTER,
+    FETCH_PRODUCT_MASTER,
+    FETCH_PRODUCTS_MASTER,
+    DELETE_PRODUCT_MASTER,
+    CREATE_PURCHASE_ORDER,
+    EDIT_PURCHASE_ORDER,
+    FETCH_PURCHASE_ORDER,
+    FETCH_PURCHASE_ORDERS,
+    DELETE_PURCHASE_ORDER,
+    CREATE_INVOICE,
+    EDIT_INVOICE,
+    FETCH_INVOICES,
+    FETCH_INVOICE,
+    DELETE_INVOICE
 } from './types';
 
 //create user
@@ -43,7 +73,7 @@ export const createUser = formValues => async dispatch => {
     const response = await api.post('/api/users/newuser', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_USER, payload: response.data });
-    //history.push('/employee');
+    history.push('/employee');
     window.location.reload();
 };
 //List all users
@@ -116,7 +146,7 @@ export const createUserRole = formValues => async dispatch => {
     console.log(response)
     dispatch({ type: CREATE_USER_ROLE, payload: response.data });
     history.push('/employee');
-    //window.location.reload();
+    window.location.reload();
 };
 //get all user roles
 export const fetchUsersRoles = () => async dispatch => {
@@ -157,7 +187,7 @@ export const editUserRole = (id, formValues) => async dispatch => {
     const response = await api.patch(`api/user-roles/update-user-role/${id}`, { ...formValues }, header);
     console.log(formValues)
     dispatch({ type: EDIT_USER_ROLE, payload: response.data });
-    window.location.reload()
+    history.push(`/user-role/${id}`)
 };
 //delete user role
 export const deleteUserRole = (id) => async dispatch => {
@@ -222,9 +252,10 @@ export const editCustomer = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/master-data/customer-master/update-customer/${id}`, { ...formValues }, header);
-    console.log(formValues)
+    console.log(response)
     dispatch({ type: EDIT_CUSTOMER, payload: response.data });
-    window.location.reload()
+    //window.location.reload()
+    history.push(`/customer-profile/${id}`)
 };
 //Delete customer
 export const deleteCustomer = (id) => async dispatch => {
@@ -252,7 +283,7 @@ export const createSupplier = formValues => async dispatch => {
     const response = await api.post('api/master-data/supplier-master/new-supplier', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_SUPPLIER, payload: response.data });
-    //history.push('/supplier');
+    history.push('/supplier');
 };
 //List all customers
 export const fetchSuppliers = () => async dispatch => {
@@ -291,7 +322,7 @@ export const editSupplier = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`/api/master-data/supplier-master/update-supplier/${id}`, { ...formValues }, header);
     console.log(response)
-    dispatch({ type: EDIT_SUPPLIER, payload: response });
+    dispatch({ type: EDIT_SUPPLIER, payload: response.data });
     history.push(`/supplier-profile/${id}`);
 };
 //Delete supplier
@@ -317,10 +348,11 @@ export const createRawMaterial = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('/material/create', { ...formValues }, header);
+    const response = await api.post('/api/master-data/raw-material/new-raw-material/', { ...formValues }, header);
     console.log(response)
-    dispatch({ type: CREATE_SUPPLIER, payload: response.data });
-    //history.push('/supplier');
+    dispatch({ type: CREATE_RAW_MATERIAL, payload: response.data });
+    history.push("/raw-material/");
+    window.location.reload()
 };
 //List all raw material
 export const fetchRawMaterials = () => async dispatch => {
@@ -331,9 +363,9 @@ export const fetchRawMaterials = () => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get('/user/get-all-supplier', header);
-
-    dispatch({ type: FETCH_SUPPLIERS, payload: response.data });
+    const response = await api.get('api/master-data/raw-material/all-raw-materials', header);
+    console.log(response.data)
+    dispatch({ type: FETCH_RAW_MATERIALS, payload: response.data });
 };
 //View single raw material
 export const fetchRawMaterial = (id) => async dispatch => {
@@ -344,9 +376,9 @@ export const fetchRawMaterial = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get(`/user/get-supplier/${id}`, header);
+    const response = await api.get(`/api/master-data/raw-material/single-raw-material/${id}`, header);
     console.log(response)
-    dispatch({ type: FETCH_SUPPLIER, payload: response.data });
+    dispatch({ type: FETCH_RAW_MATERIAL, payload: response.data });
 };
 //Edit raw material
 export const editRawMaterial = (id, formValues) => async dispatch => {
@@ -357,11 +389,12 @@ export const editRawMaterial = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/users/${id}`, { ...formValues }, header);
-    console.log(formValues)
-    dispatch({ type: EDIT_SUPPLIER, payload: id });
+    const response = await api.patch(`api/master-data/raw-material/update-raw-material/${id}`, { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: EDIT_RAW_MATERIAL, payload: response.data });
 
-    history.push(`/customer-profile/${id}`);
+    history.push(`/single-raw-material/${id}`);
+    window.location.reload()
 };
 //Delete raw material
 export const deleteRawMaterial = (id) => async dispatch => {
@@ -372,9 +405,441 @@ export const deleteRawMaterial = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    await api.delete(`/user/delete-supplier/${id}`, header);
-    dispatch({ type: DELETE_SUPPLIER, payload: id });
-    history.push('/supplier')
+    await api.delete(`/api/master-data/raw-material/delete-raw-material/${id}`, header);
+    dispatch({ type: DELETE_RAW_MATERIAL, payload: id });
+    history.push('/raw-material')
+    window.location.reload()
+};
+//create packing material
+export const createPackingaterial = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/master-data/packing-material/new-packing-material', { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: CREATE_PACKING_MATERIAL, payload: response.data });
+    history.push('/packing-material');
+    window.location.reload()
+};
+//List all packing material
+export const fetchPackingMaterials = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/master-data/packing-material/all-packing-materials', header);
+
+    dispatch({ type: FETCH_PACKING_MATERIALS, payload: response.data });
+};
+//View single packing material
+export const fetchPackingMaterial = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/master-data/packing-material/single-packing-material/${id}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_PACKING_MATERIAL, payload: response.data });
+};
+//Edit packing material
+export const editPackingMaterial = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/packing-material/update-packing-material/${id}`, { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: EDIT_PACKING_MATERIAL, payload: response.data });
+    history.push(`/single-packing-material/${id}`);
+};
+//Delete packing material
+export const deletePackingMaterial = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/master-data/packing-material/delete-packing-material/${id}`, header);
+    dispatch({ type: DELETE_PACKING_MATERIAL, payload: id });
+    history.push('/raw-material')
+    window.location.reload()
+};
+//create SFG material
+export const createSemiFinishGood = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/master-data/semi-finish-good/new-semi-finish-good-material', { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: CREATE_SFG_MATERIAL, payload: response.data });
+    history.push('/semi-finish-goods');
+    window.location.reload()
+};
+//List all SFG material
+export const fetchSemiFinishGoods = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/master-data/semi-finish-good/all-semi-finish-good-materials', header);
+    console.log(response)
+    dispatch({ type: FETCH_SFG_MATERIALS, payload: response.data });
+};
+//View SFG packing material
+export const fetchSemiFinishGood = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/master-data/semi-finish-good/single-semi-finish-good-material/${id}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_SFG_MATERIAL, payload: response.data });
+};
+//Edit SFG material
+export const editSemiFinishGood = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/semi-finish-good/update-semi-finish-good-material/${id}`, { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: EDIT_SFG_MATERIAL, payload: response.data });
+
+    history.push(`/single-semi-finish-good-material/${id}`);
+};
+//Delete SFG material
+export const deleteSemiFinishGood = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/master-data/semi-finish-good/delete-semi-finish-good-material/${id}`, header);
+    dispatch({ type: DELETE_SFG_MATERIAL, payload: id });
+    history.push('/semi-finish-goods')
+    window.location.reload()
+};
+
+//create FG material
+export const createFinishGood = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/master-data/finish-good/new-finish-good-material', { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: CREATE_FG_MATERIAL, payload: response.data });
+    history.push('/finish-goods');
+    window.location.reload()
+};
+//List all FG material
+export const fetchFinishGoods = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/master-data/finish-good/all-finish-good-materials', header);
+    console.log(response)
+    dispatch({ type: FETCH_FG_MATERIALS, payload: response.data });
+};
+//View FG  material
+export const fetchFinishGood = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/master-data/finish-good/single-finish-good-material/${id}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_FG_MATERIAL, payload: response.data });
+};
+//Edit FG material
+export const editFinishGood = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/finish-good/update-finish-good-material/${id}`, { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: EDIT_FG_MATERIAL, payload: response.data });
+
+    history.push(`/single-finish-good-material/${id}`);
+};
+//Delete FG material
+export const deleteFinishGood = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/master-data/finish-good/delete-finish-good-material/${id}`, header);
+    dispatch({ type: DELETE_FG_MATERIAL, payload: id });
+    history.push('/finish-goods')
+    window.location.reload()
+};
+
+//create Product Master
+export const createProductMaster = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('api/master-data/product-master/new-product', { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: CREATE_PRODUCT_MASTER, payload: response.data });
+    history.push('/products-dashboard');
+    window.location.reload()
+};
+//List all Product Master
+export const fetchProductsMaster = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/master-data/product-master/all-products', header);
+    console.log(response)
+    dispatch({ type: FETCH_PRODUCTS_MASTER, payload: response.data });
+};
+//View Product Master
+export const fetchProductMaster = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/master-data/product-master/single-product/${id}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_PRODUCT_MASTER, payload: response.data });
+};
+//Edit Product Master
+export const editProductMaster = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/product-master/update-product/${id}`, { ...formValues }, header);
+    console.log(formValues)
+    dispatch({ type: EDIT_PRODUCT_MASTER, payload: response.data });
+
+    history.push(`/single-product-master/${id}`);
+};
+//Delete Product Master
+export const deleteProductMaster = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/master-data/product-master/delete-product/${id}`, header);
+    dispatch({ type: DELETE_PRODUCT_MASTER, payload: id });
+    history.push('/products-dashboard')
+    window.location.reload()
+};
+
+//create purchase order
+export const createPurchaseOrder = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('api/sales/purchase-orders/new-purchase-order', { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: CREATE_PURCHASE_ORDER, payload: response.data });
+    window.location.reload()
+
+};
+//List all purchase orders
+export const fetchPurchaseOrders = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/sales/purchase-orders/all-purchase-orders', header);
+    console.log(response)
+    dispatch({ type: FETCH_PURCHASE_ORDERS, payload: response.data });
+};
+//View purchase order
+export const fetchPurchaseOrder = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/sales/purchase-orders/single-purchase-order/${id}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_PURCHASE_ORDER, payload: response.data[0] });
+};
+//Edit purchase order
+export const editPurchaseOrder = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders/update-purchase-order/${id}`, { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: EDIT_PURCHASE_ORDER, payload: response.data });
+    window.location.reload()
+    //  history.push("purchase-order-dashboard");
+};
+//Delete purchase order
+export const deletePurchaseOrder = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/sales/purchase-orders/delete-purchase-order/${id}`, header);
+    dispatch({ type: DELETE_PURCHASE_ORDER, payload: id });
+    history.push('/purchase-order-dashboard')
+    //window.location.reload()
+};
+//create purchase order
+export const createInvoice = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('api/sales/invoices/new-invoice', { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: CREATE_INVOICE, payload: response.data });
+    window.location.reload()
+
+};
+//List all purchase orders
+export const fetchInvoices = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('api/sales/invoices/all-invoices', header);
+    console.log(response)
+    dispatch({ type: FETCH_INVOICES, payload: response.data });
+};
+//View purchase order
+export const fetchInvoice = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`api/sales/invoices/single-invoice/${id}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_INVOICE, payload: response.data[0] });
+};
+//Edit purchase order
+export const editInvoice = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: EDIT_INVOICE, payload: response.data });
+    window.location.reload()
+    //  history.push("purchase-order-dashboard");
+};
+//Delete purchase order
+export const deleteInvoice = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/sales/invoices/delete-invoice/${id}`, header);
+    dispatch({ type: DELETE_INVOICE, payload: id });
+    history.push('/invoice-dashboard')
+    //window.location.reload()
 };
 //Autheticate User
 export function signInAction({ userName, password }, history) {

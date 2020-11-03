@@ -7,20 +7,7 @@ class EditCustomer extends React.Component {
     componentDidMount() {
         this.props.fetchCustomer(this.props.match.params.id);
     }
-    communicationAddress = {
-        city: "",
-        country: "",
-        lane: "",
-        no: "",
-        postalCode: ""
-    }
-    registerAddress = {
-        city2: "",
-        country2: "",
-        lane2: "",
-        no2: "",
-        postalCode2: ""
-    }
+   
    
     renderError({ error, touched }) {
         if (touched && error) {
@@ -41,11 +28,11 @@ class EditCustomer extends React.Component {
             );
         }
     }
-    renderInput = ({ input, label, placeholder, type, meta }) => {
+    renderInput = ({ input, label, placeholder, type , meta }) => {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder}  type={type} autoComplete="off" />
                 {this.renderError(meta)}
             </div>
         );
@@ -56,7 +43,7 @@ class EditCustomer extends React.Component {
     }  
     render() {
         if (!this.props.customer) {
-            return <div>Customer Role not selected. Please select a User Role from the list</div>
+            return <div>Customer not selected. Please select a User Role from the list</div>
         }
         return (
             <div className="pusher">
@@ -65,7 +52,7 @@ class EditCustomer extends React.Component {
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="sixteen wide field">
-                                <Field name="customerName" component={this.renderInput} placeholder={this.props.customer.customerName} type="text" />
+                                <Field name="customerName" component={this.renderInput} value ={this.props.customer.customerName} placeholder={this.props.customer.customerName} type="text" />
                             </div>
                         </div>
                         <div className="fields">
@@ -114,19 +101,19 @@ class EditCustomer extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="two wide field">
-                                <Field name="registerAddress.no2" component={this.renderInput} placeholder={this.props.customer.registerAddress.no} type="text" />
+                                <Field name="registerAddress.no2" component={this.renderInput} placeholder={this.props.customer.registerAddress.no2} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.lane2" component={this.renderInput} placeholder={this.props.customer.registerAddress.lane} type="text" />
+                                <Field name="registerAddress.lane2" component={this.renderInput} placeholder={this.props.customer.registerAddress.lane2} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.city2" component={this.renderInput} placeholder={this.props.customer.registerAddress.city} type="text" />
+                                <Field name="registerAddress.city2" component={this.renderInput} placeholder={this.props.customer.registerAddress.city2} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder={this.props.customer.registerAddress.postalCode} type="text" />
+                                <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder={this.props.customer.registerAddress.postalCode2} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.country2" component="select" placeholder={this.props.customer.registerAddress.country} type="text" >
+                                <Field name="registerAddress.country2" component="select" placeholder={this.props.customer.registerAddress.country2} type="text" >
                                     <option>-Select Country-</option>
                                     <option value="Sri Lanka">Sri Lanka</option>
                                 </Field>
@@ -189,7 +176,7 @@ class EditCustomer extends React.Component {
 // }
 const mapStateToProps = (state, ownPorps) => {
     console.log(state)
-    return { customer: state.customer[ownPorps.match.params.id] };
+    return { customer: state.customer[ownPorps.match.params.id], initialValues: state.customer[ownPorps.match.params.id] };
 }
 const formWrapped = reduxForm({
     form: 'editCustomer'

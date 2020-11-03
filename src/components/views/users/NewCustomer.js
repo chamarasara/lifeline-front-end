@@ -4,27 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createCustomer } from '../../../actions';
 class NewCustomer extends React.Component {
-    
-    communicationAddress = {
-        city: "",
-        country: "",
-        lane: "",
-        no: "",
-        postalCode: ""
-    }
-    registerAddress = {
-        city2: "",
-        country2: "",
-        lane2: "",
-        no2: "",
-        postalCode2: ""
-    }
-    // usersType = {
-    //     id: "",
-    //     userTypeCode: "",
-    //     userTypeName: "",
-    //     permissions: []
-    // }
+        
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -94,7 +74,10 @@ class NewCustomer extends React.Component {
                             <div className="ten wide field">
                                 <Field name="companyName" component={this.renderInput} placeholder="Company Name" type="text" />
                             </div>
-                        </div>                      
+                            <div className="four wide field">
+                                <Field name="debitPeriod" component={this.renderInput} placeholder="Debit Period" type="number" />
+                            </div>
+                        </div>                                             
                         <div className="fields">
                             <div className="five wide field">
                             <label>Communication Address- </label>
@@ -160,7 +143,7 @@ class NewCustomer extends React.Component {
                                     <option value="USD">USD</option>
                                     <option value="INR">INR</option>
                                 </Field>
-                            </div>
+                            </div>                                                       
                         </div>
                         <div className="field">
                             <Link to={"/customer"} className="ui button">Back</Link>

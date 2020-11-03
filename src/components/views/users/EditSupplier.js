@@ -8,21 +8,7 @@ class EditSupplier extends React.Component {
     componentDidMount() {
         console.log(this.props.match.params.id)
         this.props.fetchSupplier(this.props.match.params.id);
-    }
-    communicationAddress = {
-        city: "",
-        country: "",
-        lane: "",
-        no: "",
-        postalCode: ""
-    }
-    registerAddress = {
-        city2: "",
-        country2: "",
-        lane2: "",
-        no2: "",
-        postalCode2: ""
-    }
+    }   
     
     renderError({ error, touched }) {
         if (touched && error) {
@@ -200,7 +186,7 @@ class EditSupplier extends React.Component {
 // }
 const mapStateToProps = (state, ownPorps) => {
     //console.log(state.supplier[ownPorps.match.params.id])
-    return { supplier: state.supplier[ownPorps.match.params.id] };
+    return { supplier: state.supplier[ownPorps.match.params.id], initialValues: state.supplier[ownPorps.match.params.id] };
 }
 const formWrapped = reduxForm({
     form: 'editSupplier'

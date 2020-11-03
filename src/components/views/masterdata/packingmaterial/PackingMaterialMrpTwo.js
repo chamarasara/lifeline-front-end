@@ -1,11 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { createRawMaterial } from '../../../../actions';
-import history from '../../../history';
-import { Link } from 'react-router-dom';
+
 
 class PackingMaterialMrpTwo extends React.Component {
+
+    renderError = ({ meta: { touched, error } }) =>
+        touched && error ? <span>{error}</span> : false
 
     renderInput = ({ input, label, placeholder, type, meta, required }) => {
         return (
@@ -26,24 +27,14 @@ class PackingMaterialMrpTwo extends React.Component {
             lotSize: "", minimumLotSize: "", maximumLotSize: "", talkTime: "", roundingProfile: "", roundingValue: "", unitOfMeasureGroup: ""
         }
     }
-    onSubmit = (formValues) => {
-        console.log(formValues)
-        // const suppliers = [];
-        // suppliers.push({ id: parseInt(formValues.suppliers.supplierOne) }, { id: parseInt(formValues.suppliers.supplierTwo) }, { id: parseInt(formValues.suppliers.supplierThree) }, { id: parseInt(formValues.suppliers.supplierFour)})
-        // console.log(suppliers)      
-        // const values = {...formValues, suppliers}
-        // //delete formValues.suppliers;
-        // console.log(values)
-        //this.props.createRawMaterial(values)
-        history.push("/packing-material-mrp-three")
-    }
+  
     render() {
-
+        const { handleSubmit, previousPage } = this.props
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <h3>Create MRP 2</h3>
-                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                    <form className="ui mini form error" onSubmit={handleSubmit}>
                         <h4>Procurement</h4>
                         <div className="fields">
                             <div className="three wide field">
@@ -93,13 +84,13 @@ class PackingMaterialMrpTwo extends React.Component {
                         <h4>Scheduling</h4>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="mrpTwo.scheduling.inHouseProduction" component={this.renderInput} placeholder="In-house Production(days)" type="text" />
+                                <Field name="mrpTwo.scheduling.inHouseProduction" component={this.renderInput} placeholder="In-house Production(days)" type="number" />
                             </div>
                             <div className="three wide field">
-                                <Field name="mrpTwo.scheduling.plannedDeliveryTime" component={this.renderInput} placeholder="Planned Delivery Time(days)" type="text" />
+                                <Field name="mrpTwo.scheduling.plannedDeliveryTime" component={this.renderInput} placeholder="Planned Delivery Time(days)" type="number" />
                             </div>
                             <div className="three wide field">
-                                <Field name="mrpTwo.scheduling.grProcessingTime" component={this.renderInput} placeholder="GR Processing Time(days)" type="text" />
+                                <Field name="mrpTwo.scheduling.grProcessingTime" component={this.renderInput} placeholder="GR Processing Time(days)" type="number" />
                             </div>
                             <div className="three wide field">
                                 <Field name="mrpTwo.scheduling.planningCalender" component={this.renderInput} placeholder="Planning Calender" type="text" />
@@ -129,12 +120,12 @@ class PackingMaterialMrpTwo extends React.Component {
                                 <Field name="mrpTwo.netRequirements.safetyTimeInd" component={this.renderInput} placeholder="Safety Time ind" type="text" />
                             </div>
                             <div className="three wide field">
-                                <Field name="mrpTwo.netRequirements.safetyTime" component={this.renderInput} placeholder="Safety Time/act.cov(days)" type="text" />
+                                <Field name="mrpTwo.netRequirements.safetyTime" component={this.renderInput} placeholder="Safety Time/act.cov(days)" type="number" />
                             </div>
                         </div>
 
                         <div className="field">
-                            <Link to={"/packing-material-mrp-one"} className="ui  button">Previous</Link>
+                            <button type="button" className="ui  button" onClick={previousPage}>Back</button>
                             <button type="submit" className="ui primary button">Next</button>
                         </div>
                     </form>
@@ -144,11 +135,12 @@ class PackingMaterialMrpTwo extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    const supplier = Object.values(state.supplier)
-    console.log(supplier)
-    return { supplier: supplier };
+    //console.log(state)
+    return { state: state };
 }
 const formWrapped = reduxForm({
-    form: 'packingMaterialMrpTwo'
+    form: 'newPackingMaterial',
+    destroyOnUnmount: false,
+    forceUnregisterOnUnmount: true
 })(PackingMaterialMrpTwo);
-export default connect(mapStateToProps, { createRawMaterial })(formWrapped);
+export default connect(mapStateToProps, {  })(formWrapped);

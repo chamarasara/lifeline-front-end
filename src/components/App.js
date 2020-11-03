@@ -27,35 +27,67 @@ import DeleteSupplier from './views/users/DeleteSupplier';
 import DeleteUser from './views/users/DeleteUser';
 
 import { PrivateRoute } from './PrivateRoute';
-import RawMaterialDashboard from './views/masterdata/rawmaterial/PackingMaterialDashboard';
-import NewRawMaterial from './views/masterdata/rawmaterial/NewRawMaterial';
-import RawMaterialMrpOne from './views/masterdata/rawmaterial/RawMaterialMrpOne';
-import RawMaterialMrpTwo from './views/masterdata/rawmaterial/RawMaterialMrpTwo';
-import RawMaterialMrpThree from './views/masterdata/rawmaterial/RawMaterialMrpThree';
-import RawMaterialMrpFour from './views/masterdata/rawmaterial/RawMaterialMrpFour';
-import RawMaterialPlantDataOne from './views/masterdata/rawmaterial/RawMaterialPlantDataOne';
-import RawMaterialPlantDataTwo from './views/masterdata/rawmaterial/RawMaterialPlantDataTwo';
-import NewPackingMaterial from './views/masterdata/packingmaterial/NewPackingMaterial';
-import PackingMaterialDashboard from './views/masterdata/rawmaterial/PackingMaterialDashboard';
-import PackingMaterialMrpOne from './views/masterdata/packingmaterial/PackingMaterialMrpOne';
-import PackingMaterialMrpTwo from './views/masterdata/packingmaterial/PackingMaterialMrpTwo';
-import PackingMaterialMrpThree from './views/masterdata/packingmaterial/PackingMaterialMrpThree';
-import PackingMaterialMrpFour from './views/masterdata/packingmaterial/PackingMaterialMrpFour';
-import PackingMaterialPlantDataOne from './views/masterdata/packingmaterial/PackingMaterialPlantDataOne';
-import PackingMaterialPlantDataTwo from './views/masterdata/packingmaterial/PackingMaterialPlantDataTwo';
-import FinishGoodsDashboard from './views/masterdata/finishgoods/FinishGoodsDashboard';
-import NewFinishGood from './views/masterdata/finishgoods/NewFinishGood';
-import FinishGoodMrpOne from './views/masterdata/finishgoods/FinishGoodMrpOne';
-import FinishGoodMrpTwo from './views/masterdata/finishgoods/FinishGoodMrpTwo';
-import FinishGoodMrpThree from './views/masterdata/finishgoods/FinishGoodMrpThree';
-import FinishGoodlMrpFour from './views/masterdata/finishgoods/FinishGoodlMrpFour';
-import FinishGoodPlantDataOne from './views/masterdata/finishgoods/FinishGoodPlantDataOne';
-import FinishGoodPlantDataTwo from './views/masterdata/finishgoods/FinishGoodPlantDataTwo';
+import RawMaterialDashboard from './views/masterdata/rawmaterial/RawMaterialDashboard';
+import NewRawMaterial from './views/masterdata/rawmaterial/WizardForm';
+import NewPackingMaterial from './views/masterdata/packingmaterial/WizardFormPackingMaterial';
+import SinglePackingMaterial from './views/masterdata/packingmaterial/SinglePackingMaterial';
+import PackingMaterialDashboard from './views/masterdata/packingmaterial/PackingMaterialDashboard';
+import FinishGoodDashboard from './views/masterdata/finishgoods/FinishGoodDashboard';
+import NewFinishGood from './views/masterdata/finishgoods/WizardFormFinishGood';
+import NewSemiFinishGood from './views/masterdata/semifinishgoods/WizardFormSemiFinishGood';
 import SalesDashboard from './views/sales/SalesDashboard';
 import NewPurchaseOrder from './views/sales/NewPurchaseOrder';
 import NewInvoice from './views/sales/NewInvoice';
 import PurchaseOrderDashboard from './views/sales/PurchaseOrderDashboard';
 import InvoiceDashboard from './views/sales/InvoiceDashboard';
+import SemiFinishGoodDashboard from './views/masterdata/semifinishgoods/SemiFinishGoodDashboard';
+import SingleRawMaterial from './views/masterdata/rawmaterial/SingleRawMaterial';
+import EditRawMaterial from './views/masterdata/rawmaterial/EditRawMaterial';
+import EditRawMaterialMrpOne from './views/masterdata/rawmaterial/EditRawMaterialMrpOne';
+import EditRawMaterialMrpTwo from './views/masterdata/rawmaterial/EditRawMaterialMrpTwo';
+import EditRawMaterialMrpThree from './views/masterdata/rawmaterial/EditRawMaterialMrpThree';
+import EditRawMaterialMrpFour from './views/masterdata/rawmaterial/EditRawMaterialMrpFour';
+import EditRawMaterialPlantOne from './views/masterdata/rawmaterial/EditRawMaterialPlantOne';
+import EditRawMaterialPlantTwo from './views/masterdata/rawmaterial/EditRawMaterialPlantTwo';
+import DeleteRawMaterial from './views/masterdata/rawmaterial/DeleteRawMaterial';
+import EditPackingMaterial from './views/masterdata/packingmaterial/EditPackingMaterial';
+import EditPackingMaterialMrpOne from './views/masterdata/packingmaterial/EditPackingMaterialMrpOne';
+import EditPackingMaterialMrpTwo from './views/masterdata/packingmaterial/EditPackingMaterialMrpTwo';
+import EditPackingMaterialMrpThree from './views/masterdata/packingmaterial/EditPackingMaterialMrpThree';
+import EditPackingMaterialMrpFour from './views/masterdata/packingmaterial/EditPackingMaterialMrpFour';
+import EditPackingMaterialPlantOne from './views/masterdata/packingmaterial/EditPackingMaterialPlantOne';
+import EditPackingMaterialPlantTwo from './views/masterdata/packingmaterial/EditPackingMaterialPlantTwo';
+import DeletePackingMaterial from './views/masterdata/packingmaterial/DeletePackingMaterial';
+import SingleSemiFinishGoodMaterial from './views/masterdata/semifinishgoods/SingleSemiFinishGoodMaterial';
+import EditSemiFinishGoodMaterial from './views/masterdata/semifinishgoods/EditSemiFinishGoodMaterial';
+import EditSemiFinishGoodMaterialMrpOne from './views/masterdata/semifinishgoods/EditSemiFinishGoodMaterialMrpOne';
+import EditSemiFinishGoodMaterialMrpTwo from './views/masterdata/semifinishgoods/EditSemiFinishGoodMaterialMrpTwo';
+import EditSemiFinishGoodMaterialMrpThree from './views/masterdata/semifinishgoods/EditSemiFinishGoodMaterialMrpThree';
+import EditSemiFinishGoodMaterialMrpFour from './views/masterdata/semifinishgoods/EditSemiFinishGoodMaterialMrpFour';
+import EditSemiFinishGoodMaterialPlantTwo from './views/masterdata/semifinishgoods/EditSemiFinishGoodMaterialPlantTwo';
+import EditSemiFinishGoodMaterialPlantOne from './views/masterdata/semifinishgoods/EditSemiFinishGoodMaterialPlantOne';
+import DeleteSemiFinishGoodMaterial from './views/masterdata/semifinishgoods/DeleteSemiFinishGoodMaterial';
+import SingleFinishGoodMaterial from './views/masterdata/finishgoods/SingleFinishGoodMaterial';
+import EditFinishGoodMaterial from './views/masterdata/finishgoods/EditFinishGoodMaterial';
+import EditFinishGoodMaterialMrpOne from './views/masterdata/finishgoods/EditFinishGoodMaterialMrpOne';
+import EditFinishGoodMaterialMrpTwo from './views/masterdata/finishgoods/EditFinishGoodMaterialMrpTwo';
+import EditFinishGoodMaterialMrpThree from './views/masterdata/finishgoods/EditFinishGoodMaterialMrpThree';
+import EditFinishGoodMaterialMrpFour from './views/masterdata/finishgoods/EditFinishGoodMaterialMrpFour';
+import EditFinishGoodMaterialPlantOne from './views/masterdata/finishgoods/EditFinishGoodMaterialPlantOne';
+import EditFinishGoodMaterialPlantTwo from './views/masterdata/finishgoods/EditFinishGoodMaterialPlantTwo';
+import DeleteFinishGoodMaterial from './views/masterdata/finishgoods/DeleteFinishGoodMaterial';
+import ProductDashboard from './views/masterdata/productmaster/ProductDashboard';
+import NewProductMaster from './views/masterdata/productmaster/NewProductMaster';
+import SingleProductMaster from './views/masterdata/productmaster/SingleProductMaster';
+import EditProductMaster from './views/masterdata/productmaster/EditProductMaster';
+import DeleteProductMaster from './views/masterdata/productmaster/DeleteProductMaster';
+import EditPurchaseOrder from './views/sales/EditPurchaseOrder';
+import DeletePurchaseOrder from './views/sales/DeletePurchaseOrder';
+import EditInvoice from './views/sales/EditInvoice ';
+import DeleteInvoice from './views/sales/DeleteInvoice';
+
+
+
 
 class App extends React.Component {
 
@@ -74,7 +106,7 @@ class App extends React.Component {
                 <Router history={history}>
                 {this.renderNavBar()}                   
                     <Route path="/login" component={Login} />                    
-                    <PrivateRoute path="/" exact component={Dashboard}/>
+                    <PrivateRoute path="/" exact component={Dashboard}/>                    
                     <PrivateRoute path="/users"  component={UserDashboard} />
                     <PrivateRoute path="/createuser" component={NewUser} />
                     <PrivateRoute path="/userprofile/:_id/:id" component={UserProfile} />
@@ -98,33 +130,62 @@ class App extends React.Component {
                     <PrivateRoute path="/settings" component={Settings} />    
                     <PrivateRoute path="/raw-material" component={RawMaterialDashboard} />        
                     <PrivateRoute path="/new-raw-material" component={NewRawMaterial} />  
-                    <PrivateRoute path="/material-mrp-one" component={RawMaterialMrpOne} /> 
-                    <PrivateRoute path="/material-mrp-two" component={RawMaterialMrpTwo} />   
-                    <PrivateRoute path="/material-mrp-three" component={RawMaterialMrpThree} />      
-                    <PrivateRoute path="/material-mrp-four" component={RawMaterialMrpFour} />      
-                    <PrivateRoute path="/material-plant-data-one" component={RawMaterialPlantDataOne} />      
-                    <PrivateRoute path="/material-plant-data-two" component={RawMaterialPlantDataTwo} /> 
+                    <PrivateRoute path="/single-raw-material/:id" component={SingleRawMaterial} /> 
+                    <PrivateRoute path="/raw-material-edit-details/:id" component={EditRawMaterial} />   
+                    <PrivateRoute path="/edit-raw-material-mrp-one/:id" component={EditRawMaterialMrpOne} />      
+                    <PrivateRoute path="/edit-raw-material-mrp-two/:id" component={EditRawMaterialMrpTwo} />    
+                    <PrivateRoute path="/edit-raw-material-mrp-three/:id" component={EditRawMaterialMrpThree} />  
+                    <PrivateRoute path="/edit-raw-material-mrp-four/:id" component={EditRawMaterialMrpFour} />  
+                    <PrivateRoute path="/edit-raw-material-plant-one/:id" component={EditRawMaterialPlantOne} /> 
+                    <PrivateRoute path="/edit-raw-material-plant-two/:id" component={EditRawMaterialPlantTwo} />  
+                    <PrivateRoute path="/delete-raw-material/:id" component={DeleteRawMaterial} />                   
                     <PrivateRoute path="/packing-material" component={PackingMaterialDashboard} /> 
+                    <PrivateRoute path="/single-packing-material/:id" component={SinglePackingMaterial} />
                     <PrivateRoute path="/new-packing-material" component={NewPackingMaterial} />
-                    <PrivateRoute path="/packing-material-mrp-one" component={PackingMaterialMrpOne} /> 
-                    <PrivateRoute path="/packing-material-mrp-two" component={PackingMaterialMrpTwo} /> 
-                    <PrivateRoute path="/packing-material-mrp-three" component={PackingMaterialMrpThree} /> 
-                    <PrivateRoute path="/packing-material-mrp-four" component={PackingMaterialMrpFour} /> 
-                    <PrivateRoute path="/packing-material-plant-data-one" component={PackingMaterialPlantDataOne} /> 
-                    <PrivateRoute path="/packing-material-plant-data-two" component={PackingMaterialPlantDataTwo} /> 
-                    <PrivateRoute path="/finish-goods" component={FinishGoodsDashboard} /> 
+                    <PrivateRoute path="/packing-material-edit-details/:id" component={EditPackingMaterial} /> 
+                    <PrivateRoute path="/edit-packing-material-mrp-one/:id" component={EditPackingMaterialMrpOne} />
+                    <PrivateRoute path="/edit-packing-material-mrp-two/:id" component={EditPackingMaterialMrpTwo} />                  
+                    <PrivateRoute path="/edit-packing-material-mrp-three/:id" component={EditPackingMaterialMrpThree} /> 
+                    <PrivateRoute path="/edit-packing-material-mrp-four/:id" component={EditPackingMaterialMrpFour} /> 
+                    <PrivateRoute path="/edit-packing-material-plant-one/:id" component={EditPackingMaterialPlantOne} />                    
+                    <PrivateRoute path="/edit-packing-material-plant-two/:id" component={EditPackingMaterialPlantTwo} />  
+                    <PrivateRoute path="/delete-packing-material/:id" component={DeletePackingMaterial} />   
+                    <PrivateRoute path="/finish-goods" component={FinishGoodDashboard} /> 
                     <PrivateRoute path="/new-finish-good" component={NewFinishGood} />  
-                    <PrivateRoute path="/finish-good-mrp-one" component={FinishGoodMrpOne} />  
-                    <PrivateRoute path="/finish-good-mrp-two" component={FinishGoodMrpTwo} />  
-                    <PrivateRoute path="/finish-good-mrp-three" component={FinishGoodMrpThree} />
-                    <PrivateRoute path="/finish-good-mrp-four" component={FinishGoodlMrpFour} />
-                    <PrivateRoute path="/finish-good-plant-data-one" component={FinishGoodPlantDataOne} />
-                    <PrivateRoute path="/finish-good-plant-data-two" component={FinishGoodPlantDataTwo} />
+                    <PrivateRoute path="/single-finish-good-material/:id" component={SingleFinishGoodMaterial} />
+                    <PrivateRoute path="/finish-good-edit-details/:id" component={EditFinishGoodMaterial} />
+                    <PrivateRoute path="/edit-finish-good-mrp-one/:id" component={EditFinishGoodMaterialMrpOne} />
+                    <PrivateRoute path="/edit-finish-good-mrp-two/:id" component={EditFinishGoodMaterialMrpTwo} />
+                    <PrivateRoute path="/edit-finish-good-mrp-three/:id" component={EditFinishGoodMaterialMrpThree} />
+                    <PrivateRoute path="/edit-finish-good-mrp-four/:id" component={EditFinishGoodMaterialMrpFour} />
+                    <PrivateRoute path="/edit-finish-good-plant-one/:id" component={EditFinishGoodMaterialPlantOne} />
+                    <PrivateRoute path="/edit-finish-good-plant-two/:id" component={EditFinishGoodMaterialPlantTwo} />
+                    <PrivateRoute path="/delete-finish-good-material/:id" component={DeleteFinishGoodMaterial} />                     
+                    <PrivateRoute path="/semi-finish-goods" component={SemiFinishGoodDashboard} />
+                    <PrivateRoute path="/new-semi-finish-good" component={NewSemiFinishGood} />
+                    <PrivateRoute path="/single-semi-finish-good-material/:id" component={SingleSemiFinishGoodMaterial} />
+                    <PrivateRoute path="/semi-finish-good-edit-details/:id" component={EditSemiFinishGoodMaterial} />
+                    <PrivateRoute path="/edit-semi-finish-good-mrp-one/:id" component={EditSemiFinishGoodMaterialMrpOne} />
+                    <PrivateRoute path="/edit-semi-finish-good-mrp-two/:id" component={EditSemiFinishGoodMaterialMrpTwo} />
+                    <PrivateRoute path="/edit-semi-finish-good-mrp-three/:id" component={EditSemiFinishGoodMaterialMrpThree} />
+                    <PrivateRoute path="/edit-semi-finish-good-mrp-four/:id" component={EditSemiFinishGoodMaterialMrpFour} />
+                    <PrivateRoute path="/edit-semi-finish-good-plant-one/:id" component={EditSemiFinishGoodMaterialPlantOne} />
+                    <PrivateRoute path="/edit-semi-finish-good-plant-two/:id" component={EditSemiFinishGoodMaterialPlantTwo} />
+                    <PrivateRoute path="/delete-semi-finish-good-material/:id" component={DeleteSemiFinishGoodMaterial} />  
                     <PrivateRoute path="/sales-dashboard" component={SalesDashboard} />
                     <PrivateRoute path="/purchase-order-dashboard" component={PurchaseOrderDashboard} />
                     <PrivateRoute path="/invoice-dashboard" component={InvoiceDashboard} />
                     <PrivateRoute path="/new-purchase-order" component={NewPurchaseOrder} />
+                    <PrivateRoute path="/edit-purchase-order/:id" component={EditPurchaseOrder} />
+                    <PrivateRoute path="/delete-purchase-order/:id" component={DeletePurchaseOrder} />
                     <PrivateRoute path="/new-invoice" component={NewInvoice} />
+                    <PrivateRoute path="/edit-invoice/:id" component={EditInvoice} />
+                    <PrivateRoute path="/delete-invoice/:id" component={DeleteInvoice} />
+                    <PrivateRoute path="/products-dashboard" component={ProductDashboard} />
+                    <PrivateRoute path="/new-product" component={NewProductMaster} />
+                    <PrivateRoute path="/single-product-master/:id" component={SingleProductMaster} />
+                    <PrivateRoute path="/product-master-edit-details/:id" component={EditProductMaster} />
+                    <PrivateRoute path="/delete-product-master/:id" component={DeleteProductMaster} />
                 </Router>
             </div>
         ) 

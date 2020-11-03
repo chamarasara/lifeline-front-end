@@ -18,9 +18,9 @@ class Settings extends React.Component {
                             </Link>
                         </div>
                         <div className="column">
-                            <button className="massive ui blue button">
+                            <Link to={"/semi-finish-goods"} className="massive ui blue button">
                                 Semi Finish Goods
-                            </button>
+                            </Link>
                         </div>
                         <div className="column">
                             <Link to={"/finish-goods"} className="massive ui blue button">
@@ -56,6 +56,11 @@ class Settings extends React.Component {
                             <button className="massive ui blue button">
                                 Consumable Master
                             </button>
+                        </div>
+                        <div className="column">
+                            <Link to={"/products-dashboard"} className="massive ui blue button">
+                                Product Master
+                            </Link>
                         </div>
                     </div>
                 </div>
