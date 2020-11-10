@@ -54,6 +54,8 @@ import {
     FETCH_PURCHASE_ORDER,
     FETCH_PURCHASE_ORDERS,
     DELETE_PURCHASE_ORDER,
+    SEARCH_PURCHASE_ORDERS_RESULT,
+    SEARCH_PURCHASE_ORDERS_TEXT,
     CREATE_INVOICE,
     EDIT_INVOICE,
     FETCH_INVOICES,
@@ -769,7 +771,26 @@ export const deletePurchaseOrder = (id) => async dispatch => {
     history.push('/purchase-order-dashboard')
     //window.location.reload()
 };
-//create purchase order
+//Search purchase orders 
+export const searchPurchaseOrders = (formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    console.log(formValues)
+    const response = await api.post('api/sales/purchase-orders/search-purchase-order', { formValues }, header);
+    console.log(response.data);
+    dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT, payload: response.data});
+};
+//Search article
+export const searchPurchaseOrdersByText = (searchText) => async dispatch => {
+    console.log(searchText)
+    dispatch({ type: SEARCH_PURCHASE_ORDERS_TEXT, payload: searchText });
+};
+//create invoice
 export const createInvoice = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
@@ -785,7 +806,7 @@ export const createInvoice = formValues => async dispatch => {
     window.location.reload()
 
 };
-//List all purchase orders
+//List all invoice
 export const fetchInvoices = () => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
@@ -798,7 +819,7 @@ export const fetchInvoices = () => async dispatch => {
     console.log(response)
     dispatch({ type: FETCH_INVOICES, payload: response.data });
 };
-//View purchase order
+//View invoice
 export const fetchInvoice = (id) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
@@ -811,7 +832,7 @@ export const fetchInvoice = (id) => async dispatch => {
     console.log(response)
     dispatch({ type: FETCH_INVOICE, payload: response.data[0] });
 };
-//Edit purchase order
+//Edit invoice
 export const editInvoice = (id, formValues) => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
@@ -827,7 +848,7 @@ export const editInvoice = (id, formValues) => async dispatch => {
     window.location.reload()
     //  history.push("purchase-order-dashboard");
 };
-//Delete purchase order
+//Delete invoice
 export const deleteInvoice = (id) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
@@ -841,6 +862,7 @@ export const deleteInvoice = (id) => async dispatch => {
     history.push('/invoice-dashboard')
     //window.location.reload()
 };
+
 //Autheticate User
 export function signInAction({ userName, password }, history) {
     const header = {

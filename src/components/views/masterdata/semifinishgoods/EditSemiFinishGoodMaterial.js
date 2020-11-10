@@ -54,24 +54,24 @@ class EditSemiFinishGoodMaterial extends React.Component {
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="eight wide field">
-                                <Field name="materialName" component={this.renderInput} placeholder={this.props.material.materialName} type="text" />
+                                <Field name="materialName" component={this.renderInput}  type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="materialCode" component={this.renderInput} placeholder={this.props.material.materialCode} type="text" />
+                                <Field name="materialCode" component={this.renderInput} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="materialGroup" component={this.renderInput} placeholder={this.props.material.materialGroup} type="text" />
+                                <Field name="materialGroup" component={this.renderInput} type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
-                                <Field name="baseUnitMeasure" component={this.renderInput} placeholder={this.props.material.baseUnitMeasure} type="text" />
+                                <Field name="baseUnitMeasure" component={this.renderInput}  type="text" />
                             </div>
                             <div className="five wide field">
-                                <Field name="oldMaterialNumber" component={this.renderInput} placeholder={this.props.material.oldMaterialNumber} type="text" />
+                                <Field name="oldMaterialNumber" component={this.renderInput}  type="text" />
                             </div>
                             <div className="seven wide field">
-                                <Field name="division" component={this.renderInput} placeholder={this.props.material.division} type="text" />
+                                <Field name="division" component={this.renderInput}  type="text" />
                             </div>
                         </div>
                         <div className="fields">
@@ -81,6 +81,11 @@ class EditSemiFinishGoodMaterial extends React.Component {
                                     <option value="enabled">Enabled</option>
                                     <option value="disabled">Disabled</option>
                                 </Field>
+                            </div>
+                        </div>
+                        <div className="fields">
+                            <div className="four wide field">
+                                <Field name="materialDescription" component="textarea" type="text" />
                             </div>
                         </div>
                         <div className="field">

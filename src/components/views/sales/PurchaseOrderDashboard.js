@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PurchaseOrderList from "./PurchaseOrderList";
 import SearchPurchaseOrder from "./SearchPurchaseOrder";
 import SearchPurchaseOrderByDate from './SearchPurchaseOrderByDate';
+import PurchaseOrderSearchResults from './PurchaseOrderSearchResults';
 
 class PurchaseOrderDashboard extends React.Component {
 
@@ -23,7 +24,7 @@ class PurchaseOrderDashboard extends React.Component {
                         </div>
                     </div>
                     <div className="column" style={{ paddingTop: "30px" }}>
-                        <PurchaseOrderList />
+                        <PurchaseOrderSearchResults />
                     </div>
                 </div>
             </div>

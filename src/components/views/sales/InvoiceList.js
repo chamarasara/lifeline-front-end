@@ -15,31 +15,31 @@ class InvoiceList extends React.Component {
     //         )
     //     })
     // }
-    getCustomerDetails() {
-        return this.props.invoices.map(invoice => {
-            this.props.fetchCustomer(invoice.customerId)
-            return (
-                <div>
-                    {}
-                </div>
-            )
-        })
-    }
-    renderProducts() {
-        return this.props.invoices.map(invoice => {
-            return invoice.productsList.map(product => {
-                console.log(product);
-                return (
-                    <td>
-                        {product.productName}
-                    </td>
-                )
-            }
+    // getCustomerDetails() {
+    //     return this.props.invoices.map(invoice => {
+    //         this.props.fetchCustomer(invoice.customerId)
+    //         return (
+    //             <div>
+    //                 {}
+    //             </div>
+    //         )
+    //     })
+    // }
+    // renderProducts() {
+    //     return this.props.invoices.map(invoice => {
+    //         return invoice.productsList.map(product => {
+    //             console.log(product);
+    //             return (
+    //                 <td>
+    //                     {product.productName}
+    //                 </td>
+    //             )
+    //         }
 
-            )
+    //         )
 
-        })
-    }
+    //     })
+    // }
     renderList() {
         if (!this.props.invoices) {
             return (

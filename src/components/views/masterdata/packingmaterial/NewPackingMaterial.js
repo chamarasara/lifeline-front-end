@@ -97,7 +97,12 @@ class NewPackingMaterial extends React.Component {
                                     <option value="disabled">Disabled</option>
                                 </Field>
                             </div>
-                        </div>                                               
+                        </div>  
+                        <div className="fields">
+                            <div className="four wide field">
+                                <Field name="materialDescription" component="textarea" placeholder="Material Description(Optional)" type="text" />
+                            </div>
+                        </div>                                             
                         <div className="fields">
                             <div className="five wide field">
                                 <label>Suppliers- </label>

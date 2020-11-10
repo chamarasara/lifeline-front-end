@@ -2,48 +2,25 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { fetchPurchaseOrders, fetchCustomer } from "../../../actions"
+import { fetchPurchaseOrders } from "../../../actions"
 class PurchaseOrderList extends React.Component {
     componentDidMount() {
         this.props.fetchPurchaseOrders()
 
     }
-    getCustomerDetails() {
-        return this.props.orders.map(order => {
-            this.props.fetchCustomer(order.customerId)
-            return (
-                <div>
-                    {}
-                </div>
-            )
-        })
-    }
-    renderProducts() {
-        return this.props.orders.map(order => {
-            return order.productsList.map(product => {
-                console.log(product);
-                return (
-                    <td>
-                        {product.productName}
-                    </td>
-                )
-            }
-
-            )
-
-        })
-    }
-    renderList() {
-        if (!this.props.orders) {
-            return(
-                <div>
-                    <p>Loading.....</p>
-                </div>
-            )
-        }
+   
+    renderList() {     
+        // if (!this.props.orders ) {
+        //     return(
+        //         <div>
+        //             <p>Loading.....</p>
+        //         </div>
+        //     )
+        // }
         return this.props.orders.map(order => {
             const date = order.date;
-            const date2 = moment(date).format('DD / MM / YYYY, h:mm: a')
+            const date2 = moment(date).format('DD/MM/YYYY, h:mm:ss a')
+            console.log(date2)
                 return (
                     <tr key={order.id}>
                         <td>
@@ -51,26 +28,47 @@ class PurchaseOrderList extends React.Component {
                         </td>
                         <td>
                             {
-                                order.customer.map(customer1 => {
+                                order.supplier.map(supplier1 => {
                                     return(
-                                        <span key={customer1.id}>{customer1.customerName}</span>
+                                        <span key={supplier1.id}>{supplier1.supplierName}</span>
                                     )
                                 })
                             }
                         </td>
-                        <td>
+                        <td>                           
                             {
-                                order.productsList.map(product => {
-                                    console.log(product)
+                                
+                                order.rawMaterialsList.map(material => {
+                                    console.log(material)
                                     return (
-                                        <p key={product.id}>{product.productName}</p>
+                                        <p key={material.id}>{material.materialName}</p>
                                     )
                                 })
                             }
                         </td>
                         <td style={{"textAlign":"right"}}>
                             {
-                                order.products.map(quantity => {
+                                order.rawMaterials.map(quantity => {
+                                    return (
+                                        <p key={Math.random()}>{quantity.quantity}</p>
+                                    )
+                                }
+                                )
+                            }
+                        </td>
+                        <td>
+                            {
+                                order.packingMaterialsList.map(material => {
+                                    console.log(material)
+                                    return (
+                                        <p key={material.id}>{material.materialName}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.packingMaterials.map(quantity => {
                                     return (
                                         <p key={Math.random()}>{quantity.quantity}</p>
                                     )
@@ -94,8 +92,10 @@ class PurchaseOrderList extends React.Component {
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Customer Name</th>
-                                <th>Products</th>
+                                <th>Supplier Name</th>
+                                <th>Raw Materials</th>
+                                <th>Quantities</th>
+                                <th>Packing Materials</th>
                                 <th>Quantities</th>
                             </tr>
                         </thead>
@@ -113,4 +113,4 @@ const mapToSatate = (state) => {
     const orders = Object.values(state.purchaseOrders)
     return { orders: orders };
 }
-export default connect(mapToSatate, { fetchPurchaseOrders, fetchCustomer })(PurchaseOrderList);
+export default connect(mapToSatate, { fetchPurchaseOrders })(PurchaseOrderList);

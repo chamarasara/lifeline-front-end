@@ -63,7 +63,12 @@ class NewSemiFinishGood extends React.Component {
                                     <option value="disabled">Disabled</option>
                                 </Field>
                             </div>
-                        </div>                        
+                        </div> 
+                        <div className="fields">
+                            <div className="four wide field">
+                                <Field name="materialDescription" component="textarea" placeholder="Material Description(Optional)" type="text" />
+                            </div>
+                        </div>                       
                         <div className="field">
                             <Link to={"/semi-finish-goods"} className="ui button">Back</Link> 
                             <button type="submit" className="ui primary button">Next</button>

@@ -1,28 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSemiFinishGoods} from '../../../../actions';
+import { fetchSemiFinishGoods } from '../../../../actions';
 
 class SemiFinishGoodMaterialList extends React.Component {
     componentDidMount() {
         this.props.fetchSemiFinishGoods()
     }
 
-    renderList() {   
+    renderList() {
         return this.props.material.map(material => {
-            console.log(material._id)
             return (
                 <tr key={material._id}>
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
-                                {material.materialCode}                                
+                                {material.materialCode}
                             </div>
                         </h4></td>
                     <td>
                         {material.materialName}
                     </td>
-                        <td>
+                    <td>
                         {material.materialGroup}
                     </td>
                     <td>
@@ -31,7 +30,11 @@ class SemiFinishGoodMaterialList extends React.Component {
                     <td>
                         {material.division}
                     </td>
-                    <td>{material.materialState}
+                    <td>
+                        {material.materialState}
+                    </td>
+                    <td>
+                        {material.materialDescription}
                     </td>
                     <td>
                         <Link to={`/single-semi-finish-good-material/${material._id}`} className="ui blue button">View</Link>
@@ -53,6 +56,7 @@ class SemiFinishGoodMaterialList extends React.Component {
                                 <th>Base Unit</th>
                                 <th>Division</th>
                                 <th>Material Status</th>
+                                <th>Material Description</th>
                             </tr></thead>
                         <tbody>
                             {this.renderList()}

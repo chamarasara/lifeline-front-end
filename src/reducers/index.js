@@ -12,6 +12,7 @@ import finishGoodReducer from "./master/finishGoodReducer";
 import productMasterReducer from "./master/productMasterReducer";
 import purchaseOrderReducer from './sales/purchaseOrderReducer';
 import invoiceReducer from "./sales/invoiceReducer";
+import searchPurchaseOrdersReducer from "./sales/searchPurchaseOrdersReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -24,7 +25,8 @@ export default combineReducers({
     semiFinishGoods: semiFinishGoodsReducer,
     finishGoods: finishGoodReducer,
     productMaster: productMasterReducer,
-    purchaseOrders: purchaseOrderReducer,
+    searchPurchaseOrders: searchPurchaseOrdersReducer,
     invoices: invoiceReducer,
-    form: formReducer
+    form: formReducer,
+    purchaseOrders: purchaseOrderReducer
 });

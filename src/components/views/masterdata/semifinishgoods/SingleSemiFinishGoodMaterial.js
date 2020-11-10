@@ -522,6 +522,7 @@ class SingleSemiFinishGoodMaterial extends React.Component {
                                         <th >Base Unit</th>
                                         <th >Division</th>
                                         <th >Material State</th>
+                                        <th >Material Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -532,6 +533,7 @@ class SingleSemiFinishGoodMaterial extends React.Component {
                                         <td >{this.props.material.baseUnitMeasure}</td>
                                         <td >{this.props.material.division}</td>
                                         <td >{this.props.material.materialState}</td>
+                                        <td >{this.props.material.materialDescription}</td>
                                     </tr>
                                 </tbody>                                
                                 <tfoot className="full-width">
@@ -583,6 +585,7 @@ class SingleSemiFinishGoodMaterial extends React.Component {
     }
 }
 const mapToSatate = (state, ownPorps) => {
+    console.log(ownPorps.match.params.id)
     return { material: state.semiFinishGoods[ownPorps.match.params.id] };
 }
 export default connect(mapToSatate, { fetchSemiFinishGood })(SingleSemiFinishGoodMaterial);

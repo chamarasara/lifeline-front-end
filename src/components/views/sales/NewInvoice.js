@@ -49,7 +49,6 @@ class NewInvoice extends React.Component {
 
     onSubmit = (formValues) => {
         this.props.createInvoice(formValues)
-        console.log(formValues)
     }
     renderProducts() {
         return this.props.products.map(product => {
@@ -75,8 +74,16 @@ class NewInvoice extends React.Component {
                                 <Field name={`${products}.quantity`} type="number" required component="input" placeholder="Quantity" >
                                 </Field>
                             </div>
-                            <div className="four wide field">
-                                <Field name={`${products}.uom`} type="text" required component="input" placeholder="UOM" >
+                            <div className="six wide field">
+                                <Field name={`${products}.uom`} required component="select" placeholder="" type="text" >
+                                    <option>-UOM-</option>
+                                    <option value="Each">Each</option>
+                                    <option value="kg">kg</option>
+                                    <option value="l">l</option>
+                                    <option value="m">m</option>
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="cm">cm</option>
                                 </Field>
                             </div>
                             <div className="four wide field">
@@ -156,10 +163,8 @@ class NewInvoice extends React.Component {
 //     return errors;
 // }
 const mapStateToProps = (state) => {
-    console.log(state)
     const customers = Object.values(state.customer)
     const products = Object.values(state.productMaster)
-    console.log(customers)
     return { errorMessage: state, customers: customers, products: products };
 }
 const formWrapped = reduxForm({

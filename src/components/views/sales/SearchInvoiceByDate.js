@@ -32,9 +32,9 @@ class SearchInvoiceByDate extends React.Component {
     onSubmit = (formValues) => {
         const startDate = formValues.startDate;
         const endDate = formValues.endDate;
-        this.props.searchReports(startDate, endDate)
-        this.props.searchReportsByDate(formValues)
-        console.log(endDate)
+        // this.props.searchReports(startDate, endDate)
+        // this.props.searchReportsByDate(formValues)
+        console.log(formValues)
     }
     render() {
         return (

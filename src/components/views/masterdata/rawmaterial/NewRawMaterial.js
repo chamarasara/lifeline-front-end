@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { fetchSuppliers } from '../../../../actions';
 import { Link } from 'react-router-dom'
 
-
 class NewRawMaterial extends React.Component {
     componentDidMount() {
         this.props.fetchSuppliers()
@@ -64,7 +63,7 @@ class NewRawMaterial extends React.Component {
 
     render() {
         const { handleSubmit } = this.props
-
+     
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
@@ -80,7 +79,7 @@ class NewRawMaterial extends React.Component {
                             <div className="four wide field">
                                 <Field name="materialGroup" component={this.renderInput} placeholder="Material Group" type="text" />
                             </div>
-                        </div>
+                        </div>                        
                         <div className="fields">
                             <div className="four wide field">
                                 <Field name="baseUnitMeasure" component={this.renderInput} placeholder="Base Unit Measure" type="text" />
@@ -101,7 +100,11 @@ class NewRawMaterial extends React.Component {
                                 </Field>
                             </div>
                         </div>
-                       
+                        <div className="fields">
+                            <div className="four wide field">
+                                <Field name="materialDescription" component="textarea" placeholder="Material Description(Optional)" type="text" />
+                            </div>
+                        </div>
                         <div className="fields">
                             <div className="five wide field">
                                 <label>Suppliers- </label>

@@ -1,19 +1,21 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-//import { } from '../../actions';
+import { searchPurchaseOrders, searchPurchaseOrdersByText} from '../../../actions';
 
 class SearchPurchaseOrder extends React.Component {
     onClick = () => {
         window.location.reload()
     }
     onSubmit = (formvalues) => {
-        const startDate = null;
-        const endDate = null;
-        const searchText = formvalues.searchText
-        this.props.searchArticles(searchText, startDate, endDate)
-        this.props.searchArticlesByText(formvalues.searchText)
+        // const startDate = null;
+        // const endDate = null;
+        // const searchText = formvalues.searchText;
+        console.log(formvalues)
+        this.props.searchPurchaseOrders(formvalues)
+        this.props.searchPurchaseOrdersByText(formvalues.searchText)
     }
+ 
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -50,7 +52,7 @@ class SearchPurchaseOrder extends React.Component {
 const validate = (formvalues) => {
     const errors = {}
     if (!formvalues.searchText) {
-        errors.searchText = 'Enter a Customer Name or a Product Name';
+        errors.searchText = 'Enter a Supplier Name or a Material Name';
     }
     return errors;
 }
@@ -60,9 +62,9 @@ const formWrapped = reduxForm({
 })(SearchPurchaseOrder);
 const mapToSatate = (state) => {
     //console.log(state.articles.searchText)
-    return { searchText: state.articles.searchText };
+    return { searchText: state.purchaseOrders.searchText };
 }
 
-export default connect(null, {})(formWrapped);
+export default connect(mapToSatate, { searchPurchaseOrders, searchPurchaseOrdersByText})(formWrapped);
 
 

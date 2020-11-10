@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-//import { searchReports, searchReportsByDate } from '../../actions';
+import { searchPurchaseOrders } from '../../../actions';
 
 
 class SearchPurchaseOrderByDate extends React.Component {
@@ -32,9 +32,9 @@ class SearchPurchaseOrderByDate extends React.Component {
     onSubmit = (formValues) => {
         const startDate = formValues.startDate;
         const endDate = formValues.endDate;
-        this.props.searchReports(startDate, endDate)
-        this.props.searchReportsByDate(formValues)
-        console.log(endDate)
+        // this.props.searchReports(startDate, endDate)
+        this.props.searchPurchaseOrders(formValues)
+        console.log(formValues)
     }
     render() {
         return (
@@ -74,4 +74,4 @@ const mapToSatate = (state) => {
     return { searchDates: state.reports.searchDates };
 }
 
-export default connect(null, { })(formWrapped);
+export default connect(null, { searchPurchaseOrders})(formWrapped);
