@@ -30,9 +30,6 @@ class SearchPurchaseOrderByDate extends React.Component {
         window.location.reload()
     }
     onSubmit = (formValues) => {
-        const startDate = formValues.startDate;
-        const endDate = formValues.endDate;
-        // this.props.searchReports(startDate, endDate)
         this.props.searchPurchaseOrders(formValues)
         console.log(formValues)
     }
@@ -66,12 +63,8 @@ const validate = (formValues) => {
     return errors;
 }
 const formWrapped = reduxForm({
-    form: 'sortReports',
+    form: 'sortPurchaseOrders',
     validate: validate
 })(SearchPurchaseOrderByDate);
-const mapToSatate = (state) => {
-    console.log(state.reports.searchDates)
-    return { searchDates: state.reports.searchDates };
-}
 
 export default connect(null, { searchPurchaseOrders})(formWrapped);

@@ -55,12 +55,12 @@ import {
     FETCH_PURCHASE_ORDERS,
     DELETE_PURCHASE_ORDER,
     SEARCH_PURCHASE_ORDERS_RESULT,
-    SEARCH_PURCHASE_ORDERS_TEXT,
     CREATE_INVOICE,
     EDIT_INVOICE,
     FETCH_INVOICES,
     FETCH_INVOICE,
-    DELETE_INVOICE
+    DELETE_INVOICE,
+    SEARCH_INVOICES_RESULT
 } from './types';
 
 //create user
@@ -785,11 +785,7 @@ export const searchPurchaseOrders = (formValues) => async dispatch => {
     console.log(response.data);
     dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT, payload: response.data});
 };
-//Search article
-export const searchPurchaseOrdersByText = (searchText) => async dispatch => {
-    console.log(searchText)
-    dispatch({ type: SEARCH_PURCHASE_ORDERS_TEXT, payload: searchText });
-};
+
 //create invoice
 export const createInvoice = formValues => async dispatch => {
     console.log(formValues)
@@ -862,7 +858,20 @@ export const deleteInvoice = (id) => async dispatch => {
     history.push('/invoice-dashboard')
     //window.location.reload()
 };
-
+//Search purchase orders 
+export const searchInvoices = (formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    console.log(formValues)
+    const response = await api.post('api/sales/invoices/search-invoices/', { formValues }, header);
+    console.log(response.data);
+    dispatch({ type: SEARCH_INVOICES_RESULT, payload: response.data });
+};
 //Autheticate User
 export function signInAction({ userName, password }, history) {
     const header = {

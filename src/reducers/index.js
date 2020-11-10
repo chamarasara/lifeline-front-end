@@ -13,6 +13,7 @@ import productMasterReducer from "./master/productMasterReducer";
 import purchaseOrderReducer from './sales/purchaseOrderReducer';
 import invoiceReducer from "./sales/invoiceReducer";
 import searchPurchaseOrdersReducer from "./sales/searchPurchaseOrdersReducer";
+import searchInvoicesReducer from "./sales/searchInvoicesReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -28,5 +29,6 @@ export default combineReducers({
     searchPurchaseOrders: searchPurchaseOrdersReducer,
     invoices: invoiceReducer,
     form: formReducer,
-    purchaseOrders: purchaseOrderReducer
+    purchaseOrders: purchaseOrderReducer,
+    searchInvoices: searchInvoicesReducer
 });
