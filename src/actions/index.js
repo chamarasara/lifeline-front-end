@@ -713,7 +713,7 @@ export const createPurchaseOrder = formValues => async dispatch => {
     const response = await api.post('api/sales/purchase-orders/new-purchase-order', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_PURCHASE_ORDER, payload: response.data });
-    window.location.reload()
+    //window.location.reload()
 
 };
 //List all purchase orders

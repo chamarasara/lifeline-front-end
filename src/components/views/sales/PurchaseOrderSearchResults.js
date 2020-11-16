@@ -30,7 +30,7 @@ class PurchaseOrderSearchResults extends React.Component {
                         {
                             order.searchSupplier.map(supplier1 => {
                                 return (
-                                    <span key={supplier1.id}>{supplier1.supplierName}</span>
+                                    <span key={supplier1.id}>{supplier1.companyName}</span>
                                 )
                             })
                         }
@@ -98,7 +98,7 @@ class PurchaseOrderSearchResults extends React.Component {
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Supplier Name</th>
+                                <th>Company Name</th>
                                 <th>Raw Materials</th>
                                 <th>Quantities</th>
                                 <th>Packing Materials</th>
