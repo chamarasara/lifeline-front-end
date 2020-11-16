@@ -30,8 +30,7 @@ class SearchPurchaseOrderByDate extends React.Component {
         window.location.reload()
     }
     onSubmit = (formValues) => {
-        this.props.searchPurchaseOrders(formValues)
-        console.log(formValues)
+        this.props.searchPurchaseOrders({...formValues})
     }
     render() {
         return (

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { Link } from 'react-router-dom'
-import { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice } from '../../../actions';
+import { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice } from '../../../actions';
 
 class EditInvoice extends React.Component {
 
@@ -10,6 +11,7 @@ class EditInvoice extends React.Component {
         this.props.fetchCustomers()
         this.props.fetchProductsMaster()
         this.props.fetchInvoice(this.props.match.params.id)
+        console.log(this.props.match.params.id)
     }
 
     renderError({ error, touched }) {
@@ -49,15 +51,93 @@ class EditInvoice extends React.Component {
     }
 
     onSubmit = (formValues) => {
-        this.props.editInvoice(this.props.invoice._id,formValues)
-        console.log(formValues)
+        this.props.editInvoice(this.props.invoice._id, formValues)
     }
-    renderProducts() {
-        return this.props.products.map(product => {
-            return (
-                <option key={product._id} value={product.id}>{product.productName}</option>
-            )
-        })
+    renderInvoiceDetails() {
+        return (
+            <tr>
+                <td>
+                    {this.props.invoice.productsList.map(product => {
+                        return (
+                            <p key={product.id}>{product.productCode}</p>
+                        )
+                    })
+                    }
+                </td>
+                <td> {this.props.invoice.productsList.map(product => {
+                    return (
+                        <p key={product.id}>{product.productName}</p>
+                    )
+                })
+                }</td>
+                <td> {this.props.invoice.products.map(product => {
+                    return (
+                        <p key={product.id}>{product.uom}</p>
+                    )
+                })
+                }</td>
+                <td style={{ textAlign: "right" }}> {this.props.invoice.products.map(product => {
+                    return (
+                        <p key={product.id}>{product.quantity}</p>
+                    )
+                })
+                }</td>
+                <td style={{ textAlign: "right" }}> {this.props.invoice.products.map(product => {
+                    return (
+                        <p key={product.id}>{product.rate}</p>
+                    )
+                })
+                }</td>
+                <td style={{ textAlign: "right" }}> {this.props.invoice.products.map(product => {
+                    return (
+                        <p key={product.id}>{product.rate * product.quantity}</p>
+                    )
+                })
+                }</td>
+
+            </tr>
+        )
+
+    }
+    renderCustomerDetails() {
+        return (
+            <div>
+                <p><strong>Customer Name:</strong>{this.props.invoice.customer.map(customer => {
+                    return (
+                        <span key={customer.id}>{customer.companyName}</span>
+                    )
+                })
+                }</p>
+                <p><strong>Address:</strong> {this.props.invoice.customer.map(customer => {
+                    return (
+                        <span key={customer.id}>
+                            {customer.communicationAddress.no},
+                            {customer.communicationAddress.lane},
+                            {customer.communicationAddress.city},
+                            {customer.communicationAddress.country},
+                            {customer.communicationAddress.postalCode}.
+                        </span>
+                    )
+                })
+                }</p>
+                <p><strong>Email: </strong>{this.props.invoice.customer.map(customer => {
+                    return (
+                        <span key={customer.id}>{customer.email}</span>
+                    )
+                })
+                }</p>
+                <p><strong>Contact Number: </strong>{this.props.invoice.customer.map(customer => {
+                    return (
+                        <span key={customer.id}>{customer.mobileNo}</span>
+                    )
+                })
+                }</p>
+                <p><strong>Date: </strong>{moment(this.props.invoice.date).format('DD/MM/YYYY')}
+
+                </p>
+            </div>
+        )
+
     }
     renderProductsDropDown = ({ fields }) => {
         return (
@@ -102,30 +182,66 @@ class EditInvoice extends React.Component {
             </div>
         )
     }
+    renderForm = () => {
+        return (
+            <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                <div className="six wide field">
+                    <Field name="customerId" component="select" placeholder="" type="text" >
+                        <option>-Invoice Status-</option>
+                        <option value="disabled">Disabled</option>
+                    </Field>
+                </div>                
+                <div className="field">
+                   
+                    
+                    <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                    <button type="submit" className="ui primary button">Submit</button>
+                </div>
+            </form>
+        )
+    }
+    onClick = () => {
+        this.props.printInvoice(this.props.invoice.id)
+    }
     render() {
+        if (!this.props.invoice) {
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}></div>
+                    <p>Loading....</p>
+                </div>
+            )
+        }
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
-                    <h3>Edit Invoice</h3>
-                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                        <div className="six wide field">
-                            <Field name="customerId" component="select" placeholder="" type="text" >
-                                <option>-Select Customer-</option>
-                                {this.renderCustomers()}
-                            </Field>
-                        </div>
-                        <div className="fields">
-                            <div className="sixteen wide field">
-                                <label>Products- </label>
-                                <FieldArray name="products" component={this.renderProductsDropDown} />
-                            </div>
-                        </div>
-                        <div className="field">
-                            <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
-                            <Link to={`/delete-invoice/${this.props.match.params.id}`} type="button" className="ui red button">Delete</Link>
-                            <button type="submit" className="ui primary button">Submit</button>
-                        </div>
-                    </form>
+                    <h3>Invoice #{this.props.invoice.invoiceNumber}</h3>
+                    {this.renderCustomerDetails()}
+                    <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                        <thead className="full-width">
+                            <tr>
+                                <th colSpan="12" style={{ color: "red" }}><h4>Invoice Details</h4></th>
+                            </tr>
+                            <tr>
+                                <th>Product Code</th>
+                                <th>Product Name</th>
+                                <th>UOM</th>
+                                <th style={{ textAlign: "right" }}>Quantity</th>
+                                <th style={{ textAlign: "right" }}>Rate</th>
+                                <th style={{ textAlign: "right" }}>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderInvoiceDetails()}
+                        </tbody>
+                    </table>
+                    <div>
+                        <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
+                        <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                        <Link to={`/delete-invoice/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                    </div>
+                </div>
+                <div>
                 </div>
             </div>
         )
@@ -162,10 +278,11 @@ const mapStateToProps = (state, ownProps) => {
     const customers = Object.values(state.customer)
     const products = Object.values(state.productMaster)
     const invoice = state.invoices[ownProps.match.params.id]
-    return { errorMessage: state, customers: customers, products: products, invoice:invoice, initialValues:invoice };
+    console.log(invoice)
+    return { errorMessage: state, customers: customers, products: products, invoice: invoice, initialValues: invoice };
 }
 const formWrapped = reduxForm({
     form: 'editInvoice'
 })(EditInvoice);
 
-export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice })(formWrapped);
+export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice })(formWrapped);

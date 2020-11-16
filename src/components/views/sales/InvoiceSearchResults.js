@@ -121,7 +121,7 @@ class InvoiceList extends React.Component {
                         }
                     </td>
                     <td>
-                        <Link to={`/edit-invoice/${invoice.id}`} className="ui red button">Edit</Link>
+                        <Link to={`/edit-invoice/${invoice.id}`} className="ui red button">View</Link>
                     </td>
                 </tr>
             )

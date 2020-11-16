@@ -1,5 +1,6 @@
 import api from "../apis/api";
 import history from '../components/history';
+import { saveAs } from 'file-saver';
 import {
     CREATE_USER,
     EDIT_USER,
@@ -841,7 +842,7 @@ export const editInvoice = (id, formValues) => async dispatch => {
     const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
     console.log(response)
     dispatch({ type: EDIT_INVOICE, payload: response.data });
-    window.location.reload()
+    //window.location.reload()
     //  history.push("purchase-order-dashboard");
 };
 //Delete invoice
@@ -872,12 +873,33 @@ export const searchInvoices = (formValues) => async dispatch => {
     console.log(response.data);
     dispatch({ type: SEARCH_INVOICES_RESULT, payload: response.data });
 };
+//Print invoice
+export const printInvoice = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=invoice.pdf'
+            
+        }
+    };
+    const response = await api.get(`/api/sales/invoices/print-invoice/${id}`, { responseType: 'arraybuffer' }, header, { id });
+    console.log(response)
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
 //Autheticate User
 export function signInAction({ userName, password }, history) {
     const header = {
         headers: {
             'Content-Type': 'application/json',
-            //'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*'
         }
     };
     return async (dispatch) => {

@@ -43,7 +43,7 @@ class EditCustomer extends React.Component {
     }  
     render() {
         if (!this.props.customer) {
-            return <div>Customer not selected. Please select a User Role from the list</div>
+            return <div>Customer not selected. Please select a Customer from the list</div>
         }
         return (
             <div className="pusher">
@@ -68,7 +68,15 @@ class EditCustomer extends React.Component {
                             <div className="four wide field">
                                 <Field name="email" component={this.renderInput} placeholder={this.props.customer.email} type="text" />
                             </div>
-                        </div>                      
+                        </div>  
+                        <div className="fields">
+                            <div className="ten wide field">
+                                <Field name="companyName" component={this.renderInput} placeholder="Company Name" type="text" />
+                            </div>
+                            <div className="four wide field">
+                                <Field name="debitPeriod" component={this.renderInput} placeholder="Debit Period" type="number" />
+                            </div>
+                        </div>                    
                         <div className="fields">
                             <div className="five wide field">
                                 <label>Communication Address- </label>
