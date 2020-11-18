@@ -25,7 +25,6 @@ class EditInvoice extends React.Component {
     }
     errorMessage() {
         if (this.props.errorMessage) {
-            console.log(this.props)
             return (
                 <div className="ui error message">
                     {this.props.errorMessage}
@@ -50,9 +49,7 @@ class EditInvoice extends React.Component {
         );
     }
 
-    onSubmit = (formValues) => {
-        this.props.editInvoice(this.props.invoice._id, formValues)
-    }
+
     renderInvoiceDetails() {
         return (
             <tr>
@@ -139,69 +136,91 @@ class EditInvoice extends React.Component {
         )
 
     }
-    renderProductsDropDown = ({ fields }) => {
+    renderPaymentsFields = ({ fields }) => {
         return (
             <div>
                 <ul>
-                    {fields.map((products, index) => <li key={index}>
-                        <label htmlFor={products}>Product #{index + 1}</label>
+                    {fields.map((payments, index) => <li key={index}>
+                        <label htmlFor={payments}>Payment #{index + 1}</label>
                         <div className="fields">
-                            <div className="eight wide field">
-                                <Field name={`${products}.id`} type="text" required component="select" >
-                                    <option>-Select Product-</option>
-                                    {this.renderProducts()}
+                            <div className="four wide field">
+                                <Field name={`${payments}.cashAmount`} type="number" required component="input" placeholder="Cash Amount" >
+                                </Field>
+                            </div>
+                            <div className="five wide field">
+                                <Field name={`${payments}.chequeAmount`} type="number" required component="input" placeholder="Cheque Amount" >
                                 </Field>
                             </div>
                             <div className="six wide field">
-                                <Field name={`${products}.quantity`} type="number" required component="input" placeholder="Quantity" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${products}.uom`} type="text" required component="input" placeholder="UOM" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${products}.rate`} type="number" required component="input" placeholder="Rate" >
+                                <Field name={`${payments}.chequeNumber`} type="text" required component="input" placeholder="Cheque Number" >
                                 </Field>
                             </div>
                             <div className="six wide field">
-                                <Field name={`${products}.currency`} required component="select" placeholder="" type="text" >
-                                    <option>-Select Currency-</option>
-                                    <option value="LKR">LKR</option>
-                                    <option value="USD">USD</option>
+                                <Field name={`${payments}.bankName`} type="text" required component="input" placeholder="Bank Name" >
                                 </Field>
                             </div>
-                            <div className="eight wide field">
-                                <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
+                            <div className="four wide field">
+                                <Field name={`${payments}.chequeDate`} type="date" required component="input" placeholder="Cheque Date" >
+                                </Field>
                             </div>
                         </div>
                     </li>)}
                 </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Product</button>
-
+                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Payment</button>
             </div>
         )
     }
-    renderForm = () => {
+    renderPaymentsForm = () => {
         return (
             <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                <div className="six wide field">
-                    <Field name="customerId" component="select" placeholder="" type="text" >
-                        <option>-Invoice Status-</option>
-                        <option value="disabled">Disabled</option>
-                    </Field>
-                </div>                
+                <div className="fields">
+                    <div className="sixteen wide field">
+                        <label>Pay- </label>
+                        <FieldArray name="payments" component={this.renderPaymentsFields} />
+                    </div>
+                </div>
                 <div className="field">
-                   
-                    
-                    <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                    <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
                     <button type="submit" className="ui primary button">Submit</button>
                 </div>
             </form>
         )
     }
+    renderPayments = () => {
+        return (
+            <div>
+                <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
+                <p><b>Total Value:</b> {this.getTotalAmount()}</p>                
+                {this.renderPaymentsForm()}
+            </div>
+        )
+    }
+    getTotalAmount() {
+        const quantities = this.props.invoice.products.map(data => {
+            return data.quantity * data.rate
+        })
+        const total = quantities.reduce((a, b) => (a + b))
+        return total
+
+    }
+    // getTotalPaid() {
+    //     if (!this.props.invoice.payments) {
+    //         return 0
+    //     } else {            
+    //         const paid = this.props.invoice.payments.map(data => {
+    //             const total = parseInt(data.cashAmount) + parseInt(data.chequeAmount)
+    //             return total
+    //         })
+            
+    //         const total1 = paid.reduce((a, b) => (a + b))
+    //         return total1
+    //     }
+    // }
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
+    }
+    onSubmit = (formValues) => {
+        this.props.editInvoice(this.props.invoice._id, formValues)
     }
     render() {
         if (!this.props.invoice) {
@@ -214,7 +233,7 @@ class EditInvoice extends React.Component {
         }
         return (
             <div className="pusher">
-                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
+                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "80px" }}>
                     <h3>Invoice #{this.props.invoice.invoiceNumber}</h3>
                     {this.renderCustomerDetails()}
                     <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
@@ -240,6 +259,7 @@ class EditInvoice extends React.Component {
                         <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
                         <Link to={`/delete-invoice/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
                     </div>
+                    {this.renderPayments()}
                 </div>
                 <div>
                 </div>
@@ -274,15 +294,13 @@ class EditInvoice extends React.Component {
 //     return errors;
 // }
 const mapStateToProps = (state, ownProps) => {
-    console.log(state)
     const customers = Object.values(state.customer)
     const products = Object.values(state.productMaster)
     const invoice = state.invoices[ownProps.match.params.id]
-    console.log(invoice)
     return { errorMessage: state, customers: customers, products: products, invoice: invoice, initialValues: invoice };
 }
 const formWrapped = reduxForm({
-    form: 'editInvoice'
+    form: 'invoicePayments'
 })(EditInvoice);
 
 export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice })(formWrapped);

@@ -1,6 +1,6 @@
 import api from "../apis/api";
 import history from '../components/history';
-import { saveAs } from 'file-saver';
+import jwt_decode from "jwt-decode";
 import {
     CREATE_USER,
     EDIT_USER,
@@ -791,13 +791,15 @@ export const searchPurchaseOrders = (formValues) => async dispatch => {
 export const createInvoice = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    console.log(user)
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/invoices/new-invoice', { ...formValues }, header);
+    const response = await api.post('api/sales/invoices/new-invoice', { ...formValues,user }, header);
     console.log(response)
     dispatch({ type: CREATE_INVOICE, payload: response.data });
     window.location.reload()
@@ -842,7 +844,7 @@ export const editInvoice = (id, formValues) => async dispatch => {
     const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
     console.log(response)
     dispatch({ type: EDIT_INVOICE, payload: response.data });
-    //window.location.reload()
+    window.location.reload()
     //  history.push("purchase-order-dashboard");
 };
 //Delete invoice
