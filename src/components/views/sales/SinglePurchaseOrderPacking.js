@@ -2,15 +2,14 @@ import React from 'react';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchPurchaseOrder, fetchSuppliers, fetchRawMaterials, fetchPackingMaterials, createPurchaseOrder, editPurchaseOrder } from '../../../actions';
+import { fetchPurchaseOrderPacking, fetchSuppliers, fetchPackingMaterials, editPurchaseOrderPacking } from '../../../actions';
 
-class EditPurchaseOrder extends React.Component {
+class SinglePurchaseOrderPacking extends React.Component {
 
     componentDidMount() {
-        this.props.fetchPurchaseOrder(this.props.match.params.id)
+        this.props.fetchPurchaseOrderPacking(this.props.match.params.id)
         console.log(this.props.match.params.id)
         this.props.fetchSuppliers()
-        this.props.fetchRawMaterials()
         this.props.fetchPackingMaterials()
     }
 
@@ -30,53 +29,7 @@ class EditPurchaseOrder extends React.Component {
             </div>
         );
     }
-    renderRawMaterials() {
-        return this.props.rawMaterials.map(rawMaterial => {
-            return (
-                <option key={rawMaterial._id} value={rawMaterial.id}>{rawMaterial.materialName}</option>
-            )
-        })
-    }
-    rawMaterialsDropDown = ({ fields }) => {
-        return (
-            <div>
-                <ul>
-                    {fields.map((rawMaterials, index) => <li key={index}>
-                        <label htmlFor={rawMaterials}>Material #{index + 1}</label>
-                        <div className="fields">
-                            <div className="eight wide field">
-                                <Field name={`${rawMaterials}.id`} type="text" required component="select" >
-                                    <option>-Select Material-</option>
-                                    {this.renderRawMaterials()}
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${rawMaterials}.quantity`} type="number" required component="input" placeholder="Quantity" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${rawMaterials}.uom`} type="text" required component="select" placeholder="UOM" >
-                                    <option>-UOM-</option>
-                                    <option value="Each">Each</option>
-                                    <option value="kg">kg</option>
-                                    <option value="l">l</option>
-                                    <option value="m">m</option>
-                                    <option value="ml">ml</option>
-                                    <option value="g">g</option>
-                                    <option value="cm">cm</option>
-                                </Field>
-                            </div>
-                            <div className="eight wide field">
-                                <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
-                            </div>
-                        </div>
-                    </li>)}
-                </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Product</button>
-
-            </div>
-        )
-    }
+    
     renderPackingMaterials() {
         return this.props.packingMaterials.map(packingMaterial => {
             return (
@@ -140,13 +93,7 @@ class EditPurchaseOrder extends React.Component {
                                 <option>-Select Customer-</option>
                                 {this.renderSuppliers()}
                             </Field>
-                        </div>
-                        <div className="fields">
-                            <div className="sixteen wide field">
-                                <label>Raw Material- </label>
-                                <FieldArray name="rawMaterials" component={this.rawMaterialsDropDown} />
-                            </div>
-                        </div>
+                        </div>                       
                         <div className="fields">
                             <div className="sixteen wide field">
                                 <label>Packing Material- </label>
@@ -155,8 +102,8 @@ class EditPurchaseOrder extends React.Component {
                         </div>
 
                         <div className="field">
-                            <Link to={"/purchase-order-dashboard"} type="button" className="ui button">Back</Link>
-                            <Link to={`/delete-purchase-order/${this.props.match.params.id}`} type="button" className="ui red button">Delete</Link>
+                            <Link to={"/purchase-order-dashboard-packing"} type="button" className="ui button">Back</Link>
+                            <Link to={`/delete-purchase-order-packing/${this.props.match.params.id}`} type="button" className="ui red button">Delete</Link>
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>
@@ -195,8 +142,7 @@ const mapStateToProps = (state, ownPorps) => {
     const suppliers = Object.values(state.supplier)
     const rawMaterials = Object.values(state.rawMaterials)
     const packingMaterials = Object.values(state.packingMaterials)
-    const order = state.purchaseOrders[ownPorps.match.params.id]
-    console.log(state.purchaseOrders[ownPorps.match.params.id])
+    const order = state.purchaseOrdersPacking[ownPorps.match.params.id]
     return {
         errorMessage: state,
         suppliers: suppliers,
@@ -207,7 +153,7 @@ const mapStateToProps = (state, ownPorps) => {
     };
 }
 const formWrapped = reduxForm({
-    form: 'editPurchaseOrder',
-})(EditPurchaseOrder);
+    form: 'purchaseOrderPackingPayments',
+})(SinglePurchaseOrderPacking);
 
-export default connect(mapStateToProps, { fetchPurchaseOrder, fetchSuppliers, fetchRawMaterials, fetchPackingMaterials, createPurchaseOrder, editPurchaseOrder })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderPacking, fetchSuppliers, fetchPackingMaterials, editPurchaseOrderPacking })(formWrapped);

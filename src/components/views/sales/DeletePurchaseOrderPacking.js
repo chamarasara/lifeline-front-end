@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import Modal from '../../Modal';
 import history from '../../history';
-import { fetchPurchaseOrder, deletePurchaseOrder } from "../../../actions";
+import { fetchPurchaseOrderPacking, deletePurchaseOrderPacking } from "../../../actions";
 
-class DeletePurchaseOrder extends React.Component {
+class DeletePurchaseOrderPacking extends React.Component {
 
     componentDidMount() {       
-        this.props.fetchPurchaseOrder(this.props.match.params.id);
+        this.props.fetchPurchaseOrderPacking(this.props.match.params.id);
     }
     renderActions() {
        if (!this.props.order) {
@@ -22,7 +22,7 @@ class DeletePurchaseOrder extends React.Component {
         return (
             <React.Fragment>
                 <button onClick={() => this.props.deletePurchaseOrder(this.props.order._id)} className="ui red button">Delete</button>
-                <Link to={`/edit-purchase-order/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
+                <Link to={`/single-purchase-order-packing/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
             </React.Fragment>
         );
     }
@@ -35,12 +35,12 @@ class DeletePurchaseOrder extends React.Component {
     }
     render() {
         return (
-            <Modal header="Delete Purchase Order" content={this.renderContent()} actions={this.renderActions()} onDismiss={() => history.push(`/edit-purchase-order/${this.props.match.params.id}`)} />
+            <Modal header="Delete Purchase Order" content={this.renderContent()} actions={this.renderActions()} onDismiss={() => history.push(`/single-purchase-order-packing/${this.props.match.params.id}`)} />
         );
     }
 }
 
 const mapToSatate = (state, ownPorps) => {
-    return { order: state.purchaseOrders[ownPorps.match.params.id] };
+    return { order: state.purchaseOrdersPacking[ownPorps.match.params.id] };
 }
-export default connect(mapToSatate, { fetchPurchaseOrder, deletePurchaseOrder })(DeletePurchaseOrder);
+export default connect(mapToSatate, { fetchPurchaseOrderPacking, deletePurchaseOrderPacking })(DeletePurchaseOrderPacking);

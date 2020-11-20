@@ -99,7 +99,7 @@ class EditInvoice extends React.Component {
     renderCustomerDetails() {
         return (
             <div>
-                <p><strong>Customer Name:</strong>{this.props.invoice.customer.map(customer => {
+                <p><strong>Company Name:</strong>{this.props.invoice.customer.map(customer => {
                     return (
                         <span key={customer.id}>{customer.companyName}</span>
                     )

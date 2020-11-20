@@ -1,10 +1,10 @@
 import React from "react";
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { searchPurchaseOrders } from '../../../actions';
+import { searchPurchaseOrdersPacking } from '../../../actions';
 
 
-class SearchPurchaseOrderByDate extends React.Component {
+class SearchPurchaseOrderPackingByDate extends React.Component {
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -30,7 +30,7 @@ class SearchPurchaseOrderByDate extends React.Component {
         window.location.reload()
     }
     onSubmit = (formValues) => {
-        this.props.searchPurchaseOrders({...formValues})
+        this.props.searchPurchaseOrdersPacking({...formValues})
     }
     render() {
         return (
@@ -62,8 +62,8 @@ const validate = (formValues) => {
     return errors;
 }
 const formWrapped = reduxForm({
-    form: 'sortPurchaseOrders',
+    form: 'sortPurchasePackigOrders',
     validate: validate
-})(SearchPurchaseOrderByDate);
+})(SearchPurchaseOrderPackingByDate);
 
-export default connect(null, { searchPurchaseOrders})(formWrapped);
+export default connect(null, { searchPurchaseOrdersPacking})(formWrapped);

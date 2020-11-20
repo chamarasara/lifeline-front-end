@@ -1,10 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import PurchaseOrderList from "./PurchaseOrderList";
-import SearchPurchaseOrder from "./SearchPurchaseOrder";
-import SearchPurchaseOrderByDate from './SearchPurchaseOrderByDate';
-import PurchaseOrderSearchResults from './PurchaseOrderSearchResults';
-
+import { Link } from 'react-router-dom'
 class PurchaseOrderDashboard extends React.Component {
 
     render() {
@@ -13,18 +8,11 @@ class PurchaseOrderDashboard extends React.Component {
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <div className="column" style={{ paddingTop: "30px" }}>
                         <Link to={"/sales-dashboard"} className="ui button">Back</Link>
-                        <Link to={"/new-purchase-order"} className="ui blue button">New Purchase Order</Link>
-                    </div>
-                    <div className="ui grid" style={{ paddingTop: "30px" }}>
-                        <div className="eight wide column">
-                            <SearchPurchaseOrder />
+                        <div className="ui blue buttons">
+                            <Link to={"/purchase-order-dashboard-raw"} className="ui button">Purchase Orders RM</Link>
+                            <div className="or"></div>
+                            <Link to={"/purchase-order-dashboard-packing"} className="ui blue button">Purchase Orders PM</Link>
                         </div>
-                        <div className="six wide column">
-                            <SearchPurchaseOrderByDate />
-                        </div>
-                    </div>
-                    <div className="column" style={{ paddingTop: "30px" }}>
-                        <PurchaseOrderSearchResults />
                     </div>
                 </div>
             </div>

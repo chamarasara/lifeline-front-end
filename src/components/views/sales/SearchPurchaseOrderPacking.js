@@ -1,15 +1,15 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { searchPurchaseOrders} from '../../../actions';
+import { searchPurchaseOrdersPacking} from '../../../actions';
 
-class SearchPurchaseOrder extends React.Component {
+class SearchPurchaseOrderPacking extends React.Component {
     onClick = () => {
         window.location.reload()
     }
     onSubmit = (formvalues) => {
         console.log(formvalues)
-        this.props.searchPurchaseOrders(formvalues)
+        this.props.searchPurchaseOrdersPacking(formvalues)
     }
  
     renderError({ error, touched }) {
@@ -53,11 +53,11 @@ const validate = (formvalues) => {
     return errors;
 }
 const formWrapped = reduxForm({
-    form: 'searchPurchaseOrder',
+    form: 'searchPurchaseOrderPacking',
     validate: validate
-})(SearchPurchaseOrder);
+})(SearchPurchaseOrderPacking);
 
 
-export default connect(null, { searchPurchaseOrders})(formWrapped);
+export default connect(null, { searchPurchaseOrdersPacking})(formWrapped);
 
 

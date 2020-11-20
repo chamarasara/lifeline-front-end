@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { searchPurchaseOrders, fetchCustomer } from "../../../actions"
-class PurchaseOrderSearchResults extends React.Component {
+import { searchPurchaseOrdersPacking, fetchCustomer } from "../../../actions"
+
+class PurchaseOrderPackingSearchResults extends React.Component {
     componentDidMount() {
-        this.props.searchPurchaseOrders()
+        this.props.searchPurchaseOrdersPacking()
 
     }
 
@@ -34,27 +35,7 @@ class PurchaseOrderSearchResults extends React.Component {
                                 )
                             })
                         }
-                    </td>
-                    <td>
-                        {
-                            order.searchRawMaterial.map(material => {
-                                console.log(material)
-                                return (
-                                    <p key={material.id}>{material.materialName}</p>
-                                )
-                            })
-                        }
-                    </td>
-                    <td style={{ "textAlign": "right" }}>
-                        {
-                            order.rawMaterials.map(quantity => {
-                                return (
-                                    <p key={Math.random()}>{quantity.quantity}</p>
-                                )
-                            }
-                            )
-                        }
-                    </td>
+                    </td>                    
                     <td>
                         {
                             order.searchPackingMaterial.map(material => {
@@ -76,7 +57,7 @@ class PurchaseOrderSearchResults extends React.Component {
                         }
                     </td>
                     <td>
-                        <Link to={`/edit-purchase-order/${order.id}`} className="ui red button">Edit</Link>
+                        <Link to={`/single-purchase-order-packing/${order.id}`} className="ui red button">Edit</Link>
                     </td>
                 </tr>
             )
@@ -99,8 +80,6 @@ class PurchaseOrderSearchResults extends React.Component {
                             <tr>
                                 <th>Date</th>
                                 <th>Company Name</th>
-                                <th>Raw Materials</th>
-                                <th>Quantities</th>
                                 <th>Packing Materials</th>
                                 <th>Quantities</th>
                             </tr>
@@ -115,10 +94,9 @@ class PurchaseOrderSearchResults extends React.Component {
     }
 }
 const mapToSatate = (state) => {
-    console.log(Object.values(state.purchaseOrders))
-    const orders = Object.values(state.searchPurchaseOrders)
+    const orders = Object.values(state.searchPurchaseOrdersPacking)
     //delete orders['searchText']
     console.log(orders)
     return { orders: orders };
 }
-export default connect(mapToSatate, { searchPurchaseOrders, fetchCustomer })(PurchaseOrderSearchResults);
+export default connect(mapToSatate, { searchPurchaseOrdersPacking, fetchCustomer })(PurchaseOrderPackingSearchResults);

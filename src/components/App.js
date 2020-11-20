@@ -36,9 +36,8 @@ import FinishGoodDashboard from './views/masterdata/finishgoods/FinishGoodDashbo
 import NewFinishGood from './views/masterdata/finishgoods/WizardFormFinishGood';
 import NewSemiFinishGood from './views/masterdata/semifinishgoods/WizardFormSemiFinishGood';
 import SalesDashboard from './views/sales/SalesDashboard';
-import NewPurchaseOrder from './views/sales/NewPurchaseOrder';
 import NewInvoice from './views/sales/NewInvoice';
-import PurchaseOrderDashboard from './views/sales/PurchaseOrderDashboard';
+import PurchaseOrderDashboardRaw from './views/sales/PurchaseOrderDashboardRaw';
 import InvoiceDashboard from './views/sales/InvoiceDashboard';
 import SemiFinishGoodDashboard from './views/masterdata/semifinishgoods/SemiFinishGoodDashboard';
 import SingleRawMaterial from './views/masterdata/rawmaterial/SingleRawMaterial';
@@ -81,10 +80,16 @@ import NewProductMaster from './views/masterdata/productmaster/NewProductMaster'
 import SingleProductMaster from './views/masterdata/productmaster/SingleProductMaster';
 import EditProductMaster from './views/masterdata/productmaster/EditProductMaster';
 import DeleteProductMaster from './views/masterdata/productmaster/DeleteProductMaster';
-import EditPurchaseOrder from './views/sales/EditPurchaseOrder';
-import DeletePurchaseOrder from './views/sales/DeletePurchaseOrder';
+import SinglePurchaseOrderRaw from './views/sales/SinglePurchaseOrderRaw';
+import DeletePurchaseOrderRaw from './views/sales/DeletePurchaseOrderRaw';
+import SinglePurchaseOrderPacking from './views/sales/SinglePurchaseOrderPacking';
 import EditInvoice from './views/sales/EditInvoice ';
 import DeleteInvoice from './views/sales/DeleteInvoice';
+import PurchaseOrderDashboard from './views/sales/PurchaseOrderDashboard';
+import PurchaseOrderDashboardPacking from './views/sales/PurchaseOrderDashboardPacking';
+import NewPurchaseOrderRaw from './views/sales/NewPurchaseOrderRaw';
+import NewPurchaseOrderPacking from './views/sales/NewPurchaseOrderPacking';
+import DeletePurchaseOrderPacking from './views/sales/DeletePurchaseOrderPacking';
 
 
 
@@ -174,10 +179,15 @@ class App extends React.Component {
                     <PrivateRoute path="/delete-semi-finish-good-material/:id" component={DeleteSemiFinishGoodMaterial} />  
                     <PrivateRoute path="/sales-dashboard" component={SalesDashboard} />
                     <PrivateRoute path="/purchase-order-dashboard" component={PurchaseOrderDashboard} />
-                    <PrivateRoute path="/invoice-dashboard" component={InvoiceDashboard} />
-                    <PrivateRoute path="/new-purchase-order" component={NewPurchaseOrder} />
-                    <PrivateRoute path="/edit-purchase-order/:id" component={EditPurchaseOrder} />
-                    <PrivateRoute path="/delete-purchase-order/:id" component={DeletePurchaseOrder} />
+                    <PrivateRoute path="/purchase-order-dashboard-raw" component={PurchaseOrderDashboardRaw} />
+                    <PrivateRoute path="/purchase-order-dashboard-packing" component={PurchaseOrderDashboardPacking} />
+                    <PrivateRoute path="/new-purchase-order-raw" component={NewPurchaseOrderRaw} />
+                    <PrivateRoute path="/new-purchase-order-packing" component={NewPurchaseOrderPacking} />
+                    <PrivateRoute path="/invoice-dashboard" component={InvoiceDashboard} />                    
+                    <PrivateRoute path="/single-purchase-order-raw/:id" component={SinglePurchaseOrderRaw} />
+                    <PrivateRoute path="/delete-purchase-order-raw/:id" component={DeletePurchaseOrderRaw} />
+                    <PrivateRoute path="/single-purchase-order-packing/:id" component={SinglePurchaseOrderPacking} />
+                    <PrivateRoute path="/delete-purchase-order-packing/:id" component={DeletePurchaseOrderPacking} />
                     <PrivateRoute path="/new-invoice" component={NewInvoice} />
                     <PrivateRoute path="/edit-invoice/:id" component={EditInvoice} />
                     <PrivateRoute path="/delete-invoice/:id" component={DeleteInvoice} />

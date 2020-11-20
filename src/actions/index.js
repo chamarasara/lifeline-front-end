@@ -50,12 +50,18 @@ import {
     FETCH_PRODUCT_MASTER,
     FETCH_PRODUCTS_MASTER,
     DELETE_PRODUCT_MASTER,
-    CREATE_PURCHASE_ORDER,
-    EDIT_PURCHASE_ORDER,
-    FETCH_PURCHASE_ORDER,
-    FETCH_PURCHASE_ORDERS,
-    DELETE_PURCHASE_ORDER,
-    SEARCH_PURCHASE_ORDERS_RESULT,
+    CREATE_PURCHASE_ORDER_RAW,
+    EDIT_PURCHASE_ORDER_RAW,
+    FETCH_PURCHASE_ORDER_RAW,
+    FETCH_PURCHASE_ORDERS_RAW,
+    DELETE_PURCHASE_ORDER_RAW,
+    SEARCH_PURCHASE_ORDERS_RESULT_RAW,
+    CREATE_PURCHASE_ORDER_PACKING,
+    EDIT_PURCHASE_ORDER_PACKING,
+    FETCH_PURCHASE_ORDER_PACKING,
+    FETCH_PURCHASE_ORDERS_PACKING,
+    DELETE_PURCHASE_ORDER_PACKING,
+    SEARCH_PURCHASE_ORDERS_RESULT_PACKING,
     CREATE_INVOICE,
     EDIT_INVOICE,
     FETCH_INVOICES,
@@ -700,8 +706,8 @@ export const deleteProductMaster = (id) => async dispatch => {
     window.location.reload()
 };
 
-//create purchase order
-export const createPurchaseOrder = formValues => async dispatch => {
+//create purchase order raw
+export const createPurchaseOrderRaw = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
@@ -712,12 +718,12 @@ export const createPurchaseOrder = formValues => async dispatch => {
     };
     const response = await api.post('api/sales/purchase-orders/new-purchase-order', { ...formValues }, header);
     console.log(response)
-    dispatch({ type: CREATE_PURCHASE_ORDER, payload: response.data });
+    dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.data });
     //window.location.reload()
 
 };
-//List all purchase orders
-export const fetchPurchaseOrders = () => async dispatch => {
+//List all purchase orders raw
+export const fetchPurchaseOrdersRaw = () => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -727,10 +733,10 @@ export const fetchPurchaseOrders = () => async dispatch => {
     };
     const response = await api.get('/api/sales/purchase-orders/all-purchase-orders', header);
     console.log(response)
-    dispatch({ type: FETCH_PURCHASE_ORDERS, payload: response.data });
+    dispatch({ type: FETCH_PURCHASE_ORDERS_RAW, payload: response.data });
 };
-//View purchase order
-export const fetchPurchaseOrder = (id) => async dispatch => {
+//View purchase order raw
+export const fetchPurchaseOrderRaw = (id) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -740,10 +746,10 @@ export const fetchPurchaseOrder = (id) => async dispatch => {
     };
     const response = await api.get(`/api/sales/purchase-orders/single-purchase-order/${id}`, header);
     console.log(response)
-    dispatch({ type: FETCH_PURCHASE_ORDER, payload: response.data[0] });
+    dispatch({ type: FETCH_PURCHASE_ORDER_RAW, payload: response.data[0] });
 };
-//Edit purchase order
-export const editPurchaseOrder = (id, formValues) => async dispatch => {
+//Edit purchase order raw
+export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
@@ -754,12 +760,12 @@ export const editPurchaseOrder = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`/api/sales/purchase-orders/update-purchase-order/${id}`, { ...formValues }, header);
     console.log(response)
-    dispatch({ type: EDIT_PURCHASE_ORDER, payload: response.data });
+    dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
     window.location.reload()
     //  history.push("purchase-order-dashboard");
 };
-//Delete purchase order
-export const deletePurchaseOrder = (id) => async dispatch => {
+//Delete purchase order raw
+export const deletePurchaseOrderRaw = (id) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -768,12 +774,12 @@ export const deletePurchaseOrder = (id) => async dispatch => {
         }
     };
     await api.delete(`/api/sales/purchase-orders/delete-purchase-order/${id}`, header);
-    dispatch({ type: DELETE_PURCHASE_ORDER, payload: id });
+    dispatch({ type: DELETE_PURCHASE_ORDER_RAW, payload: id });
     history.push('/purchase-order-dashboard')
     //window.location.reload()
 };
-//Search purchase orders 
-export const searchPurchaseOrders = (formValues) => async dispatch => {
+//Search purchase orders raw
+export const searchPurchaseOrdersRaw = (formValues) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -784,9 +790,94 @@ export const searchPurchaseOrders = (formValues) => async dispatch => {
     console.log(formValues)
     const response = await api.post('api/sales/purchase-orders/search-purchase-order', { formValues }, header);
     console.log(response.data);
-    dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT, payload: response.data});
+    dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_RAW, payload: response.data});
 };
+//create purchase order packing
+export const createPurchaseOrderPacking = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('api/sales/purchase-orders/new-purchase-order', { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: CREATE_PURCHASE_ORDER_PACKING, payload: response.data });
+    //window.location.reload()
 
+};
+//List all purchase orders raw
+export const fetchPurchaseOrdersPacking = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/sales/purchase-orders/all-purchase-orders', header);
+    console.log(response)
+    dispatch({ type: FETCH_PURCHASE_ORDERS_PACKING, payload: response.data });
+};
+//View purchase order raw
+export const fetchPurchaseOrderPacking = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/sales/purchase-orders/single-purchase-order/${id}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_PURCHASE_ORDER_PACKING, payload: response.data[0] });
+};
+//Edit purchase order raw
+export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders/update-purchase-order/${id}`, { ...formValues }, header);
+    console.log(response)
+    dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
+    window.location.reload()
+    //  history.push("purchase-order-dashboard");
+};
+//Delete purchase order raw
+export const deletePurchaseOrderPacking = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/sales/purchase-orders/delete-purchase-order/${id}`, header);
+    dispatch({ type: DELETE_PURCHASE_ORDER_PACKING, payload: id });
+    history.push('/purchase-order-dashboard')
+    //window.location.reload()
+};
+//Search purchase orders raw
+export const searchPurchaseOrdersPacking = (formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    console.log(formValues)
+    const response = await api.post('api/sales/purchase-orders/search-purchase-order', { formValues }, header);
+    console.log(response.data);
+    dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_PACKING, payload: response.data });
+};
 //create invoice
 export const createInvoice = formValues => async dispatch => {
     console.log(formValues)

@@ -60,7 +60,7 @@ class InvoiceList extends React.Component {
                         {
                             invoice.searchCustomer.map(customer1 => {
                                 return (
-                                    <span key={customer1.id}>{customer1.customerName}</span>
+                                    <span key={customer1.id}>{customer1.companyName}</span>
                                 )
                             })
                         }
@@ -142,7 +142,7 @@ class InvoiceList extends React.Component {
                     <table className="ui very basic collapsing celled table">
                         <thead>
                             <tr><th>Date</th>
-                                <th>Customer Name</th>
+                                <th>Company Name</th>
                                 <th>Products</th>
                                 <th>Quantities</th>
                                 <th>UOM</th>

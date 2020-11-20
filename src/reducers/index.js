@@ -10,10 +10,12 @@ import packingMaterialReducer from "./master/packingMaterialReducer";
 import semiFinishGoodsReducer from "./master/semiFinishGoodReducer";
 import finishGoodReducer from "./master/finishGoodReducer";
 import productMasterReducer from "./master/productMasterReducer";
-import purchaseOrderReducer from './sales/purchaseOrderReducer';
+import purchaseOrderRawReducer from './sales/purchaseOrderRawReducer';
+import purchaseOrderPackingReducer from './sales/purchaseOrderPackingReducer';
 import invoiceReducer from "./sales/invoiceReducer";
-import searchPurchaseOrdersReducer from "./sales/searchPurchaseOrdersReducer";
 import searchInvoicesReducer from "./sales/searchInvoicesReducer";
+import searchPurchaseOrdersRawReducer from "./sales/searchPurchaseOrdersRawReducer";
+import searchPurchaseOrdersPacking  from "./sales/searchPurchaseOrdersPackingReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -26,9 +28,11 @@ export default combineReducers({
     semiFinishGoods: semiFinishGoodsReducer,
     finishGoods: finishGoodReducer,
     productMaster: productMasterReducer,
-    searchPurchaseOrders: searchPurchaseOrdersReducer,
+    searchPurchaseOrdersRaw: searchPurchaseOrdersRawReducer,
+    searchPurchaseOrdersPacking: searchPurchaseOrdersPacking,
     invoices: invoiceReducer,
     form: formReducer,
-    purchaseOrders: purchaseOrderReducer,
+    purchaseOrdersRaw: purchaseOrderRawReducer,
+    purchaseOrdersPacking: purchaseOrderPackingReducer,
     searchInvoices: searchInvoicesReducer
 });
