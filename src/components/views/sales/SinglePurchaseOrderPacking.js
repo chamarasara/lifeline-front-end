@@ -78,7 +78,7 @@ class SinglePurchaseOrderPacking extends React.Component {
         )
     }
     onSubmit = (formValues) => {
-        this.props.editPurchaseOrder(this.props.order._id, formValues)
+        this.props.editPurchaseOrderPacking(this.props.order._id, formValues)
     }
 
     render() {

@@ -716,10 +716,10 @@ export const createPurchaseOrderRaw = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/purchase-orders/new-purchase-order', { ...formValues }, header);
+    const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.data });
-    //window.location.reload()
+    window.location.reload()
 
 };
 //List all purchase orders raw
@@ -731,7 +731,7 @@ export const fetchPurchaseOrdersRaw = () => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get('/api/sales/purchase-orders/all-purchase-orders', header);
+    const response = await api.get('/api/sales/purchase-orders-raw/all-purchase-orders-raw', header);
     console.log(response)
     dispatch({ type: FETCH_PURCHASE_ORDERS_RAW, payload: response.data });
 };
@@ -744,7 +744,7 @@ export const fetchPurchaseOrderRaw = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get(`/api/sales/purchase-orders/single-purchase-order/${id}`, header);
+    const response = await api.get(`/api/sales/purchase-orders-raw/single-purchase-order-raw/${id}`, header);
     console.log(response)
     dispatch({ type: FETCH_PURCHASE_ORDER_RAW, payload: response.data[0] });
 };
@@ -758,7 +758,7 @@ export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/api/sales/purchase-orders/update-purchase-order/${id}`, { ...formValues }, header);
+    const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues }, header);
     console.log(response)
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
     window.location.reload()
@@ -773,10 +773,10 @@ export const deletePurchaseOrderRaw = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    await api.delete(`/api/sales/purchase-orders/delete-purchase-order/${id}`, header);
+    await api.delete(`/api/sales/purchase-orders-raw/delete-purchase-order-raw/${id}`, header);
     dispatch({ type: DELETE_PURCHASE_ORDER_RAW, payload: id });
-    history.push('/purchase-order-dashboard')
-    //window.location.reload()
+    history.push('/purchase-order-dashboard-raw')
+    window.location.reload()
 };
 //Search purchase orders raw
 export const searchPurchaseOrdersRaw = (formValues) => async dispatch => {
@@ -788,7 +788,7 @@ export const searchPurchaseOrdersRaw = (formValues) => async dispatch => {
         }
     };
     console.log(formValues)
-    const response = await api.post('api/sales/purchase-orders/search-purchase-order', { formValues }, header);
+    const response = await api.post('api/sales/purchase-orders-raw/search-purchase-order-raw', { formValues }, header);
     console.log(response.data);
     dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_RAW, payload: response.data});
 };
@@ -802,10 +802,10 @@ export const createPurchaseOrderPacking = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/purchase-orders/new-purchase-order', { ...formValues }, header);
+    const response = await api.post('api/sales/purchase-orders-packing/new-purchase-order-packing', { ...formValues }, header);
     console.log(response)
     dispatch({ type: CREATE_PURCHASE_ORDER_PACKING, payload: response.data });
-    //window.location.reload()
+    window.location.reload()
 
 };
 //List all purchase orders raw
@@ -817,7 +817,7 @@ export const fetchPurchaseOrdersPacking = () => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get('/api/sales/purchase-orders/all-purchase-orders', header);
+    const response = await api.get('/api/sales/purchase-orders-packing/all-purchase-orders-packing', header);
     console.log(response)
     dispatch({ type: FETCH_PURCHASE_ORDERS_PACKING, payload: response.data });
 };
@@ -830,7 +830,7 @@ export const fetchPurchaseOrderPacking = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.get(`/api/sales/purchase-orders/single-purchase-order/${id}`, header);
+    const response = await api.get(`/api/sales/purchase-orders-packing/single-purchase-order-packing/${id}`, header);
     console.log(response)
     dispatch({ type: FETCH_PURCHASE_ORDER_PACKING, payload: response.data[0] });
 };
@@ -844,7 +844,7 @@ export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/api/sales/purchase-orders/update-purchase-order/${id}`, { ...formValues }, header);
+    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues }, header);
     console.log(response)
     dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
     window.location.reload()
@@ -859,10 +859,10 @@ export const deletePurchaseOrderPacking = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    await api.delete(`/api/sales/purchase-orders/delete-purchase-order/${id}`, header);
+    await api.delete(`/api/sales/purchase-orders-packing/delete-purchase-order-packing/${id}`, header);
     dispatch({ type: DELETE_PURCHASE_ORDER_PACKING, payload: id });
     history.push('/purchase-order-dashboard')
-    //window.location.reload()
+    window.location.reload()
 };
 //Search purchase orders raw
 export const searchPurchaseOrdersPacking = (formValues) => async dispatch => {
@@ -874,7 +874,7 @@ export const searchPurchaseOrdersPacking = (formValues) => async dispatch => {
         }
     };
     console.log(formValues)
-    const response = await api.post('api/sales/purchase-orders/search-purchase-order', { formValues }, header);
+    const response = await api.post('api/sales/purchase-orders-packing/search-purchase-order-packing', { formValues }, header);
     console.log(response.data);
     dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_PACKING, payload: response.data });
 };

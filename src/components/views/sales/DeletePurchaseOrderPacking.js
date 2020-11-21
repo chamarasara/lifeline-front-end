@@ -21,7 +21,7 @@ class DeletePurchaseOrderPacking extends React.Component {
         console.log(this.props.order._id)
         return (
             <React.Fragment>
-                <button onClick={() => this.props.deletePurchaseOrder(this.props.order._id)} className="ui red button">Delete</button>
+                <button onClick={() => this.props.deletePurchaseOrderPacking(this.props.order._id)} className="ui red button">Delete</button>
                 <Link to={`/single-purchase-order-packing/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
             </React.Fragment>
         );
