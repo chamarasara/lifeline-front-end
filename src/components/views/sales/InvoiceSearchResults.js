@@ -51,80 +51,83 @@ class InvoiceList extends React.Component {
         return this.props.invoices.map(invoice => {
             const date = invoice.date;
             const date2 = moment(date).format('DD / MM / YYYY, h:mm: a')
-            return (
-                <tr key={invoice.id}>
-                    <td>
-                        {date2}
-                    </td>
-                    <td>
-                        {
-                            invoice.searchCustomer.map(customer1 => {
-                                return (
-                                    <span key={customer1.id}>{customer1.companyName}</span>
-                                )
-                            })
-                        }
-                    </td>
-                    <td>
-                        {
-                            invoice.searchProducts.map(product => {
-                                return (
-                                    <p key={product.id}>{product.productName}</p>
-                                )
-                            })
-                        }
-                    </td>
-                    <td style={{ "textAlign": "right" }}>
-                        {
-                            invoice.products.map(quantity => {
-                                return (
-                                    <p key={Math.random()}>{quantity.quantity}</p>
+            if (invoice.invoice_state ==="enabled") {
+                return (
+                    <tr key={invoice.id}>
+                        <td>
+                            {date2}
+                        </td>
+                        <td>
+                            {
+                                invoice.searchCustomer.map(customer1 => {
+                                    return (
+                                        <span key={customer1.id}>{customer1.companyName}</span>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td>
+                            {
+                                invoice.searchProducts.map(product => {
+                                    return (
+                                        <p key={product.id}>{product.productName}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                invoice.products.map(quantity => {
+                                    return (
+                                        <p key={Math.random()}>{quantity.quantity}</p>
+                                    )
+                                }
                                 )
                             }
-                            )
-                        }
-                    </td>
-                    <td>
-                        {
-                            invoice.products.map(product => {
-                                return (
-                                    <p key={product.id}>{product.uom}</p>
-                                )
-                            })
-                        }
-                    </td>
-                    <td style={{ "textAlign": "right" }}>
-                        {
-                            invoice.products.map(product => {
-                                return (
-                                    <p key={product.id}>{product.rate}</p>
-                                )
-                            })
-                        }
-                    </td>
-                    <td>
-                        {
-                            invoice.products.map(product => {
-                                return (
-                                    <p key={product.id}>{product.currency}</p>
-                                )
-                            })
-                        }
-                    </td>
-                    <td style={{ "textAlign": "right" }}>
-                        {
-                            invoice.products.map(product => {
-                                return (
-                                    <p key={product.id}>{product.rate * product.quantity} </p>
-                                )
-                            })
-                        }
-                    </td>
-                    <td>
-                        <Link to={`/edit-invoice/${invoice.id}`} className="ui red button">View</Link>
-                    </td>
-                </tr>
-            )
+                        </td>
+                        <td>
+                            {
+                                invoice.products.map(product => {
+                                    return (
+                                        <p key={product.id}>{product.uom}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                invoice.products.map(product => {
+                                    return (
+                                        <p key={product.id}>{product.rate}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td>
+                            {
+                                invoice.products.map(product => {
+                                    return (
+                                        <p key={product.id}>{product.currency}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                invoice.products.map(product => {
+                                    return (
+                                        <p key={product.id}>{product.rate * product.quantity} </p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td>
+                            <Link to={`/edit-invoice/${invoice.id}`} className="ui red button">View</Link>
+                        </td>
+                    </tr>
+                )
+            }
+            
         })
     }
     render() {

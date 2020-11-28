@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { searchPurchaseOrdersRaw, fetchCustomer } from "../../../actions"
+import { searchPurchaseOrdersRaw, fetchSupplier } from "../../../actions"
 
 class PurchaseOrderRawSearchResults extends React.Component {
     componentDidMount() {
@@ -20,47 +20,50 @@ class PurchaseOrderRawSearchResults extends React.Component {
         }
         return this.props.orders.map(order => {
             const date = order.date;
-            const date2 = moment(date).format('MM/DD/YYYY, h:mm: a')
+            const date2 = moment(date).format('DD/MM/YYYY, h:mm: a')
             console.log(date2)
-            return (
-                <tr key={order.id}>
-                    <td>
-                        {date2}
-                    </td>
-                    <td>
-                        {
-                            order.searchSupplier.map(supplier1 => {
-                                return (
-                                    <span key={supplier1.id}>{supplier1.companyName}</span>
-                                )
-                            })
-                        }
-                    </td>
-                    <td>
-                        {
-                            order.searchRawMaterial.map(material => {
-                                console.log(material)
-                                return (
-                                    <p key={material.id}>{material.materialName}</p>
-                                )
-                            })
-                        }
-                    </td>
-                    <td style={{ "textAlign": "right" }}>
-                        {
-                            order.rawMaterials.map(quantity => {
-                                return (
-                                    <p key={Math.random()}>{quantity.quantity}</p>
+            if (order.order_state === "enabled") {
+                return (
+                    <tr key={order.id}>
+                        <td>
+                            {date2}
+                        </td>
+                        <td>
+                            {
+                                order.searchSupplier.map(supplier1 => {
+                                    return (
+                                        <span key={supplier1.id}>{supplier1.companyName}</span>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td>
+                            {
+                                order.searchRawMaterial.map(material => {
+                                    console.log(material)
+                                    return (
+                                        <p key={material.id}>{material.materialName}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.rawMaterials.map(quantity => {
+                                    return (
+                                        <p key={Math.random()}>{quantity.quantity}</p>
+                                    )
+                                }
                                 )
                             }
-                            )
-                        }
-                    </td>                    
-                    <td>
-                        <Link to={`/single-purchase-order-raw/${order.id}`} className="ui red button">Edit</Link>
-                    </td>
-                </tr>
-            )
+                        </td>
+                        <td>
+                            <Link to={`/single-purchase-order-raw/${order.id}`} className="ui red button">View</Link>
+                        </td>
+                    </tr>
+                )
+            }
+
         })
     }
     render() {
@@ -71,6 +74,7 @@ class PurchaseOrderRawSearchResults extends React.Component {
                 </div>
             )
         }
+        console.log(this.props.orders)
         return (
             <div >
                 <div >
@@ -81,7 +85,7 @@ class PurchaseOrderRawSearchResults extends React.Component {
                                 <th>Date</th>
                                 <th>Company Name</th>
                                 <th>Raw Materials</th>
-                                <th>Quantities</th>                               
+                                <th>Quantities</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -97,4 +101,4 @@ const mapToSatate = (state) => {
     const orders = Object.values(state.searchPurchaseOrdersRaw)
     return { orders: orders };
 }
-export default connect(mapToSatate, { searchPurchaseOrdersRaw, fetchCustomer })(PurchaseOrderRawSearchResults);
+export default connect(mapToSatate, { searchPurchaseOrdersRaw, fetchSupplier })(PurchaseOrderRawSearchResults);

@@ -20,47 +20,48 @@ class PurchaseOrderPackingSearchResults extends React.Component {
         }
         return this.props.orders.map(order => {
             const date = order.date;
-            const date2 = moment(date).format('MM/DD/YYYY, h:mm: a')
-            console.log(date2)
-            return (
-                <tr key={order.id}>
-                    <td>
-                        {date2}
-                    </td>
-                    <td>
-                        {
-                            order.searchSupplier.map(supplier1 => {
-                                return (
-                                    <span key={supplier1.id}>{supplier1.companyName}</span>
-                                )
-                            })
-                        }
-                    </td>                    
-                    <td>
-                        {
-                            order.searchPackingMaterial.map(material => {
-                                console.log(material)
-                                return (
-                                    <p key={material.id}>{material.materialName}</p>
-                                )
-                            })
-                        }
-                    </td>
-                    <td style={{ "textAlign": "right" }}>
-                        {
-                            order.packingMaterials.map(quantity => {
-                                return (
-                                    <p key={Math.random()}>{quantity.quantity}</p>
+            const date2 = moment(date).format('DD/MM/YYYY, h:mm: a')
+            if (order.order_state === "enabled") {
+                return (
+                    <tr key={order.id}>
+                        <td>
+                            {date2}
+                        </td>
+                        <td>
+                            {
+                                order.searchSupplier.map(supplier1 => {
+                                    return (
+                                        <span key={supplier1.id}>{supplier1.companyName}</span>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td>
+                            {
+                                order.searchPackingMaterial.map(material => {
+                                    console.log(material)
+                                    return (
+                                        <p key={material.id}>{material.materialName}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.packingMaterials.map(quantity => {
+                                    return (
+                                        <p key={Math.random()}>{quantity.quantity}</p>
+                                    )
+                                }
                                 )
                             }
-                            )
-                        }
-                    </td>
-                    <td>
-                        <Link to={`/single-purchase-order-packing/${order.id}`} className="ui red button">Edit</Link>
-                    </td>
-                </tr>
-            )
+                        </td>
+                        <td>
+                            <Link to={`/single-purchase-order-packing/${order.id}`} className="ui red button">View</Link>
+                        </td>
+                    </tr>
+                )   
+            }         
         })
     }
     render() {

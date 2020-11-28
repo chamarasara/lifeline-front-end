@@ -80,7 +80,6 @@ export const createUser = formValues => async dispatch => {
         }
     };
     const response = await api.post('/api/users/newuser', { ...formValues }, header);
-    console.log(response)
     dispatch({ type: CREATE_USER, payload: response.data });
     history.push('/employee');
     window.location.reload();
@@ -95,7 +94,6 @@ export const fetchUsers = () => async dispatch => {
         }
     };
     const response = await api.get('/api/users/all-users', header);
-    console.log(response)
     dispatch({ type: FETCH_USERS, payload: response.data });
 };
 //View single user
@@ -108,7 +106,6 @@ export const fetchUser = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/users/single-user/${id}`, header);
-    console.log(response)
     dispatch({ type: FETCH_USER, payload: response.data });
 };
 //Edit user
@@ -123,7 +120,6 @@ export const editUser = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/users/update-user/${id}`, { ...formValues }, header);
-    console.log(response)
     dispatch({ type: EDIT_USER, payload: response.data });
     window.location.reload()
 };
@@ -152,7 +148,6 @@ export const createUserRole = formValues => async dispatch => {
         }
     };
     const response = await api.post('/api/user-roles/new-user-role', { ...formValues }, header);
-    console.log(response)
     dispatch({ type: CREATE_USER_ROLE, payload: response.data });
     history.push('/employee');
     window.location.reload();
@@ -167,7 +162,6 @@ export const fetchUsersRoles = () => async dispatch => {
         }
     };
     const response = await api.get('/api/user-roles/all-user-roles', header);
-    console.log(response)
     console.log(response.data)
     dispatch({ type: FETCH_USERS_ROLES, payload: response.data });
 };
@@ -222,7 +216,6 @@ export const createCustomer = formValues => async dispatch => {
         }
     };
     const response = await api.post('/api/master-data/customer-master/new-customer', { ...formValues }, header);
-    console.log(response)
     dispatch({ type: CREATE_CUSTOMER, payload: response.data });
     history.push('/customer');
 };
@@ -236,7 +229,6 @@ export const fetchCustomers = () => async dispatch => {
         }
     };
     const response = await api.get('/api/master-data/customer-master/all-customers', header);
-    console.log(response)
     dispatch({ type: FETCH_CUSTOMERS, payload: response.data });
 };
 //View single customer
@@ -261,7 +253,6 @@ export const editCustomer = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/master-data/customer-master/update-customer/${id}`, { ...formValues }, header);
-    console.log(response)
     dispatch({ type: EDIT_CUSTOMER, payload: response.data });
     //window.location.reload()
     history.push(`/customer-profile/${id}`)
@@ -290,7 +281,6 @@ export const createSupplier = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/master-data/supplier-master/new-supplier', { ...formValues }, header);
-    console.log(response)
     dispatch({ type: CREATE_SUPPLIER, payload: response.data });
     history.push('/supplier');
 };
@@ -710,13 +700,14 @@ export const deleteProductMaster = (id) => async dispatch => {
 export const createPurchaseOrderRaw = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues }, header);
+    const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues, user }, header);
     console.log(response)
     dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.data });
     window.location.reload()
@@ -745,7 +736,6 @@ export const fetchPurchaseOrderRaw = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/sales/purchase-orders-raw/single-purchase-order-raw/${id}`, header);
-    console.log(response)
     dispatch({ type: FETCH_PURCHASE_ORDER_RAW, payload: response.data[0] });
 };
 //Edit purchase order raw
@@ -759,10 +749,10 @@ export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues }, header);
-    console.log(response)
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
+    history.push(`/purchase-order-dashboard-raw/${id}`);
     window.location.reload()
-    //  history.push("purchase-order-dashboard");
+    
 };
 //Delete purchase order raw
 export const deletePurchaseOrderRaw = (id) => async dispatch => {
@@ -792,18 +782,38 @@ export const searchPurchaseOrdersRaw = (formValues) => async dispatch => {
     console.log(response.data);
     dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_RAW, payload: response.data});
 };
+//Print purchase oreder rawa
+export const printPurchaseOrderRaw = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=purchaseorderrm.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/sales/purchase-orders-raw/print-purchase-order-raw/${id}`, { responseType: 'arraybuffer' }, header, { id });
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
 //create purchase order packing
 export const createPurchaseOrderPacking = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/purchase-orders-packing/new-purchase-order-packing', { ...formValues }, header);
-    console.log(response)
+    const response = await api.post('api/sales/purchase-orders-packing/new-purchase-order-packing', { ...formValues, user }, header);
     dispatch({ type: CREATE_PURCHASE_ORDER_PACKING, payload: response.data });
     window.location.reload()
 
@@ -818,7 +828,6 @@ export const fetchPurchaseOrdersPacking = () => async dispatch => {
         }
     };
     const response = await api.get('/api/sales/purchase-orders-packing/all-purchase-orders-packing', header);
-    console.log(response)
     dispatch({ type: FETCH_PURCHASE_ORDERS_PACKING, payload: response.data });
 };
 //View purchase order raw
@@ -831,7 +840,6 @@ export const fetchPurchaseOrderPacking = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/sales/purchase-orders-packing/single-purchase-order-packing/${id}`, header);
-    console.log(response)
     dispatch({ type: FETCH_PURCHASE_ORDER_PACKING, payload: response.data[0] });
 };
 //Edit purchase order raw
@@ -845,10 +853,9 @@ export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues }, header);
-    console.log(response)
     dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
+    history.push(`/purchase-order-dashboard-packing/${id}`);
     window.location.reload()
-    //  history.push("purchase-order-dashboard");
 };
 //Delete purchase order raw
 export const deletePurchaseOrderPacking = (id) => async dispatch => {
@@ -878,6 +885,26 @@ export const searchPurchaseOrdersPacking = (formValues) => async dispatch => {
     console.log(response.data);
     dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_PACKING, payload: response.data });
 };
+//Print purchase oreder packing
+export const printPurchaseOrderPacking = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=purchaseorderrm.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/sales/purchase-orders-packing/print-purchase-order-packing/${id}`, { responseType: 'arraybuffer' }, header, { id });
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
 //create invoice
 export const createInvoice = formValues => async dispatch => {
     console.log(formValues)
@@ -891,7 +918,6 @@ export const createInvoice = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/sales/invoices/new-invoice', { ...formValues,user }, header);
-    console.log(response)
     dispatch({ type: CREATE_INVOICE, payload: response.data });
     window.location.reload()
 
@@ -906,7 +932,6 @@ export const fetchInvoices = () => async dispatch => {
         }
     };
     const response = await api.get('api/sales/invoices/all-invoices', header);
-    console.log(response)
     dispatch({ type: FETCH_INVOICES, payload: response.data });
 };
 //View invoice
@@ -919,7 +944,6 @@ export const fetchInvoice = (id) => async dispatch => {
         }
     };
     const response = await api.get(`api/sales/invoices/single-invoice/${id}`, header);
-    console.log(response)
     dispatch({ type: FETCH_INVOICE, payload: response.data[0] });
 };
 //Edit invoice
@@ -933,10 +957,9 @@ export const editInvoice = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
-    console.log(response)
-    dispatch({ type: EDIT_INVOICE, payload: response.data });
+    dispatch({ type: EDIT_INVOICE, payload: response.data });    
+    history.push("/invoice-dashboard");
     window.location.reload()
-    //  history.push("purchase-order-dashboard");
 };
 //Delete invoice
 export const deleteInvoice = (id) => async dispatch => {
@@ -979,7 +1002,6 @@ export const printInvoice = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/sales/invoices/print-invoice/${id}`, { responseType: 'arraybuffer' }, header, { id });
-    console.log(response)
     //Create a Blob from the PDF Stream
     const file = new Blob([response.data], { type: 'application/pdf' });
     //Build a URL from the file

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Field, reduxForm, FieldArray } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { fetchPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw, editPurchaseOrderRaw } from '../../../actions';
+import { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw, editPurchaseOrderRaw } from '../../../actions';
 
 class SinglePurchaseOrderRaw extends React.Component {
 
@@ -12,108 +13,126 @@ class SinglePurchaseOrderRaw extends React.Component {
         this.props.fetchSuppliers()
         this.props.fetchRawMaterials()
     }
-
-    renderSuppliers() {
-        return this.props.suppliers.map(supplier => {
-            return (
-                <option key={supplier._id} value={supplier.id}>{supplier.supplierName}</option>
-            )
-        })
-    }
-
-    renderInput = ({ input, label, placeholder, type, meta }) => {
+    renderPurchaseOrederDetails() {
         return (
-            <div className="field">
-                <label>{label}</label>
-                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
-            </div>
-        );
+            <tr>
+                <td>
+                    {this.props.order.rawMaterialsList.map(material => {
+                        return (
+                            <p key={material.id}>{material.materialCode}</p>
+                        )
+                    })
+                    }
+                </td>
+                <td> {this.props.order.rawMaterialsList.map(material => {
+                    return (
+                        <p key={material.id}>{material.materialName}</p>
+                    )
+                })
+                }</td>
+                <td> {this.props.order.rawMaterials.map(material => {
+                    return (
+                        <p key={material.id}>{material.uom}</p>
+                    )
+                })
+                }</td>
+                <td style={{ textAlign: "right" }}> {this.props.order.rawMaterials.map(material => {
+                    return (
+                        <p key={material.id}>{material.quantity}</p>
+                    )
+                })
+                }</td>
+
+
+            </tr>
+        )
+
     }
-    renderRawMaterials() {
-        return this.props.rawMaterials.map(rawMaterial => {
-            return (
-                <option key={rawMaterial._id} value={rawMaterial.id}>{rawMaterial.materialName}</option>
-            )
-        })
-    }
-    rawMaterialsDropDown = ({ fields }) => {
+    renderSupplierDetails() {
+        console.log(this.props.order.supplier)
         return (
             <div>
-                <ul>
-                    {fields.map((rawMaterials, index) => <li key={index}>
-                        <label htmlFor={rawMaterials}>Material #{index + 1}</label>
-                        <div className="fields">
-                            <div className="eight wide field">
-                                <Field name={`${rawMaterials}.id`} type="text" required component="select" >
-                                    <option>-Select Material-</option>
-                                    {this.renderRawMaterials()}
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${rawMaterials}.quantity`} type="number" required component="input" placeholder="Quantity" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${rawMaterials}.uom`} type="text" required component="select" placeholder="UOM" >
-                                    <option>-UOM-</option>
-                                    <option value="Each">Each</option>
-                                    <option value="kg">kg</option>
-                                    <option value="l">l</option>
-                                    <option value="m">m</option>
-                                    <option value="ml">ml</option>
-                                    <option value="g">g</option>
-                                    <option value="cm">cm</option>
-                                </Field>
-                            </div>
-                            <div className="eight wide field">
-                                <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
-                            </div>
-                        </div>
-                    </li>)}
-                </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Product</button>
+                <p><strong>Company Name:</strong>{this.props.order.supplier.map(Supplier => {
+                    return (
+                        <span key={Supplier.id}>{Supplier.companyName}</span>
+                    )
+                })
+                }</p>
+                <p><strong>Address:</strong> {this.props.order.supplier.map(Supplier => {
+                    return (
+                        <span key={Supplier.id}>
+                            {Supplier.communicationAddress.no},
+                            {Supplier.communicationAddress.lane},
+                            {Supplier.communicationAddress.city},
+                            {Supplier.communicationAddress.country},
+                            {Supplier.communicationAddress.postalCode}.
+                        </span>
+                    )
+                })
+                }</p>
+                <p><strong>Email: </strong>{this.props.order.supplier.map(Supplier => {
+                    return (
+                        <span key={Supplier.id}>{Supplier.email}</span>
+                    )
+                })
+                }</p>
+                <p><strong>Contact Number: </strong>{this.props.order.supplier.map(Supplier => {
+                    return (
+                        <span key={Supplier.id}>{Supplier.mobileNo}</span>
+                    )
+                })
+                }</p>
+                <p><strong>Date: </strong>{moment(this.props.order.date).format('DD/MM/YYYY')}
 
+                </p>
             </div>
         )
+
     }
-    renderPackingMaterials() {
-        return this.props.packingMaterials.map(packingMaterial => {
-            return (
-                <option key={packingMaterial._id} value={packingMaterial.id}>{packingMaterial.materialName}</option>
-            )
-        })
+    onClick = () => {
+        this.props.printPurchaseOrderRaw(this.props.order.id)
     }
-    
     onSubmit = (formValues) => {
         this.props.editPurchaseOrderRaw(this.props.order._id, formValues)
     }
 
     render() {
-
+        if (!this.props.order) {
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}></div>
+                    <p>Loading....</p>
+                </div>
+            )
+        }
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
-                    <h3>Edit Purchase Order</h3>
-                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                        <div className="six wide field">
-                            <Field name="supplierId" component="select" placeholder="" type="text" >
-                                <option>-Select Customer-</option>
-                                {this.renderSuppliers()}
-                            </Field>
-                        </div>
-                        <div className="fields">
-                            <div className="sixteen wide field">
-                                <label>Raw Material- </label>
-                                <FieldArray name="rawMaterials" component={this.rawMaterialsDropDown} />
-                            </div>
-                        </div>                        
-
-                        <div className="field">
-                            <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
-                            <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Delete</Link>
-                            <button type="submit" className="ui primary button">Submit</button>
-                        </div>
-                    </form>
+                    <h3>Order No #{this.props.order.orderNumber}</h3>
+                    {this.renderSupplierDetails()}
+                    <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                        <thead className="full-width">
+                            <tr>
+                                <th colSpan="12" style={{ color: "red" }}><h4>Invoice Details</h4></th>
+                            </tr>
+                            <tr>
+                                <th>Product Code</th>
+                                <th>Product Name</th>
+                                <th>UOM</th>
+                                <th style={{ textAlign: "right" }}>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderPurchaseOrederDetails()}
+                        </tbody>
+                    </table>
+                    <div>
+                        <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
+                        <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                        <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                    </div>
+                </div>
+                <div>
                 </div>
             </div>
         )
@@ -164,4 +183,4 @@ const formWrapped = reduxForm({
     form: 'purchaseOrderRawPayments',
 })(SinglePurchaseOrderRaw);
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw, editPurchaseOrderRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw, editPurchaseOrderRaw })(formWrapped);
