@@ -24,7 +24,7 @@ class NewSupplier extends React.Component {
             );
         }
     }
-    renderInput = ({ input, label, placeholder, type, meta }) => {
+    renderInput = ({ input, label, placeholder, type, meta, required }) => {
         return (
             <div className="field">
                 <label>{label}</label>
@@ -51,7 +51,10 @@ class NewSupplier extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="four wide field">
-                                <Field name="mobileNo" component={this.renderInput} placeholder="Contact Number" type="text" />
+                                <Field name="mobileNo1" component={this.renderInput} placeholder="Contact Number 1" type="text" />
+                            </div>
+                            <div className="four wide field">
+                                <Field name="mobileNo2" component={this.renderInput} placeholder="Contact Number 2" type="text" />
                             </div>
                             <div className="four wide field">
                                 <Field name="fax" component={this.renderInput} placeholder="Fax" type="text" />
@@ -68,7 +71,7 @@ class NewSupplier extends React.Component {
                                 <Field name="companyName" component={this.renderInput} placeholder="Company Name" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="creditPeriod" component={this.renderInput} placeholder="Credit Period" type="number" />
+                                <Field name="creditPeriod" component={this.renderInput} placeholder="Credit Period(Days)" type="number" />
                             </div>
                         </div>
                         <div className="fields">
@@ -149,39 +152,37 @@ class NewSupplier extends React.Component {
         )
     }
 }
-// //Form input validation
-// const validate = (formValues) => {
-//     const errors = {}
-//     if (!formValues.firstName) {
-//         errors.firstName = 'Please enter First Name';
-//     }
-//     if (!formValues.lastName) {
-//         errors.lastName = 'Please enter Last Name';
-//     }
-//     if (!formValues.address) {
-//         errors.address = 'Please enter the Number of the Address';
-//     }
-//     if (!formValues.nic) {
-//         errors.nic = 'Please enter the ID Nummber';
-//     }
-//     if (!formValues.mobileNo) {
-//         errors.mobileNo = 'Please enter Phone Number';
-//     }
-//     if (!formValues.email) {
-//         errors.email = 'Please enter Email';
-//     }
-//     if (!formValues.gender) {
-//         errors.gender = 'Please enter the Gender';
-//     }
-//     return errors;
-// }
-// const mapStateToProps = (state) => {
-//     console.log(state)
-//     const userRoles = Object.values(state.userRoles)
-//     console.log(userRoles)
-//     return { errorMessage: state, supplier: userRoles };
-// }
+//Form input validation
+const validate = (formValues) => {
+    const errors = {}
+    if (!formValues.supplierName) {
+        errors.supplierName = 'Please enter Supplier Name';
+    }
+    if (!formValues.companyName) {
+        errors.companyName = 'Please enter the Company Name';
+    }
+    if (!formValues.mobileNo1) {
+        errors.mobileNo1 = 'Please enter Phone Number';
+    }
+    if (!formValues.mobileNo2) {
+        errors.mobileNo2 = 'Please enter Phone Number';
+    }
+    if (!formValues.email) {
+        errors.email = 'Please enter Email';
+    }
+    if (!formValues.creditPeriod) {
+        errors.creditPeriod = 'Please enter the Debit Period';
+    }
+    if (!formValues.communicationAddress) {
+        errors.communicationAddress = { no: "Required", lane: "Required", city: "Required", postalCode: "Required", country: "Required" };
+    }
+    if (!formValues.registerAddress) {
+        errors.registerAddress = { no2: "Required", lane2: "Required", city2: "Required", postalCode2: "Required", country2: "Required" };
+    }
+    return errors;
+}
 const formWrapped = reduxForm({
-    form: 'newSupplier'
+    form: 'newSupplier',
+    validate: validate
 })(NewSupplier);
 export default connect(null, { createSupplier})(formWrapped);

@@ -20,16 +20,17 @@ class SupplierList extends React.Component {
                             </div>
                         </h4></td>
                     <td>
-                        {supplier.mobileNo}
+                        {supplier.mobileNo1}
+                    </td>
+                    <td>
+                        {supplier.mobileNo2}
                     </td>
                     <td>
                         {supplier.fax}
                     </td>
                     <td>
                         {supplier.email}
-                    </td>
-                    <td>{supplier.registerNo}
-                    </td>
+                    </td>                    
                     <td>
                         <Link to={`/supplier-profile/${supplier._id}`} className="ui blue button">View</Link>
                     </td>
@@ -45,10 +46,10 @@ class SupplierList extends React.Component {
                     <table className="ui very basic collapsing celled table">
                         <thead>
                             <tr><th>Customer Name</th>
-                                <th>Contact Number</th>
+                                <th>Contact Number 1</th>
+                                <th>Contact Number 2</th>
                                 <th>Fax</th>
-                                <th>Email</th>
-                                <th>Registration Number</th>
+                                <th>Email</th>                                
                             </tr></thead>
                         <tbody>
                             {this.renderList()}                   

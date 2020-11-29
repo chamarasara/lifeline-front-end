@@ -31,8 +31,8 @@ class SupplierProfile extends React.Component {
                                     {this.props.supplier.supplierName}
                                 </div>
                                 <div className="item">
-                                    <div className="ui horizontal label">Contact Number</div>
-                                    {this.props.supplier.mobileNo}
+                                    <div className="ui horizontal label">Contact Numbers</div>
+                                    {this.props.supplier.mobileNo1} /   {this.props.supplier.mobileNo2}
                                 </div>
                                 <div className="item">
                                     <div className="ui horizontal label">Registration Number</div>

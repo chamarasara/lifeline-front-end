@@ -31,7 +31,7 @@ class NewRawMaterial extends React.Component {
     renderSuppliers() {
         return this.props.supplier.map(supplier => {
             return (
-                <option key={supplier.id} value={supplier.id}>{supplier.supplierName}</option>
+                <option key={supplier.id} value={supplier.id}>{supplier.companyName}</option>
             )
         })
     }

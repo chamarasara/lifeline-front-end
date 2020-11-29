@@ -57,7 +57,10 @@ class EditCustomer extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="four wide field">
-                                <Field name="mobileNo" component={this.renderInput} placeholder={this.props.customer.mobileNo} type="text" />
+                                <Field name="mobileNo1" component={this.renderInput} placeholder={this.props.customer.mobileNo} type="text" />
+                            </div>
+                            <div className="four wide field">
+                                <Field name="mobileNo2" component={this.renderInput} placeholder={this.props.customer.mobileNo} type="text" />
                             </div>
                             <div className="four wide field">
                                 <Field name="fax" component={this.renderInput} placeholder={this.props.customer.fax} type="text" />

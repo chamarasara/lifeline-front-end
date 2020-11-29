@@ -10,26 +10,27 @@ class CustomerList extends React.Component {
     renderList() {
         return this.props.customers.map(customer => {
             return (
-                <tr key={ customer._id }>
+                <tr key={customer._id}>
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
                                 {customer.customerName}
                                 <div className="sub header">{customer.companyName}
-                                    </div>
+                                </div>
                             </div>
                         </h4></td>
                     <td>
-                        {customer.mobileNo}
-                                </td>
+                        {customer.mobileNo2}
+                    </td>
+                    <td>
+                        {customer.mobileNo2}
+                    </td>
                     <td>
                         {customer.fax}
-                                </td>
+                    </td>
                     <td>
                         {customer.email}
-                                </td>
-                    <td>{customer.registerNo}
-                                </td>
+                    </td>                   
                     <td>
                         <Link to={`/customer-profile/${customer._id}`} className="ui blue button">View</Link>
                     </td>
@@ -45,10 +46,10 @@ class CustomerList extends React.Component {
                     <table className="ui very basic collapsing celled table">
                         <thead>
                             <tr><th>Customer Name</th>
-                                <th>Contact Number</th>
+                                <th>Contact Number 1</th>
+                                <th>Contact Number 2</th>
                                 <th>Fax</th>
-                                <th>Email</th>
-                                <th>Registration Number</th>
+                                <th>Email</th>                                
                             </tr></thead>
                         <tbody>
                             {this.renderList()}

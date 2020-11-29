@@ -65,7 +65,10 @@ class EditSupplier extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="four wide field">
-                                <Field name="mobileNo" component={this.renderInput} placeholder={this.props.supplier.mobileNo} type="text" />
+                                <Field name="mobileNo1" component={this.renderInput} placeholder={this.props.supplier.mobileNo1} type="text" />
+                            </div>
+                            <div className="four wide field">
+                                <Field name="mobileNo2" component={this.renderInput} placeholder={this.props.supplier.mobileNo2} type="text" />
                             </div>
                             <div className="four wide field">
                                 <Field name="fax" component={this.renderInput} placeholder={this.props.supplier.fax} type="text" />

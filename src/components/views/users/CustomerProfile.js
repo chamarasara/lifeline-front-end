@@ -31,8 +31,8 @@ class CustomerProfile extends React.Component {
                                     {this.props.customer.customerName}
                                 </div>
                                 <div className="item">
-                                    <div className="ui horizontal label">Contact Number</div>
-                                    {this.props.customer.mobileNo}
+                                    <div className="ui horizontal label">Contact Numbers</div>
+                                    {this.props.customer.mobileNo1} / {this.props.customer.mobileNo2}
                                 </div>
                                 <div className="item">
                                     <div className="ui horizontal label">Registration Number</div>
