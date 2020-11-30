@@ -33,7 +33,7 @@ class NewInvoice extends React.Component {
     renderCustomers() {
         return this.props.customers.map(customer => {
             return (
-                <option key={customer._id} value={customer.id}>{customer.customerName}</option>
+                <option key={customer._id} value={customer.id}>{customer.companyName}</option>
             )
         })
     }

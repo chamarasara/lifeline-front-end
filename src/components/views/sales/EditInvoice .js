@@ -136,6 +136,54 @@ class EditInvoice extends React.Component {
         )
 
     }
+    renderCashPaymentsFields = ({ fields }) => {
+        return (
+            <div>
+                <ul>
+                    {fields.map((cashPayments, index) => <li key={index}>
+                        <label htmlFor={cashPayments}>Cash Payment #{index + 1}</label>
+                        <div className="fields">
+                            <div className="five wide field">
+                                <Field name={`${cashPayments}.cashAmount`} type="number" required component="input" placeholder="Cash Amount" >
+                                </Field>
+                            </div>
+                        </div>
+                    </li>)}
+                </ul>
+                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Cash Payment</button>
+            </div>
+        )
+    }
+    renderChequePaymentsFields = ({ fields }) => {
+        return (
+            <div>
+                <ul>
+                    {fields.map((chequePayments, index) => <li key={index}>
+                        <label htmlFor={chequePayments}>Cheque Payment #{index + 1}</label>
+                        <div className="fields">
+                            <div className="six wide field">
+                                <Field name={`${chequePayments}.chequeAmount`} type="number" required component="input" placeholder="Cheque Amount" >
+                                </Field>
+                            </div>
+                            <div className="six wide field">
+                                <Field name={`${chequePayments}.chequeNumber`} type="text" required component="input" placeholder="Cheque Number" >
+                                </Field>
+                            </div>
+                            <div className="six wide field">
+                                <Field name={`${chequePayments}.bankName`} type="text" required component="input" placeholder="Bank Name" >
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                <Field name={`${chequePayments}.chequeDate`} type="date" required component="input" placeholder="Cheque Date" >
+                                </Field>
+                            </div>
+                        </div>
+                    </li>)}
+                </ul>
+                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Cheque Payment</button>
+            </div>
+        )
+    }
     renderPaymentsFields = ({ fields }) => {
         return (
             <div>
@@ -143,25 +191,11 @@ class EditInvoice extends React.Component {
                     {fields.map((payments, index) => <li key={index}>
                         <label htmlFor={payments}>Payment #{index + 1}</label>
                         <div className="fields">
-                            <div className="four wide field">
-                                <Field name={`${payments}.cashAmount`} type="number" required component="input" placeholder="Cash Amount" >
-                                </Field>
+                            <div className="eight wide field">                               
+                                <FieldArray name={`${payments}.cashPayments`} component={this.renderCashPaymentsFields} />
                             </div>
-                            <div className="five wide field">
-                                <Field name={`${payments}.chequeAmount`} type="number" required component="input" placeholder="Cheque Amount" >
-                                </Field>
-                            </div>
-                            <div className="six wide field">
-                                <Field name={`${payments}.chequeNumber`} type="text" required component="input" placeholder="Cheque Number" >
-                                </Field>
-                            </div>
-                            <div className="six wide field">
-                                <Field name={`${payments}.bankName`} type="text" required component="input" placeholder="Bank Name" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${payments}.chequeDate`} type="date" required component="input" placeholder="Cheque Date" >
-                                </Field>
+                            <div className="ten wide field">                               
+                                <FieldArray name={`${payments}.chequePayments`} component={this.renderChequePaymentsFields} />
                             </div>
                         </div>
                     </li>)}
@@ -170,13 +204,17 @@ class EditInvoice extends React.Component {
             </div>
         )
     }
+    onSubmit = (formValues) => {
+        console.log(formValues)
+         this.props.editInvoice(this.props.invoice._id, formValues)
+    }
     renderPaymentsForm = () => {
         return (
             <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <div className="fields">
                     <div className="sixteen wide field">
                         <label>Pay- </label>
-                        <FieldArray name="payments" component={this.renderPaymentsFields} />
+                        <FieldArray name="paymentsAll" component={this.renderPaymentsFields} />
                     </div>
                 </div>
                 <div className="field">
@@ -190,7 +228,7 @@ class EditInvoice extends React.Component {
         return (
             <div>
                 <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
-                <p><b>Total Value:</b> {this.getTotalAmount()}</p>                
+                <p><b>Total Value:</b> {this.getTotalAmount()}</p>
                 {this.renderPaymentsForm()}
             </div>
         )
@@ -211,7 +249,7 @@ class EditInvoice extends React.Component {
     //             const total = parseInt(data.cashAmount) + parseInt(data.chequeAmount)
     //             return total
     //         })
-            
+
     //         const total1 = paid.reduce((a, b) => (a + b))
     //         return total1
     //     }
@@ -219,9 +257,7 @@ class EditInvoice extends React.Component {
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
     }
-    onSubmit = (formValues) => {
-        this.props.editInvoice(this.props.invoice._id, formValues)
-    }
+   
     render() {
         if (!this.props.invoice) {
             return (
