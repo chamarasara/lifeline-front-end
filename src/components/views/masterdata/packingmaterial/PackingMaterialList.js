@@ -27,13 +27,10 @@ class PackingMaterialList extends React.Component {
                     <td>
                         {material.baseUnitMeasure}
                     </td>
-                    <td>
-                        {material.division}
-                    </td>
                     <td>{material.materialState}
                     </td>
                     <td>
-                        <Link to={`/single-packing-material/${material._id}`} className="ui blue button">View</Link>
+                        <Link to={`/single-packing-material/${material.id}`} className="ui blue button">View</Link>
                     </td>
                 </tr>
             )
@@ -50,7 +47,6 @@ class PackingMaterialList extends React.Component {
                                 <th>Material Name</th>
                                 <th>Material Group</th>
                                 <th>Base Unit</th>
-                                <th>Division</th>
                                 <th>Material Status</th>
                             </tr></thead>
                         <tbody>

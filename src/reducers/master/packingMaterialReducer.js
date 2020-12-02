@@ -11,11 +11,11 @@ import {
 export default (state = {}, action) => {
     switch (action.type) {
         case FETCH_PACKING_MATERIALS:
-            return { ...state, ..._.mapKeys(action.payload, '_id') };
+            return { ...state, ..._.mapKeys(action.payload, 'id') };
         case FETCH_PACKING_MATERIAL:
-            return { ...state, [action.payload._id]: action.payload };
+            return { ...state, [action.payload.id]: action.payload };
         case CREATE_PACKING_MATERIAL:
-            return { ...state, [action.payload._id]: action.payload };
+            return { ...state, [action.payload.id]: action.payload };
         case EDIT_PACKING_MATERIAL:
             return { ...state, [action.payload._id]: action.payload };
         case DELETE_PACKING_MATERIAL:

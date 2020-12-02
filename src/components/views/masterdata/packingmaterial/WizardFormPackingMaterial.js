@@ -34,38 +34,14 @@ class WizardFormPacking extends Component {
         const { page } = this.state
         return (
             <div>
-                {page === 1 && <NewPackingMaterial onSubmit={this.nextPage} />}
+                {page === 1 && <NewPackingMaterial onSubmit={this.nextPage} />}                
                 {page === 2 && (
-                    <PackingMaterialMrpOne
-                        previousPage={this.previousPage}
-                        onSubmit={this.nextPage}
-                    />
-                )}
-                {page === 3 && (
-                    <PackingMaterialMrpTwo
-                        previousPage={this.previousPage}
-                        onSubmit={this.nextPage}
-                    />
-                )}
-                {page === 4 && (
-                    <PackingMaterialMrpThree
-                        previousPage={this.previousPage}
-                        onSubmit={this.nextPage}
-                    />
-                )}
-                {page === 5 && (
-                    <PackingMaterialMrpFour
-                        previousPage={this.previousPage}
-                        onSubmit={this.nextPage}
-                    />
-                )}
-                {page === 6 && (
                     <PackingMaterialPlantDataOne
                         previousPage={this.previousPage}
                         onSubmit={this.nextPage}
                     />
                 )}
-                {page === 7 && (
+                {page === 3 && (
                     <PackingMaterialPlantDataTwo
                         previousPage={this.previousPage}
                         onSubmit={this.onSubmit}

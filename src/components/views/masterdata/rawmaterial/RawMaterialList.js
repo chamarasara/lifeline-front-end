@@ -10,7 +10,7 @@ class RawMaterialList extends React.Component {
 
     renderList() {   
         return this.props.material.map(material => {
-            console.log(material._id)
+            console.log(material.id)
             return (
                 <tr key={material._id}>
                     <td>
@@ -27,14 +27,11 @@ class RawMaterialList extends React.Component {
                     </td>
                     <td>
                         {material.baseUnitMeasure}
-                    </td>
-                    <td>
-                        {material.division}
-                    </td>
+                    </td>                   
                     <td>{material.materialState}
                     </td>
                     <td>
-                        <Link to={`/single-raw-material/${material._id}`} className="ui blue button">View</Link>
+                        <Link to={`/single-raw-material/${material.id}`} className="ui blue button">View</Link>
                     </td>
                 </tr>
             )
@@ -51,7 +48,6 @@ class RawMaterialList extends React.Component {
                                 <th>Material Name</th>
                                 <th>Material Group</th>
                                 <th>Base Unit</th>
-                                <th>Division</th>
                                 <th>Material Status</th>
                             </tr></thead>
                         <tbody>
@@ -66,7 +62,7 @@ class RawMaterialList extends React.Component {
 const mapToSatate = (state) => {
     console.log(state)
     const material = Object.values(state.rawMaterials)
-    console.log(material)
+    console.log(material.id)
     return { material: material };
 }
 export default connect(mapToSatate, { fetchRawMaterials })(RawMaterialList);

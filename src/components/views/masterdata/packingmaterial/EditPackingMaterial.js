@@ -11,7 +11,7 @@ class EditPackingMaterial extends React.Component {
         this.props.fetchSuppliers()
         this.props.fetchPackingMaterial(this.props.match.params.id)
 
-    }   
+    }
 
     renderError({ error, touched }) {
         if (touched && error) {
@@ -27,7 +27,7 @@ class EditPackingMaterial extends React.Component {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder}  type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
             </div>
         );
     }
@@ -35,7 +35,7 @@ class EditPackingMaterial extends React.Component {
     renderSuppliers() {
         return this.props.supplier.map(supplier => {
             return (
-                <option key={supplier.id} value={supplier.id}>{supplier.supplierName}</option>
+                <option key={supplier.id} value={supplier.id}>{supplier.companyName}</option>
             )
         })
     }
@@ -47,7 +47,7 @@ class EditPackingMaterial extends React.Component {
                         <label htmlFor={suppliers}>Supplier #{index + 1}</label>
                         <div className="fields">
                             <div className="eight wide field">
-                                <Field name={suppliers} type="text" component="select" >
+                                <Field name={`${suppliers}.id`} type="text" component="select" >
                                     <option>-Select Supplier-</option>
                                     {this.renderSuppliers()}
                                 </Field>
@@ -64,9 +64,9 @@ class EditPackingMaterial extends React.Component {
         )
     }
     onSubmit = (formValues) => {
-        this.props.editPackingMaterial(this.props.match.params.id, formValues)
+        this.props.editPackingMaterial(this.props.material._id, formValues)
         console.log(formValues)
-    }  
+    }
     render() {
         if (!this.props.material) {
             return (
@@ -85,28 +85,40 @@ class EditPackingMaterial extends React.Component {
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="eight wide field">
-                                <Field name="materialName" component={this.renderInput} placeholder={this.props.material.materialName} type="text" />
+                                Material Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="materialName" component={this.renderInput} placeholder="Material Name" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="materialCode" component={this.renderInput} placeholder={this.props.material.materialCode} type="text" />
+                                Material Code<span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="materialCode" component={this.renderInput} placeholder="Material Code" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="materialGroup" component={this.renderInput} placeholder={this.props.material.materialGroup} type="text" />
+                                Material Group <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="materialGroup" component={this.renderInput} placeholder="Material Group" type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
-                                <Field name="baseUnitMeasure" component={this.renderInput} placeholder={this.props.material.baseUnitMeasure} type="text" />
+                                Base Unit of Measure<span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="baseUnitMeasure" required component="select" placeholder="" type="text" >
+                                    <option>-Unit of Measure-</option>
+                                    <option value="Each">Each</option>
+                                    <option value="kg">kg</option>
+                                    <option value="l">l</option>
+                                    <option value="m">m</option>
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="cm">cm</option>
+                                </Field>
                             </div>
                             <div className="five wide field">
+                                Old Material Number
                                 <Field name="oldMaterialNumber" component={this.renderInput} placeholder={this.props.material.oldMaterialNumber} type="text" />
-                            </div>
-                            <div className="seven wide field">
-                                <Field name="division" component={this.renderInput} placeholder={this.props.material.division} type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Material Status<span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialState" component="select" type="text" >
                                     <option>-Select Material Status-</option>
                                     <option value="enabled">Enabled</option>
@@ -114,7 +126,12 @@ class EditPackingMaterial extends React.Component {
                                 </Field>
                             </div>
                         </div>
-
+                        <div className="fields">
+                            <div className="four wide field">
+                                Material Description
+                                <Field name="materialDescription" component="textarea" placeholder="Material Description(Optional)" type="text" />
+                            </div>
+                        </div>
                         <div className="fields">
                             <div className="five wide field">
                                 <label>Suppliers- </label>
@@ -122,7 +139,7 @@ class EditPackingMaterial extends React.Component {
                             </div>
                         </div>
                         <div className="field">
-                            <Link to={`/single-packing-material/${this.props.material._id}`} className="ui button">Back</Link>
+                            <Link to={`/single-packing-material/${this.props.material.id}`} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>

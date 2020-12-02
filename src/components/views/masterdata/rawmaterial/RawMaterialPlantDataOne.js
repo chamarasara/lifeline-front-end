@@ -11,11 +11,41 @@ class RawMaterialPlantDataOne extends React.Component {
             <div className="field">
                 <label>{label}</label>
                 <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
+                {this.renderError(meta)}
             </div>
         );
     }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+                {this.renderError(meta)}
+            </div>
+        </div>
+    )
+    renderError({ error, touched }) {
+        if (touched && error) {
+            return (
+                <div className="ui error message">
+                    <div className="Header">{error}</div>
+                </div>
+            );
+        }
+    }
+    errorMessage() {
+        if (this.props.errorMessage) {
+            console.log(this.props)
+            return (
+                <div className="ui error message">
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
+    }
 
-   
     render() {
         const { handleSubmit, previousPage } = this.props
         return (
@@ -26,37 +56,49 @@ class RawMaterialPlantDataOne extends React.Component {
                         <h4>General Data</h4>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="plantDataOne.generalData.baseUnitPlant" component={this.renderInput} placeholder="Base Unit of Measure" type="text" />
+                                <Field name="plantDataOne.generalData.unitOfIssue" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Unit of Issue-</option>
+                                    <option value="Each">Each</option>
+                                    <option value="kg">kg</option>
+                                    <option value="l">l</option>
+                                    <option value="m">m</option>
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="cm">cm</option>
+                                </Field>
                             </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.unitOfIssue" component={this.renderInput} placeholder="Unit of Issue" type="text" />
+                            <div className="four wide field">
+                                <Field name="plantDataOne.generalData.tempConditions" component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Temp Condition-</option>
+                                    <option value="Room Temp">Room Temp</option>
+                                    <option value="Cold Room (-5">Cold Room (-5)</option>
+                                    <option value="Refrigrator (+5)">Refrigrator (+5)</option>
+                                </Field>
                             </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.tempConditions" component={this.renderInput} placeholder="Temp. Conditions" type="text" />
+                            <div className="four wide field">
+                                <Field name="plantDataOne.generalData.storageConditions" component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Storage Condition-</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Ventilagetd Env">Ventilagetd Env</option>
+                                    <option value="Controlled Env">Controlled Env</option>
+                                </Field>
                             </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.storageConditions" component={this.renderInput} placeholder="Storage Conditions" type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.containerRequirements" component={this.renderInput} placeholder="Container Requirements" type="text" />
+                            <div className="four wide field">
+                                <Field name="plantDataOne.generalData.containerRequirements" component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Container Requirements-</option>
+                                    <option value="Stainless Steel">Stainless Steel</option>
+                                    <option value="Mild Steel">Mild Steel</option>
+                                    <option value="HDPE">HDPE</option>
+                                    <option value="Wood">Wood</option>
+                                    <option value="No Specific">No Specific</option>
+                                    <option value="Other">Other</option>
+                                </Field>
                             </div>
                         </div>
                         <div className="fields">
                             <div className="three wide field">
                                 <Field name="plantDataOne.generalData.hazMaterialNumber" component={this.renderInput} placeholder="Haz. Material Number" type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.ccPhysInvInd" component={this.renderInput} placeholder="CC Phys.Inv.Ind" type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.grSlips" component={this.renderInput} placeholder="Number of GR Slips" type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.labelType" component={this.renderInput} placeholder="Label Type" type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.labelFrom" component={this.renderInput} placeholder="Label From" type="text" />
-                            </div>
+                            </div>                            
                         </div>
                         <h4>Shelf Life Data</h4>
                         <div className="fields">
@@ -64,7 +106,11 @@ class RawMaterialPlantDataOne extends React.Component {
                                 <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder="Max Storage Period" type="text" />
                             </div>
                             <div className="two wide field">
-                                <Field name="plantDataOne.shelfLifeData.timeUnit" component={this.renderInput} placeholder="Time Unit" type="text" />
+                                <Field name="plantDataOne.shelfLifeData.timeUnit" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Time-Unit-</option>
+                                    <option value="days">Days</option>
+                                    <option value="months">Months</option>
+                                </Field>
                             </div>
                             <div className="three wide field">
                                 <Field name="plantDataOne.shelfLifeData.minRemainigShelfLife" component={this.renderInput} placeholder="Min Remaining Shelf Life" type="text" />
@@ -91,6 +137,23 @@ class RawMaterialPlantDataOne extends React.Component {
         )
     }
 }
+//Form input validation
+const validate = (formValues) => {
+    const errors = {}
+    console.log(!formValues.plantDataOne)
+    if (!formValues.plantDataOne) {
+        errors.plantDataOne = {
+            generalData: {
+                unitOfIssue: "Required", tempConditions: "Required", storageConditions: "Required",
+                containerRequirements: "Required", ccPhysInvInd: "Required", grSlips: "Required", labelType: "Required", labelFrom: "Required"
+            }
+        };
+    }
+    // if (!formValues.plantDataOne) {
+    //     errors.plantDataOne = { weight: { grossWeight: "Required", weightUnit: "Required", netWeight: "Required", volume: "Required", volumeUnit: "Required", dimensions: "Required" } };
+    // }
+    return errors;
+}
 const mapStateToProps = (state) => {
     //console.log(state)
     return { state: state };
@@ -98,6 +161,7 @@ const mapStateToProps = (state) => {
 const formWrapped = reduxForm({
     form: 'newRawMaterial',
     destroyOnUnmount: false,
-    forceUnregisterOnUnmount: true
+    forceUnregisterOnUnmount: true,
+    validate: validate
 })(RawMaterialPlantDataOne);
 export default connect(mapStateToProps, { createRawMaterial })(formWrapped);

@@ -13,12 +13,22 @@ class RawMaterialPlantDataTwo extends React.Component {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder} required type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
             </div>
         );
-    }    
+    }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+            </div>
+        </div>
+    )
     onSubmit = (formValues) => {
-        this.props.editRawMaterial(this.props.match.params.id, formValues)
+        this.props.editRawMaterial(this.props.material._id, formValues)
     }
     render() {
         if (!this.props.material) {
@@ -38,50 +48,74 @@ class RawMaterialPlantDataTwo extends React.Component {
                         <h4>Weight/Volume</h4>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="plantDataTwo.weight.grossWeight" component={this.renderInput} placeholder={this.props.material.plantDataTwo.weight.grossWeight} type="number" />
+                                <Field name="plantDataTwo.weight.containerType" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Container Type-</option>
+                                    <option value="Bag">Bag</option>
+                                    <option value="Bottle">Bottle</option>
+                                    <option value="Can">Can</option>
+                                    <option value="Drum">Drum</option>
+                                    <option value="Big Bag">Big Bag</option>
+                                    <option value="Box">Box</option>
+                                </Field>
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataTwo.weight.weightUnit" component={this.renderInput} placeholder={this.props.material.plantDataTwo.weight.weightUnit} type="text" />
+                                <Field name="plantDataTwo.weight.unitsPerPallet" component={this.renderInput} placeholder="Units per Pallet" type="number" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataTwo.weight.netWeight" component={this.renderInput} placeholder={this.props.material.plantDataTwo.weight.netWeight} type="number" />
+                                <Field name="plantDataTwo.weight.grossWeightPerUnit" component={this.renderInput} placeholder="Gross Weight per Unit" type="number" />
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataTwo.weight.volume" component={this.renderInput} placeholder={this.props.material.plantDataTwo.weight.volume} type="number" />
+                                <Field name="plantDataTwo.weight.weightUnit" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Weight Unit-</option>
+                                    <option value="mg">mg</option>
+                                    <option value="g">g</option>
+                                    <option value="kg">kg</option>
+                                    <option value="MT">MT</option>
+                                </Field>
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataTwo.weight.volumeUnit" component={this.renderInput} placeholder={this.props.material.plantDataTwo.weight.volumeUnit} type="text" />
+                                <Field name="plantDataTwo.weight.netWeight" component={this.renderInput} placeholder="Net Weight" type="number" />
                             </div>
                         </div>
                         <div className="fields">
-                            <div className="four wide field">
-                                <Field name="plantDataTwo.weight.dimensions" component={this.renderInput} placeholder={this.props.material.plantDataTwo.weight.dimensions} type="text" />
+                            <div className="three wide field">
+                                <Field name="plantDataTwo.weight.volume" component={this.renderInput} placeholder="volume" type="number" />
+                            </div>
+                            <div className="three wide field">
+                                <Field name="plantDataTwo.weight.volumeUnit" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Volume Unit-</option>
+                                    <option value="cm3">cm3</option>
+                                    <option value="m3">m3</option>
+                                    <option value="ft3">ft3</option>
+                                </Field>
                             </div>
                         </div>
-                        <h4>General Plant Parameters</h4>
+                        <h4>Dimensions  </h4>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="plantDataTwo.generalParameters.seriolNumberProfile" component={this.renderInput} placeholder={this.props.material.plantDataTwo.generalParameters.seriolNumberProfile} type="text" />
-                            </div>
-                            <div className="two wide field">
-                                <Field name="plantDataTwo.generalParameters.profitCenter" component={this.renderInput} placeholder={this.props.material.plantDataTwo.generalParameters.profitCenter} type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataTwo.generalParameters.logHandlingGroup" component={this.renderInput} placeholder={this.props.material.plantDataTwo.generalParameters.logHandlingGroup} type="text" />
-                            </div>
-                            <div className="two wide field">
-                                <Field name="plantDataTwo.generalParameters.distributorProfile" component={this.renderInput} placeholder={this.props.material.plantDataTwo.generalParameters.distributorProfile} type="text" />
+                                <Field name="plantDataTwo.weight.dimensionsUnit" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Dimension Unit-</option>
+                                    <option value="mm">mm</option>
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                </Field>
                             </div>
                             <div className="three wide field">
-                                <Field name="plantDataTwo.generalParameters.stockDetermGroup" component={this.renderInput} placeholder={this.props.material.plantDataTwo.generalParameters.stockDetermGroup} type="text" />
+                                <Field name="plantDataTwo.weight.dimensionsL" required component={this.renderInput} placeholder="Length" type="number" >
+                                </Field>
                             </div>
-                            <div className="two wide field">
-                                <Field name="plantDataTwo.generalParameters.serLevel" component={this.renderInput} placeholder={this.props.material.plantDataTwo.generalParameters.serLevel} type="text" />
+                            <div className="three wide field">
+                                <Field name="plantDataTwo.weight.dimensionsW" required component={this.renderInput} placeholder="Width" type="number" >
+                                </Field>
                             </div>
-                        </div>
+                            <div className="three wide field">
+                                <Field name="plantDataTwo.weight.dimensionsH" required component={this.renderInput} placeholder="Height" type="number" >
+                                </Field>
+                            </div>
+                        </div>                            
                         <div className="field">
-                            <Link to={`/single-raw-material/${this.props.material._id}`} className="ui button">Back</Link>
-                            <button type="submit"  className="ui primary button">Submit</button>
+                            <Link to={`/single-raw-material/${this.props.material.id}`} className="ui button">Back</Link>
+                            <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>
                 </div>

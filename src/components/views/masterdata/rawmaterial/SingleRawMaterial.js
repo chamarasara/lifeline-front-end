@@ -5,6 +5,7 @@ import { fetchRawMaterial } from "../../../../actions";
 
 class SingleRawMaterial extends React.Component {
     componentDidMount() {
+        console.log(this.props.match.params.id)
         this.props.fetchRawMaterial(this.props.match.params.id)
     }
     renderMrpOne() {
@@ -87,7 +88,7 @@ class SingleRawMaterial extends React.Component {
                     <tfoot className="full-width">
                         <tr>
                             <th colSpan="25">
-                                <Link to={`/edit-raw-material-mrp-one/${this.props.material._id}`} className="ui small primary button">
+                                <Link to={`/edit-raw-material-mrp-one/${this.props.material.id}`} className="ui small primary button">
                                     Edit
                                     </Link>
                             </th>
@@ -187,7 +188,7 @@ class SingleRawMaterial extends React.Component {
                     <tfoot className="full-width">
                         <tr>
                             <th colSpan="25">
-                                <Link to={`/edit-raw-material-mrp-two/${this.props.material._id}`} className="ui small primary button">
+                                <Link to={`/edit-raw-material-mrp-two/${this.props.material.id}`} className="ui small primary button">
                                     Edit
                                     </Link>
                             </th>
@@ -246,7 +247,7 @@ class SingleRawMaterial extends React.Component {
                     <tfoot className="full-width">
                         <tr>
                             <th colSpan="25">
-                                <Link to={`/edit-raw-material-mrp-three/${this.props.material._id}`} className="ui small primary button">
+                                <Link to={`/edit-raw-material-mrp-three/${this.props.material.id}`} className="ui small primary button">
                                     Edit
                                     </Link>
                             </th>
@@ -305,7 +306,7 @@ class SingleRawMaterial extends React.Component {
                     <tfoot className="full-width">
                         <tr>
                             <th colSpan="25">
-                                <Link to={`/edit-raw-material-mrp-four/${this.props.material._id}`} className="ui small primary button">
+                                <Link to={`/edit-raw-material-mrp-four/${this.props.material.id}`} className="ui small primary button">
                                     Edit
                                     </Link>
                             </th>
@@ -329,30 +330,20 @@ class SingleRawMaterial extends React.Component {
                             <th colSpan="10" style={{ color: "blue" }}>General Data</th>
                         </tr>
                         <tr>
-                            <th colSpan="1">Base Unit </th>
-                            <th colSpan="1">Unit of Issue</th>
-                            <th colSpan="1">Temp Conditions</th>
-                            <th colSpan="1">Storage Conditions</th>
-                            <th colSpan="1">Container Requirements</th>
-                            <th colSpan="1">Haz Material Number</th>
-                            <th colSpan="1">CC Phys Inv Ind</th>
-                            <th colSpan="1">GR Slips</th>
-                            <th colSpan="1">Label Type</th>
-                            <th colSpan="1">Label From</th>
+                            <th colSpan="2">Unit of Issue</th>
+                            <th colSpan="2">Temp Conditions</th>
+                            <th colSpan="2">Storage Conditions</th>
+                            <th colSpan="2">Container Requirements</th>
+                            <th colSpan="2">Haz Material Number</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colSpan="1">{plantDataOne.generalData.baseUnitPlant}</td>
-                            <td colSpan="1">{plantDataOne.generalData.unitOfIssue}</td>
-                            <td colSpan="1">{plantDataOne.generalData.tempConditions}</td>
-                            <td colSpan="1">{plantDataOne.generalData.storageConditions}</td>
-                            <td colSpan="1">{plantDataOne.generalData.containerRequirements}</td>
-                            <td colSpan="1">{plantDataOne.generalData.hazMaterialNumber}</td>
-                            <td colSpan="1">{plantDataOne.generalData.ccPhysInvInd}</td>
-                            <td colSpan="1">{plantDataOne.generalData.grSlips}</td>
-                            <td colSpan="1">{plantDataOne.generalData.labelType}</td>
-                            <td colSpan="1">{plantDataOne.generalData.labelFrom}</td>
+                            <td colSpan="2">{plantDataOne.generalData.unitOfIssue}</td>
+                            <td colSpan="2">{plantDataOne.generalData.tempConditions}</td>
+                            <td colSpan="2">{plantDataOne.generalData.storageConditions}</td>
+                            <td colSpan="2">{plantDataOne.generalData.containerRequirements}</td>
+                            <td colSpan="2">{plantDataOne.generalData.hazMaterialNumber}</td>
                         </tr>
                     </tbody>
                     <thead className="full-width">
@@ -381,7 +372,7 @@ class SingleRawMaterial extends React.Component {
                     <tfoot className="full-width">
                         <tr>
                             <th colSpan="25">
-                                <Link to={`/edit-raw-material-plant-one/${this.props.material._id}`} className="ui small primary button">
+                                <Link to={`/edit-raw-material-plant-one/${this.props.material.id}`} className="ui small primary button">
                                     Edit
                                     </Link>
                             </th>
@@ -399,57 +390,56 @@ class SingleRawMaterial extends React.Component {
                 <table className="ui celled small padded compact structured table">
                     <thead className="full-width">
                         <tr>
-                            <th colSpan="6" style={{ color: "red" }}><h4>Plant Data Two</h4></th>
+                            <th colSpan="8" style={{ color: "red" }}><h4>Plant Data Two</h4></th>
                         </tr>
                         <tr>
-                            <th colSpan="6" style={{ color: "blue" }}>Weight</th>
+                            <th colSpan="8" style={{ color: "blue" }}>Weight</th>
                         </tr>
                         <tr>
-                            <th colSpan="1">Gross Weight</th>
+                            <th colSpan="2">Container Type</th>
+                            <th colSpan="1">Units Per Pallet</th>
+                            <th colSpan="1">Gross Weight Per Unit</th>
                             <th colSpan="1">Weight Unit</th>
                             <th colSpan="1">Net Weight</th>
                             <th colSpan="1">Volume</th>
                             <th colSpan="1">Volume Unit</th>
-                            <th colSpan="1">Dimensions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colSpan="1">{plantDataTwo.weight.grossWeight}</td>
+                            <td colSpan="2">{plantDataTwo.weight.containerType}</td>
+                            <td colSpan="1">{plantDataTwo.weight.unitsPerPallet}</td>
+                            <td colSpan="1">{plantDataTwo.weight.grossWeightPerUnit}</td>
                             <td colSpan="1">{plantDataTwo.weight.weightUnit}</td>
                             <td colSpan="1">{plantDataTwo.weight.netWeight}</td>
                             <td colSpan="1">{plantDataTwo.weight.volume}</td>
                             <td colSpan="1">{plantDataTwo.weight.volumeUnit}</td>
-                            <td colSpan="1">{plantDataTwo.weight.dimensions}</td>
                         </tr>
                     </tbody>
-                    <thead className="full-width">
+                    <thead className="full-width">                        
                         <tr>
-                            <th colSpan="6" style={{ color: "blue" }}>General Parameters</th>
+                            <th colSpan="8" style={{ color: "blue" }}>Dimensions</th>
                         </tr>
                         <tr>
-                            <th colSpan="1">Serial Number Profile</th>
-                            <th colSpan="1">Profit Center</th>
-                            <th colSpan="1">Log Handeling Group</th>
-                            <th colSpan="1">Distributor Profile</th>
-                            <th colSpan="1">Stock Determ Group</th>
-                            <th colSpan="1">Serv Level</th>
+                            <th colSpan="2">Dimensions Unit</th>
+                            <th colSpan="2">Length</th>
+                            <th colSpan="2">Width</th>
+                            <th colSpan="2">Height</th>                            
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colSpan="1">{plantDataTwo.generalParameters.seriolNumberProfile}</td>
-                            <td colSpan="1">{plantDataTwo.generalParameters.profitCenter}</td>
-                            <td colSpan="1">{plantDataTwo.generalParameters.logHandlingGroup}</td>
-                            <td colSpan="1">{plantDataTwo.generalParameters.distributorProfile}</td>
-                            <td colSpan="1">{plantDataTwo.generalParameters.stockDetermGroup}</td>
-                            <td colSpan="1">{plantDataTwo.generalParameters.serLevel}</td>
+                            <td colSpan="2">{plantDataTwo.weight.dimensionsUnit}</td>
+                            <td colSpan="2">{plantDataTwo.weight.dimensionsL}</td>
+                            <td colSpan="2">{plantDataTwo.weight.dimensionsW}</td>
+                            <td colSpan="2">{plantDataTwo.weight.dimensionsH}</td>                            
                         </tr>
                     </tbody>
+                    
                     <tfoot className="full-width">
                         <tr>
                             <th colSpan="25">
-                                <Link to={`/edit-raw-material-plant-two/${this.props.material._id}`} className="ui small primary button">
+                                <Link to={`/edit-raw-material-plant-two/${this.props.material.id}`} className="ui small primary button">
                                     Edit
                                     </Link>
                             </th>
@@ -461,7 +451,7 @@ class SingleRawMaterial extends React.Component {
     }
     renderSupplierList() {
         if (!this.props.material.suppliersList) {
-            return(
+            return (
                 <div>Suppliers are loading...</div>
             )
         }
@@ -505,7 +495,7 @@ class SingleRawMaterial extends React.Component {
                             <Link to={"/raw-material"} className="ui small button">
                                 Back
                         </Link>
-                            <Link to={`/delete-raw-material/${this.props.material._id}`} className="ui small red button">
+                            <Link to={`/delete-raw-material/${this.props.material.id}`} className="ui small red button">
                                 Delete
                         </Link>
                             <table className="ui celled structured table">
@@ -514,22 +504,20 @@ class SingleRawMaterial extends React.Component {
                                         <th colSpan="12" style={{ color: "red" }}><h4>Basic Details</h4></th>
                                     </tr>
                                     <tr>
-                                        <th >Material Code</th>
-                                        <th >Material Name</th>
-                                        <th >Material Group</th>
-                                        <th >Base Unit</th>
-                                        <th >Division</th>
-                                        <th >Material State</th>
+                                        <th colSpan="2">Material Code</th>
+                                        <th colSpan="3">Material Name</th>
+                                        <th colSpan="3">Material Group</th>
+                                        <th colSpan="2">Base Unit</th>
+                                        <th colSpan="2">Material State</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td >{this.props.material.materialCode}</td>
-                                        <td >{this.props.material.materialName}</td>
-                                        <td >{this.props.material.materialGroup}</td>
-                                        <td >{this.props.material.baseUnitMeasure}</td>
-                                        <td >{this.props.material.division}</td>
-                                        <td >{this.props.material.materialState}</td>
+                                        <td colSpan="2">{this.props.material.materialCode}</td>
+                                        <td colSpan="3">{this.props.material.materialName}</td>
+                                        <td colSpan="3">{this.props.material.materialGroup}</td>
+                                        <td colSpan="2">{this.props.material.baseUnitMeasure}</td>
+                                        <td colSpan="2">{this.props.material.materialState}</td>
                                     </tr>
                                 </tbody>
                                 <thead className="full-width">
@@ -537,21 +525,21 @@ class SingleRawMaterial extends React.Component {
                                         <th colSpan="12" style={{ color: "red" }}>Suppliers</th>
                                     </tr>
                                     <tr>
-                                        <th>Supplier Name</th>
-                                        <th>Company Name</th>
-                                        <th>Contact Number</th>
-                                        <th>Fax</th>
-                                        <th>Email</th>
-                                        <th>Registration Number</th>
+                                        <th colSpan="2">Supplier Name</th>
+                                        <th colSpan="2">Company Name</th>
+                                        <th colSpan="2">Contact Number</th>
+                                        <th colSpan="2">Fax</th>
+                                        <th colSpan="2">Email</th>
+                                        <th colSpan="2">Registration Number</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
+
                                 </tbody>
                                 <tfoot className="full-width">
                                     <tr>
                                         <th colSpan="12">
-                                            <Link to={`/raw-material-edit-details/${this.props.material._id}`} className="ui small primary button">
+                                            <Link to={`/raw-material-edit-details/${this.props.material.id}`} className="ui small primary button">
                                                 Edit
                                             </Link>
                                         </th>
@@ -561,26 +549,7 @@ class SingleRawMaterial extends React.Component {
                         </div>
 
                     </div>
-                    <div className="ui grid">
-                        <div className="sixteen wide column" style={{ marginTop: "0px" }}>
-                            {this.renderMrpOne()}
-                        </div>
-                    </div>
-                    <div className="ui grid">
-                        <div className="sixteen wide column" style={{ marginTop: "0px" }}>
-                            {this.renderMrpTwo()}
-                        </div>
-                    </div>
-                    <div className="ui grid">
-                        <div className="sixteen wide column" style={{ marginTop: "0px" }}>
-                            {this.renderMrpThree()}
-                        </div>
-                    </div>
-                    <div className="ui grid">
-                        <div className="sixteen wide column" style={{ marginTop: "0px" }}>
-                            {this.renderMrpFour()}
-                        </div>
-                    </div>
+
                     <div className="ui grid">
                         <div className="sixteen wide column" style={{ marginTop: "0px" }}>
                             {this.renderPlantDataOne()}

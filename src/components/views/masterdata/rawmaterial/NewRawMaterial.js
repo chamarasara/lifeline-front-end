@@ -18,16 +18,37 @@ class NewRawMaterial extends React.Component {
             );
         }
     }
+    errorMessage() {
+        if (this.props.errorMessage) {
+            console.log(this.props)
+            return (
+                <div className="ui error message">
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
+    }
 
     renderInput = ({ input, label, placeholder, type, meta, required }) => {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder} required type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder}  type={type} autoComplete="off" />
+                {this.renderError(meta)}
             </div>
         );
     }
-
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+                {this.renderError(meta)}
+            </div>
+        </div>
+    )
     renderSuppliers() {
         return this.props.supplier.map(supplier => {
             return (
@@ -35,35 +56,35 @@ class NewRawMaterial extends React.Component {
             )
         })
     }
-    renderSupplierDropDown = ({ fields }) =>{
-        return(
+    renderSupplierDropDown = ({ fields }) => {
+        return (
             <div>
                 <ul>
                     {fields.map((suppliers, index) => <li key={index}>
                         <label htmlFor={suppliers}>Supplier #{index + 1}</label>
                         <div className="fields">
-                        <div className="eight wide field">
-                                <Field name={suppliers} type="text" component="select" >
+                            <div className="eight wide field">
+                                <Field name={`${suppliers}.id`} type="text" component="select" >
                                     <option>-Select Supplier-</option>
                                     {this.renderSuppliers()}
                                 </Field>
-                        </div>
-                        <div className="eight wide field">
+                            </div>
+                            <div className="eight wide field">
                                 <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
+                            </div>
                         </div>
-                        </div>                                                
                     </li>)}
                 </ul>
-                <button className="mini ui primary button" type="button"onClick={() => fields.push()}>Add Suppliers</button>
-                
+                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Suppliers</button>
+
             </div>
         )
     }
-        
+
 
     render() {
         const { handleSubmit } = this.props
-     
+
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
@@ -79,21 +100,27 @@ class NewRawMaterial extends React.Component {
                             <div className="four wide field">
                                 <Field name="materialGroup" component={this.renderInput} placeholder="Material Group" type="text" />
                             </div>
-                        </div>                        
-                        <div className="fields">
-                            <div className="four wide field">
-                                <Field name="baseUnitMeasure" component={this.renderInput} placeholder="Base Unit Measure" type="text" />
-                            </div>
-                            <div className="five wide field">
-                                <Field name="oldMaterialNumber" component={this.renderInput} placeholder="Old Material Number" type="text" />
-                            </div>
-                            <div className="seven wide field">
-                                <Field name="division" component={this.renderInput} placeholder="Division" type="text" />
-                            </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
-                                <Field name="materialState" component="select" type="text" >
+                                <Field name="baseUnitMeasure" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-UOM-</option>
+                                    <option value="Each">Each</option>
+                                    <option value="kg">kg</option>
+                                    <option value="l">l</option>
+                                    <option value="m">m</option>
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="cm">cm</option>
+                                </Field>
+                            </div>
+                            <div className="five wide field">
+                                <Field name="oldMaterialNumber" component={this.renderInput} placeholder="Old Material Number" type="text" />
+                            </div>                            
+                        </div>
+                        <div className="fields">
+                            <div className="four wide field">
+                                <Field name="materialState" component={this.renderSelectField} type="text" >
                                     <option>-Select Material Status-</option>
                                     <option value="enabled">Enabled</option>
                                     <option value="disabled">Disabled</option>
@@ -106,7 +133,7 @@ class NewRawMaterial extends React.Component {
                             </div>
                         </div>
                         <div className="fields">
-                            <div className="five wide field">
+                            <div className="eight wide field">
                                 <label>Suppliers- </label>
                                 <FieldArray name="suppliers" component={this.renderSupplierDropDown} />
                             </div>
@@ -121,7 +148,32 @@ class NewRawMaterial extends React.Component {
         )
     }
 }
-
+//Form input validation
+const validate = (formValues) => {
+    const errors = {}
+    if (!formValues.materialName) {
+        errors.materialName = 'Required!';
+    }
+    if (!formValues.materialCode) {
+        errors.materialCode = 'Required!';
+    }
+    if (!formValues.materialGroup) {
+        errors.materialGroup = 'Required!';
+    }
+    if (!formValues.baseUnitMeasure) {
+        errors.baseUnitMeasure = 'Required!';
+    }
+    if (!formValues.email) {
+        errors.email = 'Required!';
+    }
+    if (!formValues.materialState) {
+        errors.materialState = 'Required!';
+    }
+    if (!formValues.baseUnitMeasure) {
+        errors.baseUnitMeasure = 'Required!';
+    }
+    return errors;
+}
 const mapStateToProps = (state) => {
     const supplier = Object.values(state.supplier)
     return { supplier: supplier };
@@ -129,6 +181,7 @@ const mapStateToProps = (state) => {
 const formWrapped = reduxForm({
     form: 'newRawMaterial',
     destroyOnUnmount: false, // <------ preserve form data
-    forceUnregisterOnUnmount: true
+    forceUnregisterOnUnmount: true,
+    validate: validate
 })(NewRawMaterial);
 export default connect(mapStateToProps, { fetchSuppliers })(formWrapped);

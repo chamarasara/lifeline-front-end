@@ -377,10 +377,11 @@ export const fetchRawMaterial = (id) => async dispatch => {
     };
     const response = await api.get(`/api/master-data/raw-material/single-raw-material/${id}`, header);
     console.log(response)
-    dispatch({ type: FETCH_RAW_MATERIAL, payload: response.data });
+    dispatch({ type: FETCH_RAW_MATERIAL, payload: response.data[0] });
 };
 //Edit raw material
 export const editRawMaterial = (id, formValues) => async dispatch => {
+    console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -392,7 +393,7 @@ export const editRawMaterial = (id, formValues) => async dispatch => {
     console.log(response)
     dispatch({ type: EDIT_RAW_MATERIAL, payload: response.data });
 
-    history.push(`/single-raw-material/${id}`);
+    history.push(`/single-raw-material/${formValues.id}`);
     window.location.reload()
 };
 //Delete raw material
@@ -449,7 +450,7 @@ export const fetchPackingMaterial = (id) => async dispatch => {
     };
     const response = await api.get(`/api/master-data/packing-material/single-packing-material/${id}`, header);
     console.log(response)
-    dispatch({ type: FETCH_PACKING_MATERIAL, payload: response.data });
+    dispatch({ type: FETCH_PACKING_MATERIAL, payload: response.data[0] });
 };
 //Edit packing material
 export const editPackingMaterial = (id, formValues) => async dispatch => {
@@ -463,7 +464,7 @@ export const editPackingMaterial = (id, formValues) => async dispatch => {
     const response = await api.patch(`/api/master-data/packing-material/update-packing-material/${id}`, { ...formValues }, header);
     console.log(response)
     dispatch({ type: EDIT_PACKING_MATERIAL, payload: response.data });
-    history.push(`/single-packing-material/${id}`);
+    history.push(`/single-packing-material/${formValues.id}`);
 };
 //Delete packing material
 export const deletePackingMaterial = (id) => async dispatch => {

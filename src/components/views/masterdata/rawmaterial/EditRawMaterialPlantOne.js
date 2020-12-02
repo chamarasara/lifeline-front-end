@@ -17,9 +17,19 @@ class EditRawMaterialPlantDataOne extends React.Component {
                 <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
             </div>
         );
-    }    
+    }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+            </div>
+        </div>
+    )
     onSubmit = (formValues) => {
-        this.props.editRawMaterial(this.props.match.params.id, formValues)
+        this.props.editRawMaterial(this.props.material._id, formValues)
     }
     render() {
         if (!this.props.material) {
@@ -39,61 +49,88 @@ class EditRawMaterialPlantDataOne extends React.Component {
                         <h4>General Data</h4>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="plantDataOne.generalData.baseUnitPlant" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.baseUnitPlant} type="text" />
+                                Unit of Issue
+                                <Field name="plantDataOne.generalData.unitOfIssue" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Unit of Issue-</option>
+                                    <option value="Each">Each</option>
+                                    <option value="kg">kg</option>
+                                    <option value="l">l</option>
+                                    <option value="m">m</option>
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="cm">cm</option>
+                                </Field>
                             </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.unitOfIssue" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.unitOfIssue} type="text" />
+                            <div className="four wide field">
+                                Temp Conditions
+                                <Field name="plantDataOne.generalData.tempConditions" component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Temp Condition-</option>
+                                    <option value="Room Temp">Room Temp</option>
+                                    <option value="Cold Room (-5">Cold Room (-5)</option>
+                                    <option value="Refrigator (+5)">Refrigator (+5)</option>
+                                </Field>                                
                             </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.tempConditions" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.tempConditions} type="text" />
+                            <div className="four wide field">
+                                Storage Conditions
+                                <Field name="plantDataOne.generalData.storageConditions" component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Storage Condition-</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Ventilagetd Env">Ventilagetd Env</option>
+                                    <option value="Controlled Env">Controlled Env</option>
+                                </Field>                                
                             </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.storageConditions" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.storageConditions} type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.containerRequirements" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.containerRequirements} type="text" />
+                            <div className="four wide field">
+                                Container Requirements
+                                <Field name="plantDataOne.generalData.containerRequirements" component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Container Requirements-</option>
+                                    <option value="Stainless Steel">Stainless Steel</option>
+                                    <option value="Mild Steel">Mild Steel</option>
+                                    <option value="HDPE">HDPE</option>
+                                    <option value="Wood">Wood</option>
+                                    <option value="No Specific">No Specific</option>
+                                    <option value="Other">Other</option>
+                                </Field>                               
                             </div>
                         </div>
                         <div className="fields">
                             <div className="three wide field">
+                                Haz Material Number
                                 <Field name="plantDataOne.generalData.hazMaterialNumber" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.hazMaterialNumber} type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.ccPhysInvInd" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.ccPhysInvInd} type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.grSlips" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.grSlips} type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.labelType" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.labelType} type="text" />
-                            </div>
-                            <div className="three wide field">
-                                <Field name="plantDataOne.generalData.labelFrom" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.labelFrom} type="text" />
-                            </div>
+                            </div>                            
                         </div>
                         <h4>Shelf Life Data</h4>
                         <div className="fields">
                             <div className="three wide field">
+                                Max Storage Period
                                 <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.maxStoragePeriod} type="text" />
                             </div>
                             <div className="two wide field">
-                                <Field name="plantDataOne.shelfLifeData.timeUnit" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.timeUnit} type="text" />
+                                Time Unit
+                                 <Field name="plantDataOne.shelfLifeData.timeUnit" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Time-Unit-</option>
+                                    <option value="days">Days</option>
+                                    <option value="months">Months</option>
+                                </Field>
                             </div>
                             <div className="three wide field">
+                                Min Remaining Shelf Life
                                 <Field name="plantDataOne.shelfLifeData.minRemainigShelfLife" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.minRemainigShelfLife} type="text" />
                             </div>
                             <div className="two wide field">
-                                <Field name="plantDataOne.shelfLifeData.totalShelfLife" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.totalShelfLife}type="text" />
+                                Total Shelf Life
+                                <Field name="plantDataOne.shelfLifeData.totalShelfLife" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.totalShelfLife} type="text" />
                             </div>
                             <div className="three wide field">
+                                Period for Sled
                                 <Field name="plantDataOne.shelfLifeData.periodForSled" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.periodForSled} type="text" />
                             </div>
                             <div className="two wide field">
+                                Storage Percentage
                                 <Field name="plantDataOne.shelfLifeData.storagePercentage" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.storagePercentage} type="text" />
                             </div>
                         </div>
                         <div className="field">
-                            <Link to={`/single-raw-material/${this.props.material._id}`} className="ui button">Back</Link>
+                            <Link to={`/single-raw-material/${this.props.material.id}`} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>

@@ -36,38 +36,14 @@ class WizardForm extends React.Component {
         const { page } = this.state
         return (
             <div>
-                {page === 1 && <NewRawMaterial onSubmit={this.nextPage} />}
+                {page === 1 && <NewRawMaterial onSubmit={this.nextPage} />}                
                 {page === 2 && (
-                    <RawMaterialMrpOne
-                        previousPage={this.previousPage}
-                        onSubmit={this.nextPage}
-                    />
-                )}
-                {page === 3 && (
-                    <RawMaterialMrpTwo
-                        previousPage={this.previousPage}
-                        onSubmit={this.nextPage}
-                    />
-                )}
-                {page === 4 && (
-                    <RawMaterialMrpThree
-                        previousPage={this.previousPage}
-                        onSubmit={this.nextPage}
-                    />
-                )}
-                {page === 5 && (
-                    <RawMaterialMrpFour
-                        previousPage={this.previousPage}
-                        onSubmit={this.nextPage}
-                    />
-                )}
-                {page === 6 && (
                     <RawMaterialPlantDataOne
                         previousPage={this.previousPage}
                         onSubmit={this.nextPage}
                     />
                 )}
-                {page === 7 && (
+                {page === 3 && (
                     <RawMaterialPlantDataTwo
                         previousPage={this.previousPage}
                         onSubmit={this.onSubmit}

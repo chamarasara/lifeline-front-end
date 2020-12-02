@@ -38,15 +38,25 @@ class EditRawMaterial extends React.Component {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder}  type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
             </div>
         );
     }
 
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>                
+            </div>
+        </div>
+    )
     renderSuppliers() {
         return this.props.supplier.map(supplier => {
             return (
-                <option key={supplier.id} value={supplier.id}>{supplier.supplierName}</option>
+                <option key={supplier.id} value={supplier.id}>{supplier.companyName}</option>
             )
         })
     }
@@ -75,9 +85,9 @@ class EditRawMaterial extends React.Component {
         )
     }
     onSubmit = (formValues) => {
-        this.props.editRawMaterial(this.props.match.params.id, formValues)
+        this.props.editRawMaterial(this.props.material._id, formValues)
         console.log(formValues)
-    }  
+    }
     render() {
         if (!this.props.material) {
             return (
@@ -96,28 +106,40 @@ class EditRawMaterial extends React.Component {
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="eight wide field">
+                                Material Name
                                 <Field name="materialName" component={this.renderInput} placeholder={this.props.material.materialName} type="text" />
                             </div>
                             <div className="four wide field">
+                                Material Code
                                 <Field name="materialCode" component={this.renderInput} placeholder={this.props.material.materialCode} type="text" />
                             </div>
                             <div className="four wide field">
+                                Material Group
                                 <Field name="materialGroup" component={this.renderInput} placeholder={this.props.material.materialGroup} type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
-                                <Field name="baseUnitMeasure" component={this.renderInput} placeholder={this.props.material.baseUnitMeasure} type="text" />
+                                Base Unit of Measure                                
+                                <Field name="baseUnitMeasure" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-UOM-</option>
+                                    <option value="Each">Each</option>
+                                    <option value="kg">kg</option>
+                                    <option value="l">l</option>
+                                    <option value="m">m</option>
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="cm">cm</option>
+                                </Field>
                             </div>
                             <div className="five wide field">
+                                Old Material Number
                                 <Field name="oldMaterialNumber" component={this.renderInput} placeholder={this.props.material.oldMaterialNumber} type="text" />
-                            </div>
-                            <div className="seven wide field">
-                                <Field name="division" component={this.renderInput} placeholder={this.props.material.division} type="text" />
-                            </div>
+                            </div>                            
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Material Status
                                 <Field name="materialState" component="select" type="text" >
                                     <option>-Select Material Status-</option>
                                     <option value="enabled">Enabled</option>
@@ -133,7 +155,7 @@ class EditRawMaterial extends React.Component {
                             </div>
                         </div>
                         <div className="field">
-                            <Link to={`/single-raw-material/${this.props.material._id}`} className="ui button">Back</Link>
+                            <Link to={`/single-raw-material/${this.props.material.id}`} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>
