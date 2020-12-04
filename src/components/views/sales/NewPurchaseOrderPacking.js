@@ -14,7 +14,7 @@ class NewPurchaseOrderRaw extends React.Component {
     rendeSuppliers() {
         return this.props.suppliers.map(supplier => {
             return (
-                <option key={supplier._id} value={supplier.id}>{supplier.supplierName}</option>
+                <option key={supplier._id} value={supplier.id}>{supplier.companyName}</option>
             )
         })
     }

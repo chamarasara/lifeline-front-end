@@ -739,9 +739,8 @@ export const fetchPurchaseOrderRaw = (id) => async dispatch => {
     const response = await api.get(`/api/sales/purchase-orders-raw/single-purchase-order-raw/${id}`, header);
     dispatch({ type: FETCH_PURCHASE_ORDER_RAW, payload: response.data[0] });
 };
-//Edit purchase order raw
-export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
-    console.log(formValues)
+//update purchase order raw
+export const updatePurchaseOrderRaw = (id, formValues) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -751,7 +750,24 @@ export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
-    history.push(`/purchase-order-dashboard-raw/${id}`);
+    history.push(`/approvals-raw`);
+    window.location.reload()
+
+};
+//Edit purchase order raw
+export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    console.log(id)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
+    history.push(`/approvals-single-raw/${formValues.id}`);
     window.location.reload()
     
 };

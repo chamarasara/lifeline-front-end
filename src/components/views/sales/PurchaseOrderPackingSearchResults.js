@@ -21,7 +21,7 @@ class PurchaseOrderPackingSearchResults extends React.Component {
         return this.props.orders.map(order => {
             const date = order.date;
             const date2 = moment(date).format('DD/MM/YYYY, h:mm: a')
-            if (order.order_state === "enabled") {
+            if (order.order_state === "Pending" || order.order_state === "Approved") {
                 return (
                     <tr key={order.id}>
                         <td>

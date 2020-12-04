@@ -90,6 +90,12 @@ import PurchaseOrderDashboardPacking from './views/sales/PurchaseOrderDashboardP
 import NewPurchaseOrderRaw from './views/sales/NewPurchaseOrderRaw';
 import NewPurchaseOrderPacking from './views/sales/NewPurchaseOrderPacking';
 import DeletePurchaseOrderPacking from './views/sales/DeletePurchaseOrderPacking';
+import ApprovalsDashboard from './views/approvals/ApprovalsDashboard';
+import ApprovalsRaw from './views/approvals/raw/ApprovalsRaw';
+import ApprovalsPacking from './views/approvals/ApprovalsPacking';
+import ApprovalsSingleOrderRaw from './views/approvals/raw/ApprovalsSingleOrderRaw';
+import ApprovalsEdirOrderRaw from './views/approvals/raw/ApprovalsEditOrderRaw';
+import DeclineOrderRaw from './views/approvals/raw/DeclineOrderRaw';
 
 
 
@@ -196,6 +202,12 @@ class App extends React.Component {
                     <PrivateRoute path="/single-product-master/:id" component={SingleProductMaster} />
                     <PrivateRoute path="/product-master-edit-details/:id" component={EditProductMaster} />
                     <PrivateRoute path="/delete-product-master/:id" component={DeleteProductMaster} />
+                    <PrivateRoute path="/approvals-dashboard" component={ApprovalsDashboard} />
+                    <PrivateRoute path="/approvals-raw" component={ApprovalsRaw} />
+                    <PrivateRoute path="/approvals-packing" component={ApprovalsPacking} />
+                    <PrivateRoute path="/approvals-single-raw/:id" component={ApprovalsSingleOrderRaw} />
+                    <PrivateRoute path="/approvals-edit-raw/:id" component={ApprovalsEdirOrderRaw} />
+                    <PrivateRoute path="/approvals-delete-raw/:id" component={DeclineOrderRaw} />
                 </Router>
             </div>
         ) 

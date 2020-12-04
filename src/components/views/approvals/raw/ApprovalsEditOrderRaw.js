@@ -2,13 +2,15 @@ import React from 'react';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw } from '../../../actions';
+import { fetchSuppliers, fetchRawMaterials, editPurchaseOrderRaw, fetchPurchaseOrderRaw } from '../../../../actions';
 
-class NewPurchaseOrder extends React.Component {
+class ApprovalsEdirOrderRaw extends React.Component {
 
     componentDidMount() {
         this.props.fetchSuppliers()
         this.props.fetchRawMaterials()
+        this.props.fetchPurchaseOrderRaw(this.props.match.params.id)
+        console.log(this.props.order)
     }
 
     rendeSuppliers() {
@@ -74,12 +76,20 @@ class NewPurchaseOrder extends React.Component {
             </div>
         )
     }
-  
+
     onSubmit = (formValues) => {
-        this.props.createPurchaseOrderRaw(formValues)
+        //console.log(this.props.order.id)
+        this.props.editPurchaseOrderRaw(this.props.order._id, formValues)
     }
 
     render() {
+        if (!this.props.order) {
+            return (
+                <div>
+                    Loading..............................................
+                </div>
+            )
+        }
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
@@ -96,9 +106,9 @@ class NewPurchaseOrder extends React.Component {
                                 <label>Raw Materials- </label>
                                 <FieldArray name="rawMaterials" component={this.renderRawMaterialsDropDown} />
                             </div>
-                        </div>                        
+                        </div>
                         <div className="field">
-                            <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
+                            <Link to={`/approvals-single-raw/${this.props.match.params.id}`} type="button" className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>
@@ -133,17 +143,18 @@ class NewPurchaseOrder extends React.Component {
 //     }
 //     return errors;
 // }
-const mapStateToProps = (state) => {
-    console.log(state)
+const mapStateToProps = (state, ownProps) => {
+    console.log(ownProps.match.params.id)
     const suppliers = Object.values(state.supplier)
     const rawMaterials = Object.values(state.rawMaterials)
     const packingMaterials = Object.values(state.packingMaterials)
-    return { errorMessage: state, suppliers: suppliers, rawMaterials: rawMaterials, packingMaterials: packingMaterials };
+    const order = state.purchaseOrdersRaw[ownProps.match.params.id]
+    return {  suppliers: suppliers, rawMaterials: rawMaterials, order: order, packingMaterials: packingMaterials, initialValues: order };
 }
 const formWrapped = reduxForm({
-    form: 'newPurchaseOrder',
+    form: 'approvalsEdirOrderRaw',
     destroyOnUnmount: false, // <------ preserve form data
     forceUnregisterOnUnmount: true
-})(NewPurchaseOrder);
+})(ApprovalsEdirOrderRaw);
 
-export default connect(mapStateToProps, { fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchSuppliers, fetchRawMaterials, fetchPurchaseOrderRaw, editPurchaseOrderRaw })(formWrapped);

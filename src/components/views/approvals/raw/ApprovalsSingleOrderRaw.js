@@ -3,15 +3,12 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw, editPurchaseOrderRaw } from '../../../actions';
+import { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw, editPurchaseOrderRaw, updatePurchaseOrderRaw } from '../../../../actions';
 
-class SinglePurchaseOrderRaw extends React.Component {
+class ApprovalsSingleOrderRaw extends React.Component {
 
     componentDidMount() {
-        this.props.fetchPurchaseOrderRaw(this.props.match.params.id)
-        console.log(this.props.match.params.id)
-        this.props.fetchSuppliers()
-        this.props.fetchRawMaterials()
+        this.props.fetchPurchaseOrderRaw(this.props.match.params.id)       
     }
     renderPurchaseOrederDetails() {
         return (
@@ -92,7 +89,9 @@ class SinglePurchaseOrderRaw extends React.Component {
 
     }
     onClick = () => {
-        this.props.printPurchaseOrderRaw(this.props.order.id)
+        const formValues = {}   
+        const order_state = "Approved"
+        this.props.updatePurchaseOrderRaw(this.props.order._id, {...formValues, order_state})
     }
     onSubmit = (formValues) => {
         this.props.editPurchaseOrderRaw(this.props.order._id, formValues)
@@ -129,8 +128,10 @@ class SinglePurchaseOrderRaw extends React.Component {
                         </tbody>
                     </table>
                     <div>
-                        <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
-                        <button type="button" onClick={this.onClick} className="ui primary button">Print</button>                        
+                        <Link to={"/approvals-raw"} type="button" className="ui button">Back</Link>
+                        <button type="button" onClick={this.onClick} className="ui primary button">Approve</button>
+                        <Link to={`/approvals-edit-raw/${this.props.order.id}`} type="button" className="ui black button">Edit</Link>
+                        <Link to={`/approvals-delete-raw/${this.props.match.params.id}`} type="button" className="ui red button">Decline</Link>
                     </div>
                 </div>
                 <div>
@@ -182,6 +183,6 @@ const mapStateToProps = (state, ownPorps) => {
 }
 const formWrapped = reduxForm({
     form: 'purchaseOrderRawPayments',
-})(SinglePurchaseOrderRaw);
+})(ApprovalsSingleOrderRaw);
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw, editPurchaseOrderRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderRaw, updatePurchaseOrderRaw, editPurchaseOrderRaw })(formWrapped);

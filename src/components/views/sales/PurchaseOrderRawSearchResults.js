@@ -21,8 +21,8 @@ class PurchaseOrderRawSearchResults extends React.Component {
         return this.props.orders.map(order => {
             const date = order.date;
             const date2 = moment(date).format('DD/MM/YYYY, h:mm: a')
-            console.log(date2)
-            if (order.order_state === "enabled") {
+            console.log(order.order_state)
+            if (order.order_state === "Pending" || order.order_state === "Approved") {
                 return (
                     <tr key={order.id}>
                         <td>
@@ -36,6 +36,9 @@ class PurchaseOrderRawSearchResults extends React.Component {
                                     )
                                 })
                             }
+                        </td>
+                        <td>
+                            {order.order_state}
                         </td>
                         <td>
                             {
@@ -84,6 +87,7 @@ class PurchaseOrderRawSearchResults extends React.Component {
                             <tr>
                                 <th>Date</th>
                                 <th>Company Name</th>
+                                <th>Order State</th>
                                 <th>Raw Materials</th>
                                 <th>Quantities</th>
                             </tr>
