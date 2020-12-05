@@ -857,6 +857,7 @@ export const fetchPurchaseOrderPacking = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/sales/purchase-orders-packing/single-purchase-order-packing/${id}`, header);
+    console.log(response)
     dispatch({ type: FETCH_PURCHASE_ORDER_PACKING, payload: response.data[0] });
 };
 //Edit purchase order raw
@@ -871,7 +872,22 @@ export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
-    history.push(`/purchase-order-dashboard-packing/${id}`);
+    history.push(`/approvals-single-packing/${formValues.id}`);
+    window.location.reload()
+};
+//Edit purchase order raw
+export const updatePurchaseOrderPacking = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
+    history.push('/approvals-packing');
     window.location.reload()
 };
 //Delete purchase order raw

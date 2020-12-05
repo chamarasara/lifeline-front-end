@@ -374,7 +374,7 @@ class SingleRawMaterial extends React.Component {
                             <th colSpan="25">
                                 <Link to={`/edit-raw-material-plant-one/${this.props.material.id}`} className="ui small primary button">
                                     Edit
-                                    </Link>
+                                </Link>
                             </th>
                         </tr>
                     </tfoot>
@@ -416,7 +416,7 @@ class SingleRawMaterial extends React.Component {
                             <td colSpan="1">{plantDataTwo.weight.volumeUnit}</td>
                         </tr>
                     </tbody>
-                    <thead className="full-width">                        
+                    <thead className="full-width">
                         <tr>
                             <th colSpan="8" style={{ color: "blue" }}>Dimensions</th>
                         </tr>
@@ -424,7 +424,7 @@ class SingleRawMaterial extends React.Component {
                             <th colSpan="2">Dimensions Unit</th>
                             <th colSpan="2">Length</th>
                             <th colSpan="2">Width</th>
-                            <th colSpan="2">Height</th>                            
+                            <th colSpan="2">Height</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -432,10 +432,10 @@ class SingleRawMaterial extends React.Component {
                             <td colSpan="2">{plantDataTwo.weight.dimensionsUnit}</td>
                             <td colSpan="2">{plantDataTwo.weight.dimensionsL}</td>
                             <td colSpan="2">{plantDataTwo.weight.dimensionsW}</td>
-                            <td colSpan="2">{plantDataTwo.weight.dimensionsH}</td>                            
+                            <td colSpan="2">{plantDataTwo.weight.dimensionsH}</td>
                         </tr>
                     </tbody>
-                    
+
                     <tfoot className="full-width">
                         <tr>
                             <th colSpan="25">
@@ -450,39 +450,37 @@ class SingleRawMaterial extends React.Component {
         )
     }
     renderSupplierList() {
-        if (!this.props.material.suppliersList) {
-            return (
-                <div>Suppliers are loading...</div>
-            )
-        }
-        return this.props.material.suppliersList.map(supplier => {
-            console.log(supplier)
-            return (
-                <tr key={supplier.id}>
-                    <td>{supplier.supplierName}</td>
-                    <td>{supplier.companyName}</td>
-                    <td>{supplier.mobileNo}</td>
-                    <td>{supplier.fax}</td>
-                    <td>{supplier.email}</td>
-                    <td>{supplier.registerNo}</td>
-                </tr>
-            )
-        }
 
+        return (
+            <tr>
+                <td colSpan="3">{this.props.material.suppliersList.map(supplier => {
+                    return (
+                        <p key={supplier.id}>{supplier.companyName}</p>
+                    )
+                })
+                }</td>
+                <td colSpan="3">{this.props.material.suppliersList.map(supplier => {
+                    return (
+                        <p key={supplier.id}>{supplier.mobileNo1}, {supplier.mobileNo2}</p>
+                    )
+                })
+                }</td>
+                <td colSpan="3">{this.props.material.suppliersList.map(supplier => {
+                    return (
+                        <p key={supplier.id}>{supplier.fax}</p>
+                    )
+                })
+                }</td>
+                <td colSpan="3">{this.props.material.suppliersList.map(supplier => {
+                    return (
+                        <p key={supplier.id}>{supplier.email}</p>
+                    )
+                })
+                }</td>
+            </tr>
         )
     }
-    renderSuppliersId() {
-        return this.props.material.suppliers.map(supplierId => {
-            console.log(supplierId)
-            return (
-                <div>
-                    <p>{supplierId.id}</p>
-                </div>
-            )
-        }
 
-        )
-    }
     render() {
         if (!this.props.material) {
             return <div>Raw Material not selected. Please select a Raw Material from the list</div>
@@ -525,16 +523,14 @@ class SingleRawMaterial extends React.Component {
                                         <th colSpan="12" style={{ color: "red" }}>Suppliers</th>
                                     </tr>
                                     <tr>
-                                        <th colSpan="2">Supplier Name</th>
-                                        <th colSpan="2">Company Name</th>
-                                        <th colSpan="2">Contact Number</th>
-                                        <th colSpan="2">Fax</th>
-                                        <th colSpan="2">Email</th>
-                                        <th colSpan="2">Registration Number</th>
+                                        <th colSpan="3">Company Name</th>
+                                        <th colSpan="3">Contact Number</th>
+                                        <th colSpan="3">Fax</th>
+                                        <th colSpan="3">Email</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    {this.renderSupplierList()}
                                 </tbody>
                                 <tfoot className="full-width">
                                     <tr>

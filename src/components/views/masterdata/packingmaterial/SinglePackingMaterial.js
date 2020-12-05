@@ -447,16 +447,35 @@ class SinglePackingMaterial extends React.Component {
             </div>
         )
     }
-    renderSuppliersId() {
-        return this.props.material.suppliers.map(supplierId => {
-            console.log(supplierId)
-            return (
-                <div>
-                    <p>{supplierId.id}</p>
-                </div>
-            )
-        }
+    renderSupplierList() {
 
+        return (
+            <tr>
+                <td colSpan="3">{this.props.material.suppliersList.map(supplier => {
+                    return (
+                        <p key={supplier.id}>{supplier.companyName}</p>
+                    )
+                })
+                }</td>
+                <td colSpan="3">{this.props.material.suppliersList.map(supplier => {
+                    return (
+                        <p key={supplier.id}>{supplier.mobileNo1}, {supplier.mobileNo2}</p>
+                    )
+                })
+                }</td>
+                <td colSpan="3">{this.props.material.suppliersList.map(supplier => {
+                    return (
+                        <p key={supplier.id}>{supplier.fax}</p>
+                    )
+                })
+                }</td>
+                <td colSpan="3">{this.props.material.suppliersList.map(supplier => {
+                    return (
+                        <p key={supplier.id}>{supplier.email}</p>
+                    )
+                })
+                }</td>
+            </tr>
         )
     }
     render() {
@@ -477,29 +496,43 @@ class SinglePackingMaterial extends React.Component {
                             <table className="ui celled structured table">
                                 <thead className="full-width">
                                     <tr>
-                                        <th colSpan="5" style={{ color: "red" }}><h4>Basic Details</h4></th>
+                                        <th colSpan="12" style={{ color: "red" }}><h4>Basic Details</h4></th>
                                     </tr>
                                     <tr>
-                                        <th>Material Code</th>
-                                        <th>Material Name</th>
-                                        <th>Material Group</th>
-                                        <th>Base Unit</th>
-                                        <th>Material State</th>
+                                        <th colSpan="2">Material Code</th>
+                                        <th colSpan="3">Material Name</th>
+                                        <th colSpan="3">Material Group</th>
+                                        <th colSpan="2">Base Unit</th>
+                                        <th colSpan="2">Material State</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{this.props.material.materialCode}</td>
-                                        <td>{this.props.material.materialName}</td>
-                                        <td>{this.props.material.materialGroup}</td>
-                                        <td>{this.props.material.baseUnitMeasure}</td>
-                                        <td>{this.props.material.materialState}</td>
+                                        <td colSpan="2">{this.props.material.materialCode}</td>
+                                        <td colSpan="3">{this.props.material.materialName}</td>
+                                        <td colSpan="3">{this.props.material.materialGroup}</td>
+                                        <td colSpan="2">{this.props.material.baseUnitMeasure}</td>
+                                        <td colSpan="2">{this.props.material.materialState}</td>
                                     </tr>
+                                </tbody>
+                                <thead className="full-width">
+                                    <tr>
+                                        <th colSpan="12" style={{ color: "red" }}>Suppliers</th>
+                                    </tr>
+                                    <tr>
+                                        <th colSpan="3">Company Name</th>
+                                        <th colSpan="3">Contact Number</th>
+                                        <th colSpan="3">Fax</th>
+                                        <th colSpan="3">Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.renderSupplierList()}
                                 </tbody>
                                 <tfoot className="full-width">
                                     <tr>
 
-                                        <th colSpan="6">
+                                        <th colSpan="12">
                                             <Link to={`/packing-material-edit-details/${this.props.material.id}`} className="ui small primary button">
                                                 Edit
                                             </Link>

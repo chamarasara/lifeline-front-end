@@ -54,6 +54,7 @@ class PackingMaterialPlantDataOne extends React.Component {
                         <h4>General Data</h4>
                         <div className="fields">
                             <div className="three wide field">
+                                Unit of Issue <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.generalData.unitOfIssue" required component="select" placeholder="" type="text" >
                                     <option>-Unit of Issue-</option>
                                     <option value="Each">Each</option>
@@ -66,6 +67,7 @@ class PackingMaterialPlantDataOne extends React.Component {
                                 </Field>
                             </div>
                             <div className="four wide field">
+                                Temp Conditions <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.generalData.tempConditions" component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Temp Condition-</option>
                                     <option value="Room Temp">Room Temp</option>
@@ -74,6 +76,7 @@ class PackingMaterialPlantDataOne extends React.Component {
                                 </Field>
                             </div>
                             <div className="four wide field">
+                                Storage Condition <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.generalData.storageConditions" component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Storage Condition-</option>
                                     <option value="Normal">Normal</option>
@@ -82,6 +85,7 @@ class PackingMaterialPlantDataOne extends React.Component {
                                 </Field>
                             </div>
                             <div className="four wide field">
+                                Container Requirements <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.generalData.containerRequirements" component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Container Requirements-</option>
                                     <option value="Stainless Steel">Stainless Steel</option>
@@ -95,15 +99,18 @@ class PackingMaterialPlantDataOne extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="three wide field">
+                            Haz Material Number (Optional)
                                 <Field name="plantDataOne.generalData.hazMaterialNumber" component={this.renderInput} placeholder="Haz. Material Number" type="text" />
                             </div>
                         </div>
                         <h4>Shelf Life Data</h4>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder="Max Storage Period" type="text" />
+                                Max Storage Period <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder="Max Storage Period" type="number" />
                             </div>
                             <div className="two wide field">
+                                Time Unit <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.timeUnit" required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Time-Unit-</option>
                                     <option value="days">Days</option>
@@ -111,15 +118,19 @@ class PackingMaterialPlantDataOne extends React.Component {
                                 </Field>
                             </div>
                             <div className="three wide field">
+                                Min Shelf Life <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.minRemainigShelfLife" component={this.renderInput} placeholder="Min Remaining Shelf Life" type="text" />
                             </div>
                             <div className="two wide field">
+                                Total Shelf Life <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.totalShelfLife" component={this.renderInput} placeholder="Total Shelf Life" type="text" />
                             </div>
                             <div className="three wide field">
+                                Period fro Sled <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.periodForSled" component={this.renderInput} placeholder="Period Ind. for SLED" type="text" />
                             </div>
                             <div className="two wide field">
+                                Storage Percentage <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.storagePercentage" component={this.renderInput} placeholder="Storage Percentage" type="text" />
                             </div>
                         </div>

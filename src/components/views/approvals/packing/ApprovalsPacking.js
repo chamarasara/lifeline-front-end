@@ -2,18 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { fetchPurchaseOrdersRaw, updatePurchaseOrderRaw } from "../../../../actions"
-class ApprovalsRaw extends React.Component {
+import { fetchPurchaseOrdersPacking, updatePurchaseOrderRaw } from "../../../../actions"
+class ApprovalsPacking extends React.Component {
     componentDidMount() {
-        this.props.fetchPurchaseOrdersRaw()
-    }
-    onClick = () => {
-        const formValues = {}
-        const order_state= "Approved";
-
-        console.log(this.props.orders)
-        this.props.updatePurchaseOrderRaw(this.props.orders._id, { ...formValues, order_state})
-    }
+        this.props.fetchPurchaseOrdersPacking()
+    }   
     renderList() {
         if (!this.props.orders) {
             return (
@@ -46,7 +39,7 @@ class ApprovalsRaw extends React.Component {
                         </div>
                         <div className="extra content">
                             <div className="ui three buttons">
-                                <Link to={`/approvals-single-raw/${order.id}`} className="ui blue button">View</Link>
+                                <Link to={`/approvals-single-packing/${order.id}`} className="ui blue button">View</Link>
                             </div>
                         </div>
                     </div>
@@ -59,8 +52,8 @@ class ApprovalsRaw extends React.Component {
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <div className="column" style={{ paddingTop: "30px" }}>
-                        <h3>Pending Purchase Orders RM</h3>
-                        <Link to={"/approvals-dashboard"} className="ui button">Back</Link>
+                        <h3>Pending Purchase Orders PM</h3>
+                        <Link to={"/approvals-dashboard"}className="ui button">Back</Link>
                     </div>
                     <div className="column" style={{ paddingTop: "30px" }}>
                         <div className="ui cards">
@@ -76,7 +69,7 @@ class ApprovalsRaw extends React.Component {
 
 const mapToSatate = (state) => {
     console.log(state.purchaseOrdersRaw)
-    const orders = Object.values(state.purchaseOrdersRaw)
+    const orders = Object.values(state.purchaseOrdersPacking)
     return { orders: orders };
 }
-export default connect(mapToSatate, { fetchPurchaseOrdersRaw, updatePurchaseOrderRaw })(ApprovalsRaw);
+export default connect(mapToSatate, { fetchPurchaseOrdersPacking, updatePurchaseOrderRaw })(ApprovalsPacking);

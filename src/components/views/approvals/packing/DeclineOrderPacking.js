@@ -4,12 +4,12 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from "react-router-dom";
 import Modal from '../../../Modal';
 import history from '../../../history';
-import { fetchPurchaseOrderRaw, updatePurchaseOrderRaw } from "../../../../actions";
+import { fetchPurchaseOrderPacking, updatePurchaseOrderPacking } from "../../../../actions";
 
-class DeclineOrderRaw extends React.Component {
+class DeclineOrderPacking extends React.Component {
 
     componentDidMount() {
-        this.props.fetchPurchaseOrderRaw(this.props.match.params.id);
+        this.props.fetchPurchaseOrderPacking(this.props.match.params.id);
     }
     renderInput = ({ input, label, placeholder, type, meta }) => {
         return (
@@ -41,7 +41,7 @@ class DeclineOrderRaw extends React.Component {
     }
     onSubmit = (formValues) => {
         const order_state = "Declined";
-        this.props.updatePurchaseOrderRaw(this.props.order._id, { ...formValues, order_state })
+        this.props.updatePurchaseOrderPacking(this.props.order._id, { ...formValues, order_state })
     }
     renderActions() {
         if (!this.props.order) {
@@ -63,7 +63,7 @@ class DeclineOrderRaw extends React.Component {
                     </div>
                     <div className="field">
                         <button onClick={this.onClick} className="ui red button">Disable</button>
-                        <Link to={`/approvals-single-raw/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
+                        <Link to={`/approvals-single-packing/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
                     </div>
                 </form>
 
@@ -79,7 +79,7 @@ class DeclineOrderRaw extends React.Component {
     }
     render() {
         return (
-            <Modal header="Disable Purchase Order" content={this.renderContent()} actions={this.renderActions()} onDismiss={() => history.push(`/approvals-single-raw/${this.props.match.params.id}`)} />
+            <Modal header="Disable Purchase Order" content={this.renderContent()} actions={this.renderActions()} onDismiss={() => history.push(`/approvals-single-packing/${this.props.match.params.id}`)} />
         );
     }
 }
@@ -88,14 +88,14 @@ const validate = (formValues) => {
     const errors = {}
     if (!formValues.disable_reason) {
         errors.disable_reason = 'Required!';
-    }    
+    }
     return errors;
 }
 const mapToSatate = (state, ownPorps) => {
-    return { order: state.purchaseOrdersRaw[ownPorps.match.params.id] };
+    return { order: state.purchaseOrdersPacking[ownPorps.match.params.id] };
 }
 const formWrapped = reduxForm({
-    form: 'disableOrderRaw',
+    form: 'disableOrderPacking',
     validate: validate
-})(DeclineOrderRaw);
-export default connect(mapToSatate, { fetchPurchaseOrderRaw, updatePurchaseOrderRaw })(formWrapped);
+})(DeclineOrderPacking);
+export default connect(mapToSatate, { fetchPurchaseOrderPacking, updatePurchaseOrderPacking })(formWrapped);

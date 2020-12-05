@@ -37,14 +37,14 @@ class NewPackingMaterial extends React.Component {
             </div>
         );
     }
-     renderSelectField = ({ input, label, type, meta, children }) => (
+    renderSelectField = ({ input, label, type, meta, children }) => (
         <div>
             <label>{label}</label>
             <div>
                 <select {...input}>
                     {children}
                 </select>
-                 {this.renderError(meta)}
+                {this.renderError(meta)}
             </div>
         </div>
     )
@@ -89,17 +89,17 @@ class NewPackingMaterial extends React.Component {
                     <form className="ui mini form error" onSubmit={handleSubmit}>
                         <div className="fields">
                             <div className="eight wide field">
+                                Material Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialName" component={this.renderInput} placeholder="Material Name" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="materialCode" component={this.renderInput} placeholder="Material Code" type="text" />
-                            </div>
-                            <div className="four wide field">
+                                Material Group <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialGroup" component={this.renderInput} placeholder="Material Group" type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Unit of Measure <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="baseUnitMeasure" required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-UOM-</option>
                                     <option value="Each">Each</option>
@@ -112,11 +112,13 @@ class NewPackingMaterial extends React.Component {
                                 </Field>
                             </div>
                             <div className="five wide field">
+                                Old Material Number (Optional )
                                 <Field name="oldMaterialNumber" component={this.renderInput} placeholder="Old Material Number" type="text" />
-                            </div>                            
+                            </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Material State <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialState" component={this.renderSelectField} type="text" >
                                     <option>-Select Material Status-</option>
                                     <option value="enabled">Enabled</option>
@@ -126,12 +128,13 @@ class NewPackingMaterial extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Materila Description (Optional)
                                 <Field name="materialDescription" component="textarea" placeholder="Material Description(Optional)" type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="five wide field">
-                                <label>Suppliers- </label>
+                                Suppliers <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <FieldArray name="suppliers" component={this.renderSupplierDropDown} />
                             </div>
                         </div>
@@ -150,9 +153,6 @@ const validate = (formValues) => {
     const errors = {}
     if (!formValues.materialName) {
         errors.materialName = 'Required!';
-    }
-    if (!formValues.materialCode) {
-        errors.materialCode = 'Required!';
     }
     if (!formValues.materialGroup) {
         errors.materialGroup = 'Required!';

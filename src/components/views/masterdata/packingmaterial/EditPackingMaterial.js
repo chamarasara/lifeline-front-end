@@ -87,11 +87,7 @@ class EditPackingMaterial extends React.Component {
                             <div className="eight wide field">
                                 Material Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialName" component={this.renderInput} placeholder="Material Name" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Material Code<span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="materialCode" component={this.renderInput} placeholder="Material Code" type="text" />
-                            </div>
+                            </div>                            
                             <div className="four wide field">
                                 Material Group <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialGroup" component={this.renderInput} placeholder="Material Group" type="text" />

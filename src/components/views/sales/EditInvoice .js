@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 import { Link } from 'react-router-dom'
 import { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice } from '../../../actions';
 
@@ -147,6 +148,9 @@ class EditInvoice extends React.Component {
                                 <Field name={`${cashPayments}.cashAmount`} type="number" required component="input" placeholder="Cash Amount" >
                                 </Field>
                             </div>
+                            <div className="four wide field">
+                                <button className="mini ui red button" type="button" onClick={() => window.location.reload()}>Cancel</button>
+                            </div>
                         </div>
                     </li>)}
                 </ul>
@@ -177,10 +181,13 @@ class EditInvoice extends React.Component {
                                 <Field name={`${chequePayments}.chequeDate`} type="date" required component="input" placeholder="Cheque Date" >
                                 </Field>
                             </div>
+                            <div className="four wide field">
+                                <button className="mini ui red button" type="button" onClick={() => window.location.reload()}>Cancel</button>
+                            </div>                           
                         </div>
                     </li>)}
                 </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Cheque Payment</button>
+                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Cheque Payment</button>          
             </div>
         )
     }
@@ -200,7 +207,7 @@ class EditInvoice extends React.Component {
                         </div>
                     </li>)}
                 </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Payment</button>
+                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Payment</button>                
             </div>
         )
     }
@@ -229,6 +236,7 @@ class EditInvoice extends React.Component {
             <div>
                 <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
                 <p><b>Total Value:</b> {this.getTotalAmount()}</p>
+                <p><b>Total Value:</b> {this.getTotalCashPayments()}</p>
                 {this.renderPaymentsForm()}
             </div>
         )
@@ -241,19 +249,30 @@ class EditInvoice extends React.Component {
         return total
 
     }
-    // getTotalPaid() {
-    //     if (!this.props.invoice.payments) {
-    //         return 0
-    //     } else {            
-    //         const paid = this.props.invoice.payments.map(data => {
-    //             const total = parseInt(data.cashAmount) + parseInt(data.chequeAmount)
-    //             return total
-    //         })
+//    getTotalCashPayments(){
+//        return(
+//            <p>
+//                {this.props.invoice.paymentsAll.map(cash => {
+//                    return cash.cashPayments.map(data=>{
+//                        return data.cashAmount
+//                    })
 
-    //         const total1 = paid.reduce((a, b) => (a + b))
-    //         return total1
-    //     }
-    // }
+//                })
+//                }
+//            </p>
+//        )
+//    }
+    getTotalCashPayments() {
+        const payments = this.props.invoice.paymentsAll.map(cash => {
+            return cash.cashPayments.map(data => {
+                console.log(data.cashAmount)
+                return data.cashAmount
+            })
+        })
+        const total = payments.reduce((a, b) => (a + b))
+        console.log(payments)
+        return payments
+    }
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
     }
@@ -303,36 +322,12 @@ class EditInvoice extends React.Component {
         )
     }
 }
-//Form input validation
-// const validate = (formValues) => {
-//     const errors = {}
-//     if (!formValues.firstName) {
-//         errors.firstName = 'Please enter First Name';
-//     }
-//     if (!formValues.lastName) {
-//         errors.lastName = 'Please enter Last Name';
-//     }
-//     if (!formValues.address) {
-//         errors.address = 'Please enter the Number of the Address';
-//     }
-//     if (!formValues.nic) {
-//         errors.nic = 'Please enter the ID Nummber';
-//     }
-//     if (!formValues.mobileNo) {
-//         errors.mobileNo = 'Please enter Phone Number';
-//     }
-//     if (!formValues.email) {
-//         errors.email = 'Please enter Email';
-//     }
-//     if (!formValues.gender) {
-//         errors.gender = 'Please enter the Gender';
-//     }
-//     return errors;
-// }
+
 const mapStateToProps = (state, ownProps) => {
     const customers = Object.values(state.customer)
     const products = Object.values(state.productMaster)
     const invoice = state.invoices[ownProps.match.params.id]
+    console.log(invoice)
     return { errorMessage: state, customers: customers, products: products, invoice: invoice, initialValues: invoice };
 }
 const formWrapped = reduxForm({

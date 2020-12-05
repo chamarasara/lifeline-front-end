@@ -92,10 +92,13 @@ import NewPurchaseOrderPacking from './views/sales/NewPurchaseOrderPacking';
 import DeletePurchaseOrderPacking from './views/sales/DeletePurchaseOrderPacking';
 import ApprovalsDashboard from './views/approvals/ApprovalsDashboard';
 import ApprovalsRaw from './views/approvals/raw/ApprovalsRaw';
-import ApprovalsPacking from './views/approvals/ApprovalsPacking';
+import ApprovalsPacking from './views/approvals/packing/ApprovalsPacking';
 import ApprovalsSingleOrderRaw from './views/approvals/raw/ApprovalsSingleOrderRaw';
 import ApprovalsEdirOrderRaw from './views/approvals/raw/ApprovalsEditOrderRaw';
 import DeclineOrderRaw from './views/approvals/raw/DeclineOrderRaw';
+import ApprovalsSingleOrderPacking from './views/approvals/packing/ApprovalsSingleOrderPacking';
+import ApprovalsEditOrderPacking from './views/approvals/packing/ApprovalsEditOrderPacking';
+import DeclineOrderPacking from './views/approvals/packing/DeclineOrderPacking';
 
 
 
@@ -204,10 +207,13 @@ class App extends React.Component {
                     <PrivateRoute path="/delete-product-master/:id" component={DeleteProductMaster} />
                     <PrivateRoute path="/approvals-dashboard" component={ApprovalsDashboard} />
                     <PrivateRoute path="/approvals-raw" component={ApprovalsRaw} />
-                    <PrivateRoute path="/approvals-packing" component={ApprovalsPacking} />
                     <PrivateRoute path="/approvals-single-raw/:id" component={ApprovalsSingleOrderRaw} />
                     <PrivateRoute path="/approvals-edit-raw/:id" component={ApprovalsEdirOrderRaw} />
                     <PrivateRoute path="/approvals-delete-raw/:id" component={DeclineOrderRaw} />
+                    <PrivateRoute path="/approvals-packing" component={ApprovalsPacking} />
+                    <PrivateRoute path="/approvals-single-packing/:id" component={ApprovalsSingleOrderPacking} />
+                    <PrivateRoute path="/approvals-edit-packing/:id" component={ApprovalsEditOrderPacking} />
+                    <PrivateRoute path="/approvals-delete-packing/:id" component={DeclineOrderPacking} />
                 </Router>
             </div>
         ) 

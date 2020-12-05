@@ -13,17 +13,6 @@ class EditRawMaterial extends React.Component {
 
     }
 
-    suppliers = {
-        supplier1: "",
-        supplier2: "",
-        supplier3: "",
-        supplier4: "",
-        supplier5: "",
-        supplier6: "",
-        supplier7: "",
-        supplier8: "",
-    }
-
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -68,7 +57,7 @@ class EditRawMaterial extends React.Component {
                         <label htmlFor={suppliers}>Supplier #{index + 1}</label>
                         <div className="fields">
                             <div className="eight wide field">
-                                <Field name={suppliers} type="text" component="select" >
+                                <Field name={`${suppliers}.id`} type="text" component="select" >
                                     <option>-Select Supplier-</option>
                                     {this.renderSuppliers()}
                                 </Field>
@@ -108,11 +97,7 @@ class EditRawMaterial extends React.Component {
                             <div className="eight wide field">
                                 Material Name
                                 <Field name="materialName" component={this.renderInput} placeholder={this.props.material.materialName} type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Material Code
-                                <Field name="materialCode" component={this.renderInput} placeholder={this.props.material.materialCode} type="text" />
-                            </div>
+                            </div>                            
                             <div className="four wide field">
                                 Material Group
                                 <Field name="materialGroup" component={this.renderInput} placeholder={this.props.material.materialGroup} type="text" />

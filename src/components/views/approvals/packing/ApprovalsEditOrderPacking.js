@@ -2,14 +2,14 @@ import React from 'react';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchSuppliers, fetchRawMaterials, editPurchaseOrderRaw, fetchPurchaseOrderRaw } from '../../../../actions';
+import { fetchSuppliers, editPurchaseOrderPacking, fetchPurchaseOrderPacking, fetchPackingMaterials } from '../../../../actions';
 
-class ApprovalsEdirOrderRaw extends React.Component {
+class ApprovalsEditOrderPacking extends React.Component {
 
     componentDidMount() {
         this.props.fetchSuppliers()
-        this.props.fetchRawMaterials()
-        this.props.fetchPurchaseOrderRaw(this.props.match.params.id)
+        this.props.fetchPackingMaterials()
+        this.props.fetchPurchaseOrderPacking(this.props.match.params.id)
         console.log(this.props.order)
     }
 
@@ -29,32 +29,34 @@ class ApprovalsEdirOrderRaw extends React.Component {
             </div>
         );
     }
-    renderRawMaterials() {
-        return this.props.rawMaterials.map(rawMaterial => {
+    renderpackingMaterials() {
+        console.log(this.props.packingMaterials)
+        return this.props.packingMaterials.map(packingMaterial => {
+            console.log(packingMaterial.id)
             return (
-                <option key={rawMaterial._id} value={rawMaterial.id}>{rawMaterial.materialName}</option>
+                <option key={packingMaterial._id} value={packingMaterial.id}>{packingMaterial.materialName}</option>
             )
         })
     }
-    renderRawMaterialsDropDown = ({ fields }) => {
+    renderMaterialsDropDown = ({ fields }) => {
         return (
             <div>
                 <ul>
-                    {fields.map((rawMaterials, index) => <li key={index}>
-                        <label htmlFor={rawMaterials}>Material #{index + 1}</label>
+                    {fields.map((packingMaterials, index) => <li key={index}>
+                        <label htmlFor={packingMaterials}>Material #{index + 1}</label>
                         <div className="fields">
                             <div className="eight wide field">
-                                <Field name={`${rawMaterials}.id`} type="text" required component="select" >
+                                <Field name={`${packingMaterials}.id`} type="text" required component="select" >
                                     <option>-Select Material-</option>
-                                    {this.renderRawMaterials()}
+                                    {this.renderpackingMaterials()}
                                 </Field>
                             </div>
                             <div className="four wide field">
-                                <Field name={`${rawMaterials}.quantity`} type="number" required component="input" placeholder="Quantity" >
+                                <Field name={`${packingMaterials}.quantity`} type="number" required component="input" placeholder="Quantity" >
                                 </Field>
                             </div>
                             <div className="four wide field">
-                                <Field name={`${rawMaterials}.uom`} type="text" required component="select" placeholder="UOM" >
+                                <Field name={`${packingMaterials}.uom`} type="text" required component="select" placeholder="UOM" >
                                     <option>-UOM-</option>
                                     <option value="Each">Each</option>
                                     <option value="kg">kg</option>
@@ -71,15 +73,15 @@ class ApprovalsEdirOrderRaw extends React.Component {
                         </div>
                     </li>)}
                 </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Raw Material</button>
+                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Packing Material</button>
 
             </div>
         )
     }
 
     onSubmit = (formValues) => {
-        //console.log(this.props.order.id)
-        this.props.editPurchaseOrderRaw(this.props.order._id, formValues)
+        console.log(formValues)
+        this.props.editPurchaseOrderPacking(this.props.order._id, formValues)
     }
 
     render() {
@@ -93,7 +95,7 @@ class ApprovalsEdirOrderRaw extends React.Component {
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
-                    <h3>Edit Purchase Order RM</h3>
+                    <h3>Edit Purchase Order PM</h3>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="six wide field">
                             <Field name="supplierId" component="select" placeholder="" type="text" >
@@ -104,11 +106,11 @@ class ApprovalsEdirOrderRaw extends React.Component {
                         <div className="fields">
                             <div className="sixteen wide field">
                                 <label>Raw Materials- </label>
-                                <FieldArray name="rawMaterials" component={this.renderRawMaterialsDropDown} />
+                                <FieldArray name="packingMaterials" component={this.renderMaterialsDropDown} />
                             </div>
                         </div>
                         <div className="field">
-                            <Link to={`/approvals-single-raw/${this.props.match.params.id}`} type="button" className="ui button">Back</Link>
+                            <Link to={`/approvals-single-packing/${this.props.match.params.id}`} type="button" className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>
@@ -146,15 +148,15 @@ class ApprovalsEdirOrderRaw extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     console.log(ownProps.match.params.id)
     const suppliers = Object.values(state.supplier)
-    const rawMaterials = Object.values(state.rawMaterials)
     const packingMaterials = Object.values(state.packingMaterials)
-    const order = state.purchaseOrdersRaw[ownProps.match.params.id]
-    return {  suppliers: suppliers, rawMaterials: rawMaterials, order: order, packingMaterials: packingMaterials, initialValues: order };
+    const order = state.purchaseOrdersPacking[ownProps.match.params.id]
+    console.log(order)
+    return { suppliers: suppliers, order: order, packingMaterials: packingMaterials, initialValues: order };
 }
 const formWrapped = reduxForm({
-    form: 'approvalsEdirOrderRaw',
+    form: 'approvalsEditOrderPacking',
     destroyOnUnmount: false, // <------ preserve form data
     forceUnregisterOnUnmount: true
-})(ApprovalsEdirOrderRaw);
+})(ApprovalsEditOrderPacking);
 
-export default connect(mapStateToProps, { fetchSuppliers, fetchRawMaterials, fetchPurchaseOrderRaw, editPurchaseOrderRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchSuppliers, fetchPackingMaterials, fetchPurchaseOrderPacking, editPurchaseOrderPacking })(formWrapped);

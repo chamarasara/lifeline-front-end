@@ -92,17 +92,17 @@ class NewRawMaterial extends React.Component {
                     <form className="ui mini form error" onSubmit={handleSubmit}>
                         <div className="fields">
                             <div className="eight wide field">
+                                Materila Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialName" component={this.renderInput} placeholder="Material Name" type="text" />
-                            </div>
+                            </div>                          
                             <div className="four wide field">
-                                <Field name="materialCode" component={this.renderInput} placeholder="Material Code" type="text" />
-                            </div>
-                            <div className="four wide field">
+                                Material Group <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialGroup" component={this.renderInput} placeholder="Material Group" type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Unit of Measure <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="baseUnitMeasure" required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-UOM-</option>
                                     <option value="Each">Each</option>
@@ -115,11 +115,13 @@ class NewRawMaterial extends React.Component {
                                 </Field>
                             </div>
                             <div className="five wide field">
+                            Old Material Number(Optional)
                                 <Field name="oldMaterialNumber" component={this.renderInput} placeholder="Old Material Number" type="text" />
                             </div>                            
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Material State <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="materialState" component={this.renderSelectField} type="text" >
                                     <option>-Select Material Status-</option>
                                     <option value="enabled">Enabled</option>
@@ -129,6 +131,7 @@ class NewRawMaterial extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                            Description(optional)
                                 <Field name="materialDescription" component="textarea" placeholder="Material Description(Optional)" type="text" />
                             </div>
                         </div>
@@ -153,10 +156,7 @@ const validate = (formValues) => {
     const errors = {}
     if (!formValues.materialName) {
         errors.materialName = 'Required!';
-    }
-    if (!formValues.materialCode) {
-        errors.materialCode = 'Required!';
-    }
+    }    
     if (!formValues.materialGroup) {
         errors.materialGroup = 'Required!';
     }
