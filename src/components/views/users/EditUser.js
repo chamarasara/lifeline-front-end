@@ -50,7 +50,7 @@ class EditUser extends React.Component {
     renderUserRolesList(){
         return this.props.userRoles.map(userRoles => {
             return (
-                <option key={userRoles._id} value={userRoles._id}>{userRoles.userTypeName}</option>
+                <option key={userRoles._id} value={userRoles.userTypeName}>{userRoles.userTypeName}</option>
             )
         })
     }
@@ -129,7 +129,7 @@ class EditUser extends React.Component {
                         <div className="fields">
                             <div className="four wide field">
                                 <label>User Role</label>
-                                <Field name="userRole.id" component="select" label="User Role" placeholder={this.props.user.userType}>
+                                <Field name="userRole.userTypeName" component="select" label="User Role" placeholder={this.props.user.userType}>
                                     <option>-Select User Role-</option>
                                     {this.renderUserRolesList()}
                                 </Field>

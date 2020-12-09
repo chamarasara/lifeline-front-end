@@ -16,7 +16,7 @@ class RawMaterialList extends React.Component {
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
-                                {material.materialCode}                                
+                                RM{material.materialCodeRm}                                
                             </div>
                         </h4></td>
                     <td>

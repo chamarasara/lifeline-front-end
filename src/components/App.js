@@ -68,12 +68,6 @@ import EditSemiFinishGoodMaterialPlantOne from './views/masterdata/semifinishgoo
 import DeleteSemiFinishGoodMaterial from './views/masterdata/semifinishgoods/DeleteSemiFinishGoodMaterial';
 import SingleFinishGoodMaterial from './views/masterdata/finishgoods/SingleFinishGoodMaterial';
 import EditFinishGoodMaterial from './views/masterdata/finishgoods/EditFinishGoodMaterial';
-import EditFinishGoodMaterialMrpOne from './views/masterdata/finishgoods/EditFinishGoodMaterialMrpOne';
-import EditFinishGoodMaterialMrpTwo from './views/masterdata/finishgoods/EditFinishGoodMaterialMrpTwo';
-import EditFinishGoodMaterialMrpThree from './views/masterdata/finishgoods/EditFinishGoodMaterialMrpThree';
-import EditFinishGoodMaterialMrpFour from './views/masterdata/finishgoods/EditFinishGoodMaterialMrpFour';
-import EditFinishGoodMaterialPlantOne from './views/masterdata/finishgoods/EditFinishGoodMaterialPlantOne';
-import EditFinishGoodMaterialPlantTwo from './views/masterdata/finishgoods/EditFinishGoodMaterialPlantTwo';
 import DeleteFinishGoodMaterial from './views/masterdata/finishgoods/DeleteFinishGoodMaterial';
 import ProductDashboard from './views/masterdata/productmaster/ProductDashboard';
 import NewProductMaster from './views/masterdata/productmaster/NewProductMaster';
@@ -168,12 +162,6 @@ class App extends React.Component {
                     <PrivateRoute path="/new-finish-good" component={NewFinishGood} />  
                     <PrivateRoute path="/single-finish-good-material/:id" component={SingleFinishGoodMaterial} />
                     <PrivateRoute path="/finish-good-edit-details/:id" component={EditFinishGoodMaterial} />
-                    <PrivateRoute path="/edit-finish-good-mrp-one/:id" component={EditFinishGoodMaterialMrpOne} />
-                    <PrivateRoute path="/edit-finish-good-mrp-two/:id" component={EditFinishGoodMaterialMrpTwo} />
-                    <PrivateRoute path="/edit-finish-good-mrp-three/:id" component={EditFinishGoodMaterialMrpThree} />
-                    <PrivateRoute path="/edit-finish-good-mrp-four/:id" component={EditFinishGoodMaterialMrpFour} />
-                    <PrivateRoute path="/edit-finish-good-plant-one/:id" component={EditFinishGoodMaterialPlantOne} />
-                    <PrivateRoute path="/edit-finish-good-plant-two/:id" component={EditFinishGoodMaterialPlantTwo} />
                     <PrivateRoute path="/delete-finish-good-material/:id" component={DeleteFinishGoodMaterial} />                     
                     <PrivateRoute path="/semi-finish-goods" component={SemiFinishGoodDashboard} />
                     <PrivateRoute path="/new-semi-finish-good" component={NewSemiFinishGood} />

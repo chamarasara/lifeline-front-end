@@ -93,8 +93,20 @@ class NewPackingMaterial extends React.Component {
                                 <Field name="materialName" component={this.renderInput} placeholder="Material Name" type="text" />
                             </div>
                             <div className="four wide field">
-                                Material Group <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="materialGroup" component={this.renderInput} placeholder="Material Group" type="text" />
+                                Material Group <span style={{ color: "red", fontSize: "18px" }}>*</span>                                
+                                <Field name="materialGroup" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Material Group-</option>
+                                    <option value="Outer Box">Outer Box</option>
+                                    <option value="Reel">Reel</option>
+                                    <option value="Bottle">Bottle</option>
+                                    <option value="Cap">Cap</option>
+                                    <option value="Mist Spray">ml</option>
+                                    <option value="Lid">Lid</option>
+                                    <option value="Sticker">Sticker</option>
+                                    <option value="Label">Label</option>
+                                    <option value="Cartoon">Cartoon</option>
+                                    <option value="Pump Head">Pump Head</option>
+                                </Field>
                             </div>
                         </div>
                         <div className="fields">

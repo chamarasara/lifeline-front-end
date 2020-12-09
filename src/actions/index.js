@@ -73,13 +73,14 @@ import {
 //create user
 export const createUser = formValues => async dispatch => {
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('/api/users/newuser', { ...formValues }, header);
+    const response = await api.post('/api/users/newuser', { ...formValues, user }, header);
     dispatch({ type: CREATE_USER, payload: response.data });
     history.push('/employee');
     window.location.reload();
@@ -141,13 +142,14 @@ export const deleteUser = (id) => async dispatch => {
 export const createUserRole = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('/api/user-roles/new-user-role', { ...formValues }, header);
+    const response = await api.post('/api/user-roles/new-user-role', { ...formValues, user }, header);
     dispatch({ type: CREATE_USER_ROLE, payload: response.data });
     history.push('/employee');
     window.location.reload();
@@ -209,13 +211,14 @@ export const deleteUserRole = (id) => async dispatch => {
 //create customer
 export const createCustomer = formValues => async dispatch => {
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('/api/master-data/customer-master/new-customer', { ...formValues }, header);
+    const response = await api.post('/api/master-data/customer-master/new-customer', { ...formValues, user }, header);
     dispatch({ type: CREATE_CUSTOMER, payload: response.data });
     history.push('/customer');
 };
@@ -274,13 +277,14 @@ export const deleteCustomer = (id) => async dispatch => {
 export const createSupplier = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('api/master-data/supplier-master/new-supplier', { ...formValues }, header);
+    const response = await api.post('api/master-data/supplier-master/new-supplier', { ...formValues, user }, header);
     dispatch({ type: CREATE_SUPPLIER, payload: response.data });
     history.push('/supplier');
 };
@@ -341,13 +345,14 @@ export const deleteSupplier = (id) => async dispatch => {
 export const createRawMaterial = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('/api/master-data/raw-material/new-raw-material/', { ...formValues }, header);
+    const response = await api.post('/api/master-data/raw-material/new-raw-material/', { ...formValues,user }, header);
     console.log(response)
     dispatch({ type: CREATE_RAW_MATERIAL, payload: response.data });
     history.push("/raw-material/");
@@ -406,21 +411,22 @@ export const deleteRawMaterial = (id) => async dispatch => {
         }
     };
     await api.delete(`/api/master-data/raw-material/delete-raw-material/${id}`, header);
+    console.log(id)
     dispatch({ type: DELETE_RAW_MATERIAL, payload: id });
     history.push('/raw-material')
     window.location.reload()
 };
 //create packing material
 export const createPackingaterial = formValues => async dispatch => {
-    console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('/api/master-data/packing-material/new-packing-material', { ...formValues }, header);
+    const response = await api.post('/api/master-data/packing-material/new-packing-material', { ...formValues,user }, header);
     console.log(response)
     dispatch({ type: CREATE_PACKING_MATERIAL, payload: response.data });
     history.push('/packing-material');
@@ -484,13 +490,14 @@ export const deletePackingMaterial = (id) => async dispatch => {
 export const createSemiFinishGood = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('/api/master-data/semi-finish-good/new-semi-finish-good-material', { ...formValues }, header);
+    const response = await api.post('/api/master-data/semi-finish-good/new-semi-finish-good-material', { ...formValues, user }, header);
     console.log(response)
     dispatch({ type: CREATE_SFG_MATERIAL, payload: response.data });
     history.push('/semi-finish-goods');
@@ -548,21 +555,22 @@ export const deleteSemiFinishGood = (id) => async dispatch => {
     };
     await api.delete(`/api/master-data/semi-finish-good/delete-semi-finish-good-material/${id}`, header);
     dispatch({ type: DELETE_SFG_MATERIAL, payload: id });
-    history.push('/semi-finish-goods')
-    window.location.reload()
+    // history.push('/semi-finish-goods')
+    // window.location.reload()
 };
 
 //create FG material
 export const createFinishGood = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('/api/master-data/finish-good/new-finish-good-material', { ...formValues }, header);
+    const response = await api.post('/api/master-data/finish-good/new-finish-good-material', { ...formValues, user }, header);
     console.log(response)
     dispatch({ type: CREATE_FG_MATERIAL, payload: response.data });
     history.push('/finish-goods');

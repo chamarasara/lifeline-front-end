@@ -100,10 +100,6 @@ class EditPackingMaterialPlantOne extends React.Component {
                         </div>
                         <h4>Shelf Life Data</h4>
                         <div className="fields">
-                            <div className="three wide field">
-                                Max Storage Period
-                                <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder="Max Storage Period" type="text" />
-                            </div>
                             <div className="two wide field">
                                 Time Unit
                                 <Field name="plantDataOne.shelfLifeData.timeUnit" required component={this.renderSelectField} placeholder="" type="text" >
@@ -112,6 +108,10 @@ class EditPackingMaterialPlantOne extends React.Component {
                                     <option value="months">Months</option>
                                 </Field>
                             </div>
+                            <div className="three wide field">
+                                Max Storage Period
+                                <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder="Max Storage Period" type="text" />
+                            </div>                            
                             <div className="three wide field">
                                 Min Remaining Shelf Life
                                 <Field name="plantDataOne.shelfLifeData.minRemainigShelfLife" component={this.renderInput} placeholder="Min Remaining Shelf Life" type="text" />

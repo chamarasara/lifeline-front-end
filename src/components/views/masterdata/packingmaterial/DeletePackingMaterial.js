@@ -13,7 +13,7 @@ class DeletePackingMaterial extends React.Component {
     renderActions() {
         return (
             <React.Fragment>
-                <button onClick={() => this.props.deletePackingMaterial(this.props.match.params.id)} className="ui red button">Delete</button>
+                <button onClick={() => this.props.deletePackingMaterial(this.props.material._id)} className="ui red button">Delete</button>
                 <Link to={`/single-packing-material/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
             </React.Fragment>
         );

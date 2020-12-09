@@ -82,8 +82,11 @@ class SinglePurchaseOrderPacking extends React.Component {
                     )
                 })
                 }</p>
-                <p><strong>Date: </strong>{moment(this.props.order.date).format('DD/MM/YYYY')}
-
+                <p>
+                <strong>Date: </strong>{moment(this.props.order.date).format('DD/MM/YYYY')}
+                </p>
+                <p>
+                    <strong>Order State:</strong> {this.props.order.order_state}
                 </p>
             </div>
         )

@@ -37,6 +37,9 @@ class PurchaseOrderPackingSearchResults extends React.Component {
                             }
                         </td>
                         <td>
+                            {order.order_state}
+                        </td>
+                        <td>
                             {
                                 order.searchPackingMaterial.map(material => {
                                     console.log(material)
@@ -81,6 +84,7 @@ class PurchaseOrderPackingSearchResults extends React.Component {
                             <tr>
                                 <th>Date</th>
                                 <th>Company Name</th>
+                                <th>Order State</th>
                                 <th>Packing Materials</th>
                                 <th>Quantities</th>
                             </tr>

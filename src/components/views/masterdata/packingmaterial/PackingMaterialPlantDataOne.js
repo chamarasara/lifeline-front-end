@@ -105,10 +105,6 @@ class PackingMaterialPlantDataOne extends React.Component {
                         </div>
                         <h4>Shelf Life Data</h4>
                         <div className="fields">
-                            <div className="three wide field">
-                                Max Storage Period <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder="Max Storage Period" type="number" />
-                            </div>
                             <div className="two wide field">
                                 Time Unit <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.timeUnit" required component={this.renderSelectField} placeholder="" type="text" >
@@ -117,6 +113,10 @@ class PackingMaterialPlantDataOne extends React.Component {
                                     <option value="months">Months</option>
                                 </Field>
                             </div>
+                            <div className="three wide field">
+                                Max Storage Period <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder="Max Storage Period" type="number" />
+                            </div>                            
                             <div className="three wide field">
                                 Min Shelf Life <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.minRemainigShelfLife" component={this.renderInput} placeholder="Min Remaining Shelf Life" type="text" />
@@ -128,11 +128,7 @@ class PackingMaterialPlantDataOne extends React.Component {
                             <div className="three wide field">
                                 Period fro Sled <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.periodForSled" component={this.renderInput} placeholder="Period Ind. for SLED" type="text" />
-                            </div>
-                            <div className="two wide field">
-                                Storage Percentage <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="plantDataOne.shelfLifeData.storagePercentage" component={this.renderInput} placeholder="Storage Percentage" type="text" />
-                            </div>
+                            </div>                            
                         </div>
                         <div className="field">
                             <button type="button" className="ui  button" onClick={previousPage}>

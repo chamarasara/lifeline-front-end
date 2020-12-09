@@ -15,7 +15,7 @@ class PackingMaterialList extends React.Component {
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
-                                {material.materialCode}                                
+                                PM{material.materialCodePm}                                
                             </div>
                         </h4></td>
                     <td>

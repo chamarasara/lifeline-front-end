@@ -97,7 +97,17 @@ class NewRawMaterial extends React.Component {
                             </div>                          
                             <div className="four wide field">
                                 Material Group <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="materialGroup" component={this.renderInput} placeholder="Material Group" type="text" />
+                                <Field name="materialGroup" required component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Material Group-</option>
+                                    <option value="Liquids">Liquids</option>
+                                    <option value="Solids">Solids</option>
+                                    <option value="Powder">Powder</option>
+                                    <option value="Gas">Gas</option>
+                                    <option value="Flammable">Flammable</option>
+                                    <option value="Laboratory">Laboratory</option>
+                                    <option value="Consumenbles">Consumenbles</option>
+                                    <option value="Semi-Liquid">Semi-Liquid</option>
+                                </Field>
                             </div>
                         </div>
                         <div className="fields">

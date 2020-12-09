@@ -56,7 +56,7 @@ class NewUser extends React.Component{
     renderRolesList(){
         return this.props.userRoles.map(userRoles => {
             return (
-                <option key={userRoles._id} value={userRoles._id}>{userRoles.userTypeName}</option>
+                <option key={userRoles._id} value={userRoles.userTypeName}>{userRoles.userTypeName}</option>
             )
         })
     }
@@ -126,7 +126,7 @@ class NewUser extends React.Component{
                         </div>
                         <div className="fields">   
                             <div className="four wide field">
-                                <Field name="userRole.id" component="select" label="User Role" placeholder="User Role" type="number">
+                                <Field name="userRole.userTypeName" component="select" label="User Role" placeholder="User Role" type="number">
                                     <option>-Select User Role-</option>
                                     {this.renderRolesList()}
                                 </Field>

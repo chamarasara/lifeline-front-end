@@ -15,6 +15,7 @@ class UsersList extends React.Component {
             return <div className="ui active inline loader"></div>
         }
         return this.props.users.map(users => {
+            console.log(users.userRole)
             return (
                 <div className="column">
                     <Link to={`/userprofile/${users._id}/${users.userRole.id}`} className="ui link fluid card">
@@ -29,8 +30,7 @@ class UsersList extends React.Component {
             )
         })
     }
-    render() {
-        
+    render() {        
         return (
             <div className="pusher">
                 <div className="ui basic segment" id="basic-segment">

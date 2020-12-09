@@ -490,7 +490,7 @@ class SinglePackingMaterial extends React.Component {
                             <Link to={"/packing-material"} className="ui small button">
                                 Back
                         </Link>
-                            <Link to={`/delete-packing-material/${this.props.material._id}`} className="ui small red button">
+                            <Link to={`/delete-packing-material/${this.props.material.id}`} className="ui small red button">
                                 Delete
                         </Link>
                             <table className="ui celled structured table">
@@ -508,7 +508,7 @@ class SinglePackingMaterial extends React.Component {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colSpan="2">{this.props.material.materialCode}</td>
+                                        <td colSpan="2">PM{this.props.material.materialCodePm}</td>
                                         <td colSpan="3">{this.props.material.materialName}</td>
                                         <td colSpan="3">{this.props.material.materialGroup}</td>
                                         <td colSpan="2">{this.props.material.baseUnitMeasure}</td>

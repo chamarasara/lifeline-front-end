@@ -511,7 +511,7 @@ class SingleRawMaterial extends React.Component {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colSpan="2">{this.props.material.materialCode}</td>
+                                        <td colSpan="2">RM{this.props.material.materialCodeRm}</td>
                                         <td colSpan="3">{this.props.material.materialName}</td>
                                         <td colSpan="3">{this.props.material.materialGroup}</td>
                                         <td colSpan="2">{this.props.material.baseUnitMeasure}</td>

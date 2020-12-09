@@ -16,14 +16,14 @@ class FinishGoodMaterialList extends React.Component {
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
-                                {material.materialCode}                                
+                                FG{material.productCode}                                
                             </div>
                         </h4></td>
                     <td>
-                        {material.materialName}
+                        {material.productName}
                     </td>
                         <td>
-                        {material.materialGroup}
+                        {material.productCategory}
                     </td>
                     <td>
                         {material.baseUnitMeasure}
@@ -31,7 +31,7 @@ class FinishGoodMaterialList extends React.Component {
                     <td>
                         {material.division}
                     </td>
-                    <td>{material.materialState}
+                    <td>{material.productState}
                     </td>
                     <td>
                         <Link to={`/single-finish-good-material/${material._id}`} className="ui blue button">View</Link>
@@ -47,12 +47,12 @@ class FinishGoodMaterialList extends React.Component {
                     <h4>Finish Goods</h4>
                     <table className="ui very basic collapsing celled table">
                         <thead>
-                            <tr><th>Material Code</th>
-                                <th>Material Name</th>
-                                <th>Material Group</th>
+                            <tr><th>Product Code</th>
+                                <th>Product Name</th>
+                                <th>Product Group</th>
                                 <th>Base Unit</th>
                                 <th>Division</th>
-                                <th>Material Status</th>
+                                <th>Product Status</th>
                             </tr></thead>
                         <tbody>
                             {this.renderList()}

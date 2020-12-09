@@ -236,7 +236,7 @@ class EditInvoice extends React.Component {
             <div>
                 <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
                 <p><b>Total Value:</b> {this.getTotalAmount()}</p>
-                <p><b>Total Value:</b> {this.getTotalCashPayments()}</p>
+          
                 {this.renderPaymentsForm()}
             </div>
         )
@@ -262,17 +262,17 @@ class EditInvoice extends React.Component {
 //            </p>
 //        )
 //    }
-    getTotalCashPayments() {
-        const payments = this.props.invoice.paymentsAll.map(cash => {
-            return cash.cashPayments.map(data => {
-                console.log(data.cashAmount)
-                return data.cashAmount
-            })
-        })
-        const total = payments.reduce((a, b) => (a + b))
-        console.log(payments)
-        return payments
-    }
+    // getTotalCashPayments() {
+    //     const payments = this.props.invoice.paymentsAll.map(cash => {
+    //         return cash.cashPayments.map(data => {
+    //             console.log(data.cashAmount)
+    //             return data.cashAmount
+    //         })
+    //     })
+    //     const total = payments.reduce((a, b) => (a + b))
+    //     console.log(payments)
+    //     return payments
+    // }
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
     }

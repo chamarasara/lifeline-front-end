@@ -14,7 +14,7 @@ class DeleteRawMaterial extends React.Component {
     renderActions() {
         return (
             <React.Fragment>
-                <button onClick={() => this.props.deleteRawMaterial(this.props.match.params.id)} className="ui red button">Delete</button>
+                <button onClick={() => this.props.deleteRawMaterial(this.props.material._id)} className="ui red button">Delete</button>
                 <Link to={`/single-raw-material/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
             </React.Fragment>
         );
