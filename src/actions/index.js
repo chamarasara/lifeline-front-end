@@ -67,7 +67,12 @@ import {
     FETCH_INVOICES,
     FETCH_INVOICE,
     DELETE_INVOICE,
-    SEARCH_INVOICES_RESULT
+    SEARCH_INVOICES_RESULT,
+    CREATE_BOM,
+    EDIT_BOM,
+    FETCH_BOMS,
+    FETCH_BOM,
+    DELETE_BOM,
 } from './types';
 
 //create user
@@ -352,7 +357,7 @@ export const createRawMaterial = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('/api/master-data/raw-material/new-raw-material/', { ...formValues,user }, header);
+    const response = await api.post('/api/master-data/raw-material/new-raw-material/', { ...formValues, user }, header);
     console.log(response)
     dispatch({ type: CREATE_RAW_MATERIAL, payload: response.data });
     history.push("/raw-material/");
@@ -426,7 +431,7 @@ export const createPackingaterial = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('/api/master-data/packing-material/new-packing-material', { ...formValues,user }, header);
+    const response = await api.post('/api/master-data/packing-material/new-packing-material', { ...formValues, user }, header);
     console.log(response)
     dispatch({ type: CREATE_PACKING_MATERIAL, payload: response.data });
     history.push('/packing-material');
@@ -777,7 +782,7 @@ export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
     history.push(`/approvals-single-raw/${formValues.id}`);
     window.location.reload()
-    
+
 };
 //Delete purchase order raw
 export const deletePurchaseOrderRaw = (id) => async dispatch => {
@@ -805,7 +810,7 @@ export const searchPurchaseOrdersRaw = (formValues) => async dispatch => {
     console.log(formValues)
     const response = await api.post('api/sales/purchase-orders-raw/search-purchase-order-raw', { formValues }, header);
     console.log(response.data);
-    dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_RAW, payload: response.data});
+    dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_RAW, payload: response.data });
 };
 //Print purchase oreder rawa
 export const printPurchaseOrderRaw = (id) => async dispatch => {
@@ -958,7 +963,7 @@ export const createInvoice = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/invoices/new-invoice', { ...formValues,user }, header);
+    const response = await api.post('api/sales/invoices/new-invoice', { ...formValues, user }, header);
     dispatch({ type: CREATE_INVOICE, payload: response.data });
     window.location.reload()
 
@@ -998,7 +1003,7 @@ export const editInvoice = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
-    dispatch({ type: EDIT_INVOICE, payload: response.data });    
+    dispatch({ type: EDIT_INVOICE, payload: response.data });
     history.push("/invoice-dashboard");
     window.location.reload()
 };
@@ -1016,7 +1021,7 @@ export const deleteInvoice = (id) => async dispatch => {
     history.push('/invoice-dashboard')
     //window.location.reload()
 };
-//Search purchase orders 
+//Search invoices
 export const searchInvoices = (formValues) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
@@ -1039,7 +1044,7 @@ export const printInvoice = (id) => async dispatch => {
             'Content-Type': 'application/pdf',
             'Accept': 'application/pdf',
             'Content-Disposition': 'attachment;filename=invoice.pdf'
-            
+
         }
     };
     const response = await api.get(`/api/sales/invoices/print-invoice/${id}`, { responseType: 'arraybuffer' }, header, { id });
@@ -1049,6 +1054,76 @@ export const printInvoice = (id) => async dispatch => {
     const fileURL = URL.createObjectURL(file);
     //Open the URL on new Window
     window.open(fileURL);
+};
+//create BOM
+export const createBom = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    console.log(user)
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/master-data/bom/new-bom', { ...formValues, user }, header);
+    dispatch({ type: CREATE_BOM, payload: response.data });
+    window.location.reload()
+
+};
+//List all BOMs
+export const fetchBoms = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/master-data/bom/all-boms', header);
+    dispatch({ type: FETCH_BOMS, payload: response.data });
+};
+//View BOM
+export const fetchBom = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`api/master-data/bom/single-bom/${id}`, header);
+    dispatch({ type: FETCH_BOM, payload: response.data[0] });
+};
+//Edit BOM
+export const editBom = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/master-data/bom/update-bom/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_BOM, payload: response.data });
+    history.push(`/single-bom/${formValues.id}`);
+    window.location.reload()
+};
+//Delete BOM
+export const deleteBom = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/master-data/bom/delete-bom/${id}`, header);
+    dispatch({ type: DELETE_BOM, payload: id });
+    history.push('/bom')
+    window.location.reload()
 };
 //Autheticate User
 export function signInAction({ userName, password }, history) {

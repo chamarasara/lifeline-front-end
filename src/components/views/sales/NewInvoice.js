@@ -2,13 +2,13 @@ import React from 'react';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { fetchCustomers, fetchProductsMaster, createInvoice } from '../../../actions';
+import { fetchCustomers, fetchFinishGoods, createInvoice } from '../../../actions';
 
 class NewInvoice extends React.Component {
 
     componentDidMount() {
         this.props.fetchCustomers()
-        this.props.fetchProductsMaster()
+        this.props.fetchFinishGoods()
     }
 
     renderError({ error, touched }) {
@@ -164,11 +164,11 @@ class NewInvoice extends React.Component {
 // }
 const mapStateToProps = (state) => {
     const customers = Object.values(state.customer)
-    const products = Object.values(state.productMaster)
+    const products = Object.values(state.finishGoods)
     return { errorMessage: state, customers: customers, products: products };
 }
 const formWrapped = reduxForm({
     form: 'newInvoice'
 })(NewInvoice);
 
-export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, createInvoice })(formWrapped);
+export default connect(mapStateToProps, { fetchCustomers, fetchFinishGoods, createInvoice })(formWrapped);

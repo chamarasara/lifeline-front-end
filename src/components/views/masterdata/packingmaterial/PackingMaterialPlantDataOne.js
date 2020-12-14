@@ -119,15 +119,15 @@ class PackingMaterialPlantDataOne extends React.Component {
                             </div>                            
                             <div className="three wide field">
                                 Min Shelf Life <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="plantDataOne.shelfLifeData.minRemainigShelfLife" component={this.renderInput} placeholder="Min Remaining Shelf Life" type="text" />
+                                <Field name="plantDataOne.shelfLifeData.minRemainigShelfLife" component={this.renderInput} placeholder="Min Remaining Shelf Life" type="number" />
                             </div>
                             <div className="two wide field">
                                 Total Shelf Life <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="plantDataOne.shelfLifeData.totalShelfLife" component={this.renderInput} placeholder="Total Shelf Life" type="text" />
+                                <Field name="plantDataOne.shelfLifeData.totalShelfLife" component={this.renderInput} placeholder="Total Shelf Life" type="number" />
                             </div>
                             <div className="three wide field">
                                 Period fro Sled <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="plantDataOne.shelfLifeData.periodForSled" component={this.renderInput} placeholder="Period Ind. for SLED" type="text" />
+                                <Field name="plantDataOne.shelfLifeData.periodForSled" component={this.renderInput} placeholder="Period Ind. for SLED" type="number" />
                             </div>                            
                         </div>
                         <div className="field">

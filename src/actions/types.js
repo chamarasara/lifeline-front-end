@@ -76,6 +76,12 @@ export const FETCH_INVOICES = 'FETCH_INVOICES';
 export const DELETE_INVOICE = 'DELETE_INVOICE';
 export const SEARCH_INVOICES_RESULT = 'SEARCH_INVOICES_RESULT';
 
+export const CREATE_BOM = 'CREATE_BOM';
+export const EDIT_BOM = 'EDIT_BOM';
+export const FETCH_BOM = 'FETCH_BOM';
+export const FETCH_BOMS = 'FETCH_BOMS';
+export const DELETE_BOM = 'DELETE_BOM';
+
 
 
 

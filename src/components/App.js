@@ -93,6 +93,12 @@ import DeclineOrderRaw from './views/approvals/raw/DeclineOrderRaw';
 import ApprovalsSingleOrderPacking from './views/approvals/packing/ApprovalsSingleOrderPacking';
 import ApprovalsEditOrderPacking from './views/approvals/packing/ApprovalsEditOrderPacking';
 import DeclineOrderPacking from './views/approvals/packing/DeclineOrderPacking';
+import BomDashboard from './views/masterdata/billofmaterial/BomDashboard';
+import NewBom from './views/masterdata/billofmaterial/WizardFormBom';
+import SingleBom from './views/masterdata/billofmaterial/SingleBom';
+import EditBom from './views/masterdata/billofmaterial/EditBom';
+import { deleteBom } from '../actions';
+import DeleteBom from './views/masterdata/billofmaterial/DeleteBom';
 
 
 
@@ -202,6 +208,11 @@ class App extends React.Component {
                     <PrivateRoute path="/approvals-single-packing/:id" component={ApprovalsSingleOrderPacking} />
                     <PrivateRoute path="/approvals-edit-packing/:id" component={ApprovalsEditOrderPacking} />
                     <PrivateRoute path="/approvals-delete-packing/:id" component={DeclineOrderPacking} />
+                    <PrivateRoute path="/bom" component={BomDashboard} />
+                    <PrivateRoute path="/new-bom" component={NewBom} />
+                    <PrivateRoute path="/single-bom/:id" component={SingleBom} />
+                    <PrivateRoute path="/edit-bom/:id" component={EditBom} />
+                    <PrivateRoute path="/delete-bom/:id" component={DeleteBom} />                    
                 </Router>
             </div>
         ) 
