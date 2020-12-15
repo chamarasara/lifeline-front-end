@@ -121,8 +121,9 @@ class SinglePurchaseOrderPacking extends React.Component {
         if (!this.props.order) {
             return (
                 <div className="pusher">
-                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}></div>
-                    <p>Loading....</p>
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>                    
                 </div>
             )
         }
