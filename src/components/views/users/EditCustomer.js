@@ -7,8 +7,8 @@ class EditCustomer extends React.Component {
     componentDidMount() {
         this.props.fetchCustomer(this.props.match.params.id);
     }
-   
-   
+
+
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -28,19 +28,19 @@ class EditCustomer extends React.Component {
             );
         }
     }
-    renderInput = ({ input, label, placeholder, type , meta }) => {
+    renderInput = ({ input, label, placeholder, type, meta }) => {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder}  type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
                 {this.renderError(meta)}
             </div>
         );
     }
     onSubmit = (formValues) => {
-        this.props.editCustomer(this.props.customer._id,formValues)
+        this.props.editCustomer(this.props.customer._id, formValues)
         console.log(formValues)
-    }  
+    }
     render() {
         if (!this.props.customer) {
             return <div>Customer not selected. Please select a Customer from the list</div>
@@ -48,57 +48,74 @@ class EditCustomer extends React.Component {
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
-                    <h5>Edit Customer Details</h5>
+                    <h2>Edit Customer Details</h2>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="sixteen wide field">
-                                <Field name="customerName" component={this.renderInput} value ={this.props.customer.customerName} placeholder={this.props.customer.customerName} type="text" />
+                                Company Name
+                                <Field name="companyName" component={this.renderInput} placeholder="Company Name" type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Contact Number 1
                                 <Field name="mobileNo1" component={this.renderInput} placeholder={this.props.customer.mobileNo} type="text" />
                             </div>
                             <div className="four wide field">
+                                Contact Number 2
                                 <Field name="mobileNo2" component={this.renderInput} placeholder={this.props.customer.mobileNo} type="text" />
                             </div>
                             <div className="four wide field">
+                                Fax
                                 <Field name="fax" component={this.renderInput} placeholder={this.props.customer.fax} type="text" />
                             </div>
                             <div className="four wide field">
+                                Registration Number
                                 <Field name="registerNo" component={this.renderInput} placeholder={this.props.customer.registerNo} type="text" />
                             </div>
                             <div className="four wide field">
+                                Email
                                 <Field name="email" component={this.renderInput} placeholder={this.props.customer.email} type="text" />
                             </div>
-                        </div>  
+                        </div>
                         <div className="fields">
-                            <div className="ten wide field">
-                                <Field name="companyName" component={this.renderInput} placeholder="Company Name" type="text" />
+                            <div className="sixteen wide field">
+                                Contact Person Name
+                                <Field name="customerName" component={this.renderInput} placeholder={this.props.customer.customerName} type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="debitPeriod" component={this.renderInput} placeholder="Debit Period" type="number" />
+                                Credit Period
+                                <Field name="creditPeriod" component={this.renderInput}  placeholder="Credit Period" type="number" />
                             </div>
-                        </div>                    
+                            <div className="four wide field">
+                                Credit Amount
+                                <Field name="creditAmount" component={this.renderInput} placeholder="Credit Amount" type="number" />
+                            </div>
+                        </div>
                         <div className="fields">
                             <div className="five wide field">
-                                <label>Communication Address- </label>
+                                Communication Address-
                             </div>
                         </div>
                         <div className="fields">
                             <div className="two wide field">
+                                No
                                 <Field name="communicationAddress.no" component={this.renderInput} placeholder={this.props.customer.communicationAddress.no} type="text" />
                             </div>
                             <div className="four wide field">
+                                Lane
                                 <Field name="communicationAddress.lane" component={this.renderInput} placeholder={this.props.customer.communicationAddress.lane} type="text" />
                             </div>
                             <div className="four wide field">
+                                City
                                 <Field name="communicationAddress.city" component={this.renderInput} placeholder={this.props.customer.email} type="text" />
                             </div>
                             <div className="four wide field">
+                                Postal Code
                                 <Field name="communicationAddress.postalCode" component={this.renderInput} placeholder={this.props.customer.communicationAddress.postalCode} type="text" />
                             </div>
                             <div className="four wide field">
+                                Country
                                 <Field name="communicationAddress.country" component="select" placeholder={this.props.customer.communicationAddress.country} type="text" >
                                     <option>-Select Country-</option>
                                     <option value="Sri Lanka">Sri Lanka</option>
@@ -107,23 +124,28 @@ class EditCustomer extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="five wide field">
-                                <label>Registered Address- </label>
+                                Registered Address-
                             </div>
                         </div>
                         <div className="fields">
                             <div className="two wide field">
+                                No
                                 <Field name="registerAddress.no2" component={this.renderInput} placeholder={this.props.customer.registerAddress.no2} type="text" />
                             </div>
                             <div className="four wide field">
+                                Lane
                                 <Field name="registerAddress.lane2" component={this.renderInput} placeholder={this.props.customer.registerAddress.lane2} type="text" />
                             </div>
                             <div className="four wide field">
+                                City
                                 <Field name="registerAddress.city2" component={this.renderInput} placeholder={this.props.customer.registerAddress.city2} type="text" />
                             </div>
                             <div className="four wide field">
+                                Postal Code
                                 <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder={this.props.customer.registerAddress.postalCode2} type="text" />
                             </div>
                             <div className="four wide field">
+                                Country
                                 <Field name="registerAddress.country2" component="select" placeholder={this.props.customer.registerAddress.country2} type="text" >
                                     <option>-Select Country-</option>
                                     <option value="Sri Lanka">Sri Lanka</option>
@@ -132,6 +154,7 @@ class EditCustomer extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="three wide field">
+                                Nationality
                                 <Field name="state" component="select" placeholder={this.props.customer.state} type="text" >
                                     <option>-Select Nationality-</option>
                                     <option value="local">Local</option>
@@ -139,6 +162,7 @@ class EditCustomer extends React.Component {
                                 </Field>
                             </div>
                             <div className="three wide field">
+                                Currency
                                 <Field name="currency" component="select" placeholder={this.props.customer.currency} type="text" >
                                     <option>-Select Currency-</option>
                                     <option value="LKR">LKR</option>

@@ -27,7 +27,11 @@ class CustomerProfile extends React.Component {
                         <div className="twelve wide column" style={{ marginTop: "30px" }}>
                             <div className="ui divided selection list">
                                 <div className="item">
-                                    <div className="ui horizontal label">Full Name</div>
+                                    <div className="ui horizontal label">Company Name</div>
+                                    {this.props.customer.companyName}
+                                </div>
+                                <div className="item">
+                                    <div className="ui horizontal label">Contact Person Name Name</div>
                                     {this.props.customer.customerName}
                                 </div>
                                 <div className="item">
@@ -45,11 +49,15 @@ class CustomerProfile extends React.Component {
                                 <div className="item">
                                     <div className="ui horizontal label">Fax</div>
                                     {this.props.customer.fax}
-                                </div>
+                                </div>  
                                 <div className="item">
-                                    <div className="ui horizontal label">Company Name</div>
-                                    {this.props.customer.companyName}
-                                </div>
+                                    <div className="ui horizontal label">Credit Period</div>
+                                    {this.props.customer.creditPeriod}(Days)
+                                </div> 
+                                <div className="item">
+                                    <div className="ui horizontal label">Credit Amount</div>
+                                    {this.props.customer.creditAmount}
+                                </div>                               
                                 <div className="item">
                                     <div className="ui horizontal label">Currency</div>
                                     {this.props.customer.currency}

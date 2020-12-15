@@ -70,10 +70,6 @@ class RawMaterialPlantDataTwo extends React.Component {
                                 <Field name="plantDataTwo.weight.unitsPerPallet" component={this.renderInput} placeholder="Units per Pallet" type="number" />
                             </div>
                             <div className="three wide field">
-                            Gross Weight Per Unit
-                                <Field name="plantDataTwo.weight.grossWeightPerUnit" component={this.renderInput} placeholder="Gross Weight per Unit" type="number" />
-                            </div>
-                            <div className="three wide field">
                                 Weight Unit <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataTwo.weight.weightUnit" required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Weight Unit-</option>
@@ -84,15 +80,15 @@ class RawMaterialPlantDataTwo extends React.Component {
                                 </Field>
                             </div>
                             <div className="three wide field">
+                            Gross Weight Per Unit
+                                <Field name="plantDataTwo.weight.grossWeightPerUnit" component={this.renderInput} placeholder="Gross Weight per Unit" type="number" />
+                            </div>                            
+                            <div className="three wide field">
                                 Net Weight <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataTwo.weight.netWeight" component={this.renderInput} placeholder="Net Weight" type="number" />
                             </div>
-                        </div>
+                        </div>                        
                         <div className="fields">
-                            <div className="three wide field">
-                                Volume <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="plantDataTwo.weight.volume" component={this.renderInput} placeholder="volume" type="number" />
-                            </div>
                             <div className="three wide field">
                                 Volume Unit <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataTwo.weight.volumeUnit" required component={this.renderSelectField} placeholder="" type="text" >
@@ -100,32 +96,37 @@ class RawMaterialPlantDataTwo extends React.Component {
                                     <option value="cm3">cm3</option>
                                     <option value="m3">m3</option>
                                     <option value="ft3">ft3</option>
+                                    <option value="l">l</option>
                                 </Field>
                             </div>
+                            <div className="three wide field">
+                                Volume <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="plantDataTwo.weight.volume" component={this.renderInput} placeholder="volume" type="number" />
+                            </div>                            
                         </div>
                         <h4>Dimensions  </h4>
                         <div className="fields">
                             <div className="three wide field">
-                                Dimension Unit <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Dimension Unit (Optional)
                                 <Field name="plantDataTwo.weight.dimensionsUnit" required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Dimension Unit-</option>
                                     <option value="mm">mm</option>
                                     <option value="cm">cm</option>
-                                    <option value="m">m</option>
+                                    <option value="m">m</option>                                 
                                 </Field>
                             </div>
                             <div className="three wide field">
-                                Lenght <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Lenght (Optional)
                                 <Field name="plantDataTwo.weight.dimensionsL" required component={this.renderInput} placeholder="Length" type="number" >
                                 </Field>
                             </div>
                             <div className="three wide field">
-                                Width <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Width (Optional)
                                 <Field name="plantDataTwo.weight.dimensionsW" required component={this.renderInput} placeholder="Width" type="number" >
                                 </Field>
                             </div>
                             <div className="three wide field">
-                                Height <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Height (Optional)
                                 <Field name="plantDataTwo.weight.dimensionsH" required component={this.renderInput} placeholder="Height" type="number" >
                                 </Field>
                             </div>

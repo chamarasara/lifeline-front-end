@@ -94,7 +94,7 @@ class EditRawMaterialPlantDataOne extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="three wide field">
-                                Haz Material Number
+                                Haz Material Number(Optional)
                                 <Field name="plantDataOne.generalData.hazMaterialNumber" component={this.renderInput} placeholder={this.props.material.plantDataOne.generalData.hazMaterialNumber} type="text" />
                             </div>                            
                         </div>
@@ -104,7 +104,7 @@ class EditRawMaterialPlantDataOne extends React.Component {
                                 Max Storage Period
                                 <Field name="plantDataOne.shelfLifeData.maxStoragePeriod" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.maxStoragePeriod} type="text" />
                             </div>
-                            <div className="two wide field">
+                            <div className="four wide field">
                                 Time Unit
                                  <Field name="plantDataOne.shelfLifeData.timeUnit" required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Time-Unit-</option>
@@ -123,11 +123,7 @@ class EditRawMaterialPlantDataOne extends React.Component {
                             <div className="three wide field">
                                 Period for Sled
                                 <Field name="plantDataOne.shelfLifeData.periodForSled" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.periodForSled} type="text" />
-                            </div>
-                            <div className="two wide field">
-                                Storage Percentage
-                                <Field name="plantDataOne.shelfLifeData.storagePercentage" component={this.renderInput} placeholder={this.props.material.plantDataOne.shelfLifeData.storagePercentage} type="text" />
-                            </div>
+                            </div>                            
                         </div>
                         <div className="field">
                             <Link to={`/single-raw-material/${this.props.material.id}`} className="ui button">Back</Link>

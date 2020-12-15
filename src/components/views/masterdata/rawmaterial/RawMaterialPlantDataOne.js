@@ -128,7 +128,7 @@ class RawMaterialPlantDataOne extends React.Component {
                                 <Field name="plantDataOne.shelfLifeData.totalShelfLife" component={this.renderInput} placeholder="Total Shelf Life" type="number" />
                             </div>
                             <div className="three wide field">
-                                Period For Sled <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Period For SLED <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="plantDataOne.shelfLifeData.periodForSled" component={this.renderInput} placeholder="Period Ind. for SLED" type="number" />
                             </div>                            
                         </div>

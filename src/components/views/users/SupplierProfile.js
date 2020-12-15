@@ -49,14 +49,18 @@ class SupplierProfile extends React.Component {
                                 <div className="item">
                                     <div className="ui horizontal label">Company Name</div>
                                     {this.props.supplier.companyName}
+                                </div>                                
+                                <div className="item">
+                                    <div className="ui horizontal label">Credit Period</div>
+                                    {this.props.supplier.creditPeriod} (Days)
+                                </div>
+                                <div className="item">
+                                    <div className="ui horizontal label">Credit Amount</div>
+                                    {this.props.supplier.creditAmount}
                                 </div>
                                 <div className="item">
                                     <div className="ui horizontal label">Currency</div>
                                     {this.props.supplier.currency}
-                                </div>
-                                <div className="item">
-                                    <div className="ui horizontal label">Credit Period</div>
-                                    {this.props.supplier.creditPeriod}
                                 </div>
                                 <div className="item">
                                     <div className="ui horizontal label">Coummunication Address</div>

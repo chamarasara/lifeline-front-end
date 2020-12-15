@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createSupplier } from '../../../actions';
 class NewSupplier extends React.Component {
-   
+
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -33,67 +33,94 @@ class NewSupplier extends React.Component {
             </div>
         );
     }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+                {this.renderError(meta)}
+            </div>
+        </div>
+    )
     onSubmit = (formValues) => {
         this.props.createSupplier(formValues)
-        console.log(formValues)
     }
-    
+
     render() {
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
-                    <h5>Create New Supplier</h5>
+                    <h3>Create New Supplier</h3>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="sixteen wide field">
-                                <Field name="supplierName" component={this.renderInput} placeholder="Full Name" type="text" />
+                                Company Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="companyName" component={this.renderInput} placeholder="Company Name" type="text" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Contact Number 1 <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="mobileNo1" component={this.renderInput} placeholder="Contact Number 1" type="text" />
                             </div>
                             <div className="four wide field">
+                                Contact Number 2 (Optional)
                                 <Field name="mobileNo2" component={this.renderInput} placeholder="Contact Number 2" type="text" />
                             </div>
                             <div className="four wide field">
+                                Fax (Optional)
                                 <Field name="fax" component={this.renderInput} placeholder="Fax" type="text" />
                             </div>
                             <div className="four wide field">
+                                Registration Number (Optional)
                                 <Field name="registerNo" component={this.renderInput} placeholder="Registration Number" type="text" />
                             </div>
                             <div className="four wide field">
+                                Email
                                 <Field name="email" component={this.renderInput} placeholder="Email" type="text" />
                             </div>
                         </div>
                         <div className="fields">
-                            <div className="ten wide field">
-                                <Field name="companyName" component={this.renderInput} placeholder="Company Name" type="text" />
+                            <div className="eight wide field">
+                                Contact Person Name (Optional)
+                                <Field name="supplierName" component={this.renderInput} placeholder="Contact Person Name" type="text" />
                             </div>
                             <div className="four wide field">
+                                Credit Period <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="creditPeriod" component={this.renderInput} placeholder="Credit Period(Days)" type="number" />
+                            </div>
+                            <div className="four wide field">
+                                Credit Amount <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="creditAmount" component={this.renderInput} placeholder="Credit Amount" type="number" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="five wide field">
-                                <label>Communication Address- </label>
+                                Communication Address-<span style={{ color: "red", fontSize: "18px" }}>*</span>
                             </div>
                         </div>
                         <div className="fields">
                             <div className="two wide field">
+                                No <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="communicationAddress.no" component={this.renderInput} placeholder="No" type="text" />
                             </div>
                             <div className="four wide field">
+                                Lane <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="communicationAddress.lane" component={this.renderInput} placeholder="Lane" type="text" />
                             </div>
                             <div className="four wide field">
+                                City <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="communicationAddress.city" component={this.renderInput} placeholder="City" type="text" />
                             </div>
                             <div className="four wide field">
+                                Postal Code <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="communicationAddress.postalCode" component={this.renderInput} placeholder="Postal Code" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="communicationAddress.country" component="select" placeholder="Country" type="text" >
+                                Country <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="communicationAddress.country" component={this.renderSelectField} placeholder="Country" type="text" >
                                     <option>-Select Country-</option>
                                     <option value="Sri Lanka">Sri Lanka</option>
                                 </Field>
@@ -101,50 +128,57 @@ class NewSupplier extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="five wide field">
-                                <label>Registered Address- </label>
+                                Registered Address-(Optional)
                             </div>
                         </div>
                         <div className="fields">
                             <div className="two wide field">
+                                No (Optional)
                                 <Field name="registerAddress.no2" component={this.renderInput} placeholder="No" type="text" />
                             </div>
                             <div className="four wide field">
+                                Lane (Optional)
                                 <Field name="registerAddress.lane2" component={this.renderInput} placeholder="Lane" type="text" />
                             </div>
                             <div className="four wide field">
+                                City (Optional)
                                 <Field name="registerAddress.city2" component={this.renderInput} placeholder="City" type="text" />
                             </div>
                             <div className="four wide field">
+                                Postal Code (Optional)
                                 <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder="Postal Code" type="text" />
                             </div>
                             <div className="four wide field">
-                                <Field name="registerAddress.country2" component="select" placeholder="Country" type="text" >
+                                Country (Optional)
+                                <Field name="registerAddress.country2" component={this.renderSelectField} placeholder="Country" type="text" >
                                     <option>-Select Country-</option>
                                     <option value="Sri Lanka">Sri Lanka</option>
                                 </Field>
                             </div>
-                            
+
                         </div>
                         <div className="fields">
                             <div className="three wide field">
-                                <Field name="state" component="select" placeholder="Country" type="text" >
+                                Nationality <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="state" component={this.renderSelectField} placeholder="Country" type="text" >
                                     <option>-Select Nationality-</option>
                                     <option value="local">Local</option>
                                     <option value="foriegn">Foreign</option>
                                 </Field>
                             </div>
                             <div className="three wide field">
-                                <Field name="currency" component="select" placeholder="Country" type="text" >
+                                Currency <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="currency" component={this.renderSelectField} placeholder="Country" type="text" >
                                     <option>-Select Currency-</option>
                                     <option value="LKR">LKR</option>
                                     <option value="USD">USD</option>
                                     <option value="INR">INR</option>
                                 </Field>
-                            </div>                            
-                        </div>                                            
+                            </div>
+                        </div>
                         <div className="field">
                             <Link to={"/supplier"} className="ui button">Back</Link>
-                            <button type="submit" className="ui primary button">Add New Supplier</button>
+                            <button type="submit" className="ui primary button">Save</button>
                         </div>
                     </form>
                 </div>
@@ -156,33 +190,39 @@ class NewSupplier extends React.Component {
 const validate = (formValues) => {
     const errors = {}
     if (!formValues.supplierName) {
-        errors.supplierName = 'Please enter Supplier Name';
+        errors.supplierName = 'Required';
     }
     if (!formValues.companyName) {
-        errors.companyName = 'Please enter the Company Name';
+        errors.companyName = 'Required';
     }
     if (!formValues.mobileNo1) {
-        errors.mobileNo1 = 'Please enter Phone Number';
+        errors.mobileNo1 = 'Required';
     }
     if (!formValues.mobileNo2) {
-        errors.mobileNo2 = 'Please enter Phone Number';
+        errors.mobileNo2 = 'Required';
     }
     if (!formValues.email) {
-        errors.email = 'Please enter Email';
+        errors.email = 'Required';
     }
     if (!formValues.creditPeriod) {
-        errors.creditPeriod = 'Please enter the Debit Period';
+        errors.creditPeriod = 'Required';
+    }
+    if (!formValues.creditAmount) {
+        errors.creditAmount = 'Required';
+    }
+    if (!formValues.state) {
+        errors.state = 'Required';
+    }
+    if (!formValues.currency) {
+        errors.currency = 'Required';
     }
     if (!formValues.communicationAddress) {
         errors.communicationAddress = { no: "Required", lane: "Required", city: "Required", postalCode: "Required", country: "Required" };
-    }
-    if (!formValues.registerAddress) {
-        errors.registerAddress = { no2: "Required", lane2: "Required", city2: "Required", postalCode2: "Required", country2: "Required" };
-    }
+    }    
     return errors;
 }
 const formWrapped = reduxForm({
     form: 'newSupplier',
     validate: validate
 })(NewSupplier);
-export default connect(null, { createSupplier})(formWrapped);
+export default connect(null, { createSupplier })(formWrapped);

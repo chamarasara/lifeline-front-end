@@ -353,20 +353,18 @@ class SingleRawMaterial extends React.Component {
                         <tr>
                             <th colSpan="2">Max Storage Period</th>
                             <th colSpan="2">Time Unit</th>
-                            <th colSpan="1">Min Remaining Shelf Life</th>
-                            <th colSpan="1">Total Shelf Life</th>
-                            <th colSpan="2">Period for Sled</th>
-                            <th colSpan="2">Storage Percentage</th>
+                            <th colSpan="2">Min Remaining Shelf Life</th>
+                            <th colSpan="2">Total Shelf Life</th>
+                            <th colSpan="2">Period for SLED</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td colSpan="2">{plantDataOne.shelfLifeData.maxStoragePeriod}</td>
                             <td colSpan="2">{plantDataOne.shelfLifeData.timeUnit}</td>
-                            <td colSpan="1">{plantDataOne.shelfLifeData.minRemainigShelfLife}</td>
-                            <td colSpan="1">{plantDataOne.shelfLifeData.totalShelfLife}</td>
+                            <td colSpan="2">{plantDataOne.shelfLifeData.minRemainigShelfLife}</td>
+                            <td colSpan="2">{plantDataOne.shelfLifeData.totalShelfLife}</td>
                             <td colSpan="2">{plantDataOne.shelfLifeData.periodForSled}</td>
-                            <td colSpan="2">{plantDataOne.shelfLifeData.storagePercentage}</td>
                         </tr>
                     </tbody>
                     <tfoot className="full-width">
