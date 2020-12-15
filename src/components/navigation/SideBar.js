@@ -22,7 +22,7 @@ class SideBar extends React.Component {
         console.log(user)
         if (!this.props.user) {
             return(
-                <div>Loading</div>
+                <div className="ui active inline loader"></div>
             )
         }
         if (user.user.userRole === "Admin") {

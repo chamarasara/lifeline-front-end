@@ -106,6 +106,7 @@ class NewPackingMaterial extends React.Component {
                                     <option value="Label">Label</option>
                                     <option value="Cartoon">Cartoon</option>
                                     <option value="Pump Head">Pump Head</option>
+                                    <option value="Tube">Tube</option>
                                 </Field>
                             </div>
                         </div>

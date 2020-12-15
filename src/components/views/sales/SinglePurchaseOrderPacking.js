@@ -19,7 +19,7 @@ class SinglePurchaseOrderPacking extends React.Component {
                 <td>
                     {this.props.order.packingMaterialsList.map(material => {
                         return (
-                            <p key={material.id}>{material.materialCode}</p>
+                            <p key={material.id}>PM{material.materialCodePm}</p>
                         )
                     })
                     }

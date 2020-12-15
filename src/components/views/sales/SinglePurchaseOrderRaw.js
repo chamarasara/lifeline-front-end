@@ -19,7 +19,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                 <td>
                     {this.props.order.rawMaterialsList.map(material => {
                         return (
-                            <p key={material.id}>{material.materialCode}</p>
+                            <p key={material.id}>RM{material.materialCodeRm}</p>
                         )
                     })
                     }
