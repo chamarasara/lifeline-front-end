@@ -763,7 +763,7 @@ export const updatePurchaseOrderRaw = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
-    history.push(`/approvals-raw`);
+    history.push(`/purchase-order-dashboard-raw`);
     window.location.reload()
 
 };
@@ -900,7 +900,7 @@ export const updatePurchaseOrderPacking = (id, formValues) => async dispatch => 
     };
     const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
-    history.push('/approvals-packing');
+    history.push('/purchase-order-dashboard-packing');
     window.location.reload()
 };
 //Delete purchase order raw

@@ -97,13 +97,31 @@ class SinglePurchaseOrderRaw extends React.Component {
     onSubmit = (formValues) => {
         this.props.editPurchaseOrderRaw(this.props.order._id, formValues)
     }
-
+    renderPrintButton(){
+        if (this.props.order.order_state === "Pending") {            
+            return(
+                <div>
+                    <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>    
+                    <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>               
+                </div>
+            )
+        } else if (this.props.order.order_state === "Approved") {
+            return (
+                <div>
+                    <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
+                    <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                    <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                </div>
+            ) 
+        }
+    }
     render() {
         if (!this.props.order) {
             return (
                 <div className="pusher">
-                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}></div>
-                    <p>Loading....</p>
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>
                 </div>
             )
         }
@@ -128,10 +146,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                             {this.renderPurchaseOrederDetails()}
                         </tbody>
                     </table>
-                    <div>
-                        <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
-                        <button type="button" onClick={this.onClick} className="ui primary button">Print</button>                        
-                    </div>
+                    {this.renderPrintButton()}
                 </div>
                 <div>
                 </div>

@@ -92,6 +92,24 @@ class SinglePurchaseOrderPacking extends React.Component {
         )
 
     }
+    renderPrintButton() {
+        if (this.props.order.order_state === "Pending") {
+            return (
+                <div>
+                    <Link to={"/purchase-order-dashboard-packing"} type="button" className="ui button">Back</Link>
+                    <Link to={`/delete-purchase-order-packing/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                </div>
+            )
+        } else if (this.props.order.order_state === "Approved") {
+            return (
+                <div>
+                    <Link to={"/purchase-order-dashboard-packing"} type="button" className="ui button">Back</Link>
+                    <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                    <Link to={`/delete-purchase-order-packing/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                </div>
+            )
+        }
+    }
     onClick = () => {
         this.props.printPurchaseOrderPacking(this.props.order.id)
     }
@@ -129,10 +147,9 @@ class SinglePurchaseOrderPacking extends React.Component {
                             {this.renderPurchaseOrederDetails()}
                         </tbody>
                     </table>
+                    {this.renderPrintButton()}
                     <div>
-                        <Link to={"/purchase-order-dashboard-packing"} type="button" className="ui button">Back</Link>
-                        <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
-                        <Link to={`/delete-purchase-order-packing/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                        
                     </div>
                 </div>
                 <div>
