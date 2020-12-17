@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchFinishGoods} from '../../../../actions';
+import { fetchFinishGoods } from '../../../../actions';
 
 class FinishGoodMaterialList extends React.Component {
     componentDidMount() {
         this.props.fetchFinishGoods()
     }
 
-    renderList() {   
+    renderList() {
         return this.props.material.map(material => {
             console.log(material._id)
             return (
@@ -16,22 +16,26 @@ class FinishGoodMaterialList extends React.Component {
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
-                                FG{material.productCode}                                
+                                FG{material.productCode}
                             </div>
                         </h4></td>
                     <td>
                         {material.productName}
                     </td>
-                        <td>
+                    <td>
                         {material.productCategory}
                     </td>
                     <td>
                         {material.baseUnitMeasure}
                     </td>
                     <td>
+                        {material.sellingPrice}
+                    </td>
+                    <td>
                         {material.division}
                     </td>
-                    <td>{material.productState}
+                    <td>
+                        {material.productState}
                     </td>
                     <td>
                         <Link to={`/single-finish-good-material/${material._id}`} className="ui blue button">View</Link>
@@ -51,6 +55,7 @@ class FinishGoodMaterialList extends React.Component {
                                 <th>Product Name</th>
                                 <th>Product Group</th>
                                 <th>Base Unit</th>
+                                <th>Selling Price</th>
                                 <th>Division</th>
                                 <th>Product Status</th>
                             </tr></thead>

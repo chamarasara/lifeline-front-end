@@ -122,6 +122,12 @@ class NewFinishGood extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Selling Price <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="sellingPrice" component={this.renderInput} placeholder="Selling Price" type="number" />
+                            </div>
+                        </div>
+                        <div className="fields">
+                            <div className="four wide field">
                                 Bar Code <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="barCode" component={this.renderInput} placeholder="Bar Code" type="number" />
                             </div>
@@ -162,9 +168,9 @@ const validate = (formValues) => {
     if (!formValues.barCode) {
         errors.barCode = 'Required!';
     }
-    // if (!formValues.barCodeImage) {
-    //     errors.barCodeImage = 'Required!';
-    // }
+    if (!formValues.sellingPrice) {
+        errors.sellingPrice = 'Required!';
+    }
     return errors;
 }
 const mapStateToProps = (state) => {

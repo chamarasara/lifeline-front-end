@@ -32,6 +32,7 @@ class FinishGoodMaterial extends React.Component {
                                         <th >Product Name</th>
                                         <th >Product Group</th>
                                         <th >Base Unit</th>
+                                        <th >Selling Price</th>
                                         <th >Division</th>
                                         <th >Product State</th>
                                     </tr>
@@ -42,6 +43,7 @@ class FinishGoodMaterial extends React.Component {
                                         <td >{this.props.material.productName}</td>
                                         <td >{this.props.material.productCategory}</td>
                                         <td >{this.props.material.baseUnitMeasure}</td>
+                                        <td >{this.props.material.sellingPrice}</td>
                                         <td >{this.props.material.division}</td>
                                         <td >{this.props.material.productState}</td>
                                     </tr>

@@ -124,7 +124,10 @@ class EditFinishGoodMaterial extends React.Component {
                             </div>
                         </div>
                         <div className="fields">
-                            
+                            <div className="four wide field">
+                                Selling Price 
+                                <Field name="sellingPrice" component={this.renderInput} placeholder="sellingPrice" type="number" />
+                            </div>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
