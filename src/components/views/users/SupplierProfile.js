@@ -63,13 +63,9 @@ class SupplierProfile extends React.Component {
                                     {this.props.supplier.currency}
                                 </div>
                                 <div className="item">
-                                    <div className="ui horizontal label">Coummunication Address</div>
+                                    <div className="ui horizontal label">Company Address</div>
                                     {this.props.supplier.communicationAddress.no}, {this.props.supplier.communicationAddress.lane}, {this.props.supplier.communicationAddress.city}, {this.props.supplier.communicationAddress.postalCode}, {this.props.supplier.communicationAddress.country}.
-                                </div>
-                                <div className="item">
-                                    <div className="ui horizontal label">Registered Address</div>
-                                    {this.props.supplier.registerAddress.no2}, {this.props.supplier.registerAddress.lane2}, {this.props.supplier.registerAddress.city2}, {this.props.supplier.registerAddress.postalCode2}, {this.props.supplier.registerAddress.country2}.
-                                </div>
+                                </div>                               
                             </div>
                             <Link to={"/supplier"} className="ui button">Back</Link>
                             <Link to={`/edit-supplier/${this.props.supplier._id}`} className="ui primary button">

@@ -57,7 +57,7 @@ class EditInvoice extends React.Component {
                 <td>
                     {this.props.invoice.productsList.map(product => {
                         return (
-                            <p key={product.id}>{product.productCode}</p>
+                            <p key={product.id}>FG{product.productCode}</p>
                         )
                     })
                     }

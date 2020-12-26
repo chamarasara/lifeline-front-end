@@ -101,7 +101,7 @@ class EditSupplier extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="five wide field">
-                                Communication Address-
+                                Company Address-
                             </div>
                         </div>
                         <div className="fields">
@@ -129,37 +129,7 @@ class EditSupplier extends React.Component {
                                 </Field>
                             </div>
                         </div>
-
-                        <div className="fields">
-                            <div className="five wide field">
-                                Registered Address-
-                            </div>
-                        </div>
-                        <div className="fields">
-                            <div className="two wide field">
-                                No
-                                <Field name="registerAddress.no2" component={this.renderInput} placeholder={this.props.supplier.registerAddress.no2} type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Lane
-                                <Field name="registerAddress.lane2" component={this.renderInput} placeholder={this.props.supplier.registerAddress.lane2} type="text" />
-                            </div>
-                            <div className="four wide field">
-                                City
-                                <Field name="registerAddress.city2" component={this.renderInput} placeholder={this.props.supplier.registerAddress.city2} type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Postal Code
-                                <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder={this.props.supplier.registerAddress.postalCode2} type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Country
-                                <Field name="registerAddress.country2" component="select" placeholder={this.props.supplier.registerAddress.country2} type="text" >
-                                    <option>-Select Country-</option>
-                                    <option value="Sri Lanka">Sri Lanka</option>
-                                </Field>
-                            </div>
-                        </div>
+                        
                         <div className="fields">
                             <div className="three wide field">
                                 Nationality

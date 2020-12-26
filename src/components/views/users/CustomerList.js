@@ -20,7 +20,7 @@ class CustomerList extends React.Component {
                             </div>
                         </h4></td>
                     <td>
-                        {customer.mobileNo2}
+                        {customer.mobileNo1}
                     </td>
                     <td>
                         {customer.mobileNo2}

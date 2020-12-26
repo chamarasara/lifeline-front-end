@@ -63,13 +63,9 @@ class CustomerProfile extends React.Component {
                                     {this.props.customer.currency}
                                 </div>
                                 <div className="item">
-                                    <div className="ui horizontal label">Coummunication Address</div>
+                                    <div className="ui horizontal label">Company Address</div>
                                     {this.props.customer.communicationAddress.no}, {this.props.customer.communicationAddress.lane}, {this.props.customer.communicationAddress.city}, {this.props.customer.communicationAddress.postalCode}, {this.props.customer.communicationAddress.country}.
-                                </div>
-                                <div className="item">
-                                    <div className="ui horizontal label">Coummunication Address</div>
-                                    {this.props.customer.registerAddress.no2}, {this.props.customer.registerAddress.lane2}, {this.props.customer.registerAddress.city2}, {this.props.customer.registerAddress.postalCode2}, {this.props.customer.registerAddress.country}.
-                                </div>
+                                </div>                                
                             </div>
                             <Link to={"/customer"} className="ui button">
                                 Back

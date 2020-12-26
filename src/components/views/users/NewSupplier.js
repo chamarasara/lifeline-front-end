@@ -125,38 +125,7 @@ class NewSupplier extends React.Component {
                                     <option value="Sri Lanka">Sri Lanka</option>
                                 </Field>
                             </div>
-                        </div>
-                        <div className="fields">
-                            <div className="five wide field">
-                                Registered Address-(Optional)
-                            </div>
-                        </div>
-                        <div className="fields">
-                            <div className="two wide field">
-                                No (Optional)
-                                <Field name="registerAddress.no2" component={this.renderInput} placeholder="No" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Lane (Optional)
-                                <Field name="registerAddress.lane2" component={this.renderInput} placeholder="Lane" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                City (Optional)
-                                <Field name="registerAddress.city2" component={this.renderInput} placeholder="City" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Postal Code (Optional)
-                                <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder="Postal Code" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Country (Optional)
-                                <Field name="registerAddress.country2" component={this.renderSelectField} placeholder="Country" type="text" >
-                                    <option>-Select Country-</option>
-                                    <option value="Sri Lanka">Sri Lanka</option>
-                                </Field>
-                            </div>
-
-                        </div>
+                        </div>                        
                         <div className="fields">
                             <div className="three wide field">
                                 Nationality <span style={{ color: "red", fontSize: "18px" }}>*</span>
@@ -188,19 +157,13 @@ class NewSupplier extends React.Component {
 }
 //Form input validation
 const validate = (formValues) => {
-    const errors = {}
-    if (!formValues.supplierName) {
-        errors.supplierName = 'Required';
-    }
+    const errors = {}    
     if (!formValues.companyName) {
         errors.companyName = 'Required';
     }
     if (!formValues.mobileNo1) {
         errors.mobileNo1 = 'Required';
-    }
-    if (!formValues.mobileNo2) {
-        errors.mobileNo2 = 'Required';
-    }
+    }  
     if (!formValues.email) {
         errors.email = 'Required';
     }

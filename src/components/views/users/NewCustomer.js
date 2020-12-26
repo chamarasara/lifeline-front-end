@@ -103,7 +103,7 @@ class NewCustomer extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="five wide field">
-                                Communication Address-<span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Company Address-<span style={{ color: "red", fontSize: "18px" }}>*</span>
                             </div>
                         </div>
                         <div className="fields">
@@ -130,37 +130,7 @@ class NewCustomer extends React.Component {
                                     <option value="Sri Lanka">Sri Lanka</option>
                                 </Field>
                             </div>
-                        </div>
-                        <div className="fields">
-                            <div className="five wide field">
-                                Registered Address-(Optional)
-                            </div>
-                        </div>
-                        <div className="fields">
-                            <div className="two wide field">
-                                No
-                                <Field name="registerAddress.no2" component={this.renderInput} placeholder="No" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Lane
-                                <Field name="registerAddress.lane2" component={this.renderInput} placeholder="Lane" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                City
-                                <Field name="registerAddress.city2" component={this.renderInput} placeholder="City" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Postal Code
-                                <Field name="registerAddress.postalCode2" component={this.renderInput} placeholder="Postal Code" type="text" />
-                            </div>
-                            <div className="four wide field">
-                                Country
-                                <Field name="registerAddress.country2" component={this.renderSelectField} placeholder="Country" type="text" >
-                                    <option>-Select Country-</option>
-                                    <option value="Sri Lanka">Sri Lanka</option>
-                                </Field>
-                            </div>
-                        </div>
+                        </div>                        
                         <div className="fields">
                             <div className="three wide field">
                                 Nationality <span style={{ color: "red", fontSize: "18px" }}>*</span>
