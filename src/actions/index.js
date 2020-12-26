@@ -226,7 +226,7 @@ export const createCustomer = formValues => async dispatch => {
     const response = await api.post('/api/master-data/customer-master/new-customer', { ...formValues, user }, header);
     dispatch({ type: CREATE_CUSTOMER, payload: response.data });
     console.log(formValues)
-    //history.push('/customer');
+    history.push('/customer');
 };
 //List all customers
 export const fetchCustomers = () => async dispatch => {
