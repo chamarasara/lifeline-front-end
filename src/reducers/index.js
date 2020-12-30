@@ -17,6 +17,8 @@ import searchInvoicesReducer from "./sales/searchInvoicesReducer";
 import searchPurchaseOrdersRawReducer from "./sales/searchPurchaseOrdersRawReducer";
 import searchPurchaseOrdersPacking  from "./sales/searchPurchaseOrdersPackingReducer";
 import bomReducer from "./master/bomReducer";
+import quotationReducer from "./sales/quotationReducer";
+import searchQuotationReducer from "./sales/searchQuotationReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -32,6 +34,8 @@ export default combineReducers({
     searchPurchaseOrdersRaw: searchPurchaseOrdersRawReducer,
     searchPurchaseOrdersPacking: searchPurchaseOrdersPacking,
     invoices: invoiceReducer,
+    quotations: quotationReducer,
+    searchQuotations: searchQuotationReducer,
     form: formReducer,
     purchaseOrdersRaw: purchaseOrderRawReducer,
     purchaseOrdersPacking: purchaseOrderPackingReducer,

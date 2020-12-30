@@ -9,6 +9,7 @@ class ApprovalsDashboard extends React.Component {
                     <div className="column" style={{ paddingTop: "30px" }}>
                         <Link to={"/approvals-raw"} className="huge ui blue button">Purchase Orders RM</Link>
                         <Link to={"/approvals-packing"} className="huge ui blue button">Purchase Orders PM</Link>
+                        <Link to={"/approvals-quotations"} className="huge ui blue button">Quotations</Link>
                     </div>
                 </div>
             </div>

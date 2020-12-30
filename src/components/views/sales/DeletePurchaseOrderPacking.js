@@ -44,7 +44,7 @@ class DeletePurchaseOrderPacking extends React.Component {
                     </div>
                     <div className="field">
                         <button onClick={this.onClick} className="ui red button">Disable</button>
-                        <Link to={`/single-purchase-order-raw/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
+                        <Link to={`/single-purchase-order-packing/${this.props.match.params.id}`} className="ui cancel button">Cancel</Link>
                     </div>
                 </form>                
             </React.Fragment>

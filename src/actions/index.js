@@ -73,6 +73,12 @@ import {
     FETCH_BOMS,
     FETCH_BOM,
     DELETE_BOM,
+    CREATE_QUOTATION,
+    EDIT_QUOTATION,
+    FETCH_QUOTATIONS,
+    FETCH_QUOTATION,
+    DELETE_QUOTATION,
+    SEARCH_QUOTATIONS_RESULT
 } from './types';
 
 //create user
@@ -1049,6 +1055,140 @@ export const printInvoice = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/sales/invoices/print-invoice/${id}`, { responseType: 'arraybuffer' }, header, { id });
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
+//Create quotation
+export const createQuotation = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    console.log(user)
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('api/sales/quotations/new-quotation', { ...formValues, user }, header);
+    dispatch({ type: CREATE_QUOTATION, payload: response.data });
+    window.location.reload()
+
+};
+//List all quotations
+export const fetchQuotations = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('api/sales/quotations/all-quotations', header);
+    dispatch({ type: FETCH_QUOTATIONS, payload: response.data });
+};
+//View quotation
+export const fetchQuotation = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`api/sales/quotations/single-quotation/${id}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_QUOTATION, payload: response.data[0] });
+};
+//Edit quotation
+export const editQuotation = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/quotations/update-quotation/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_QUOTATION, payload: response.data });
+    history.push("/quotation-dashboard");
+    window.location.reload()
+};
+//Update quotation
+export const updateQuotation = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/quotations/update-quotation/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_QUOTATION, payload: response.data });
+    history.push(`/approvals-single-quotation/${formValues.id}`);
+    window.location.reload()
+};
+//Disable quotation
+export const disableQuotation = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/quotations/update-quotation/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_QUOTATION, payload: response.data });
+    history.push("/approvals-quotations");
+    window.location.reload()
+};
+//Approve quotation
+export const approveQuotation = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/quotations/update-quotation/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_QUOTATION, payload: response.data });
+    history.push("/approvals-quotations");
+    window.location.reload()
+};
+//Search quotation
+export const searchQuotations = (formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    console.log(formValues)
+    const response = await api.post('api/sales/quotations/search-quotation/', { formValues }, header);
+    console.log(response.data);
+    dispatch({ type: SEARCH_QUOTATIONS_RESULT, payload: response.data });
+};
+//Print quotation
+export const printQuotation = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=invoice.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/sales/quotations/print-quotation/${id}`, { responseType: 'arraybuffer' }, header, { id });
     //Create a Blob from the PDF Stream
     const file = new Blob([response.data], { type: 'application/pdf' });
     //Build a URL from the file

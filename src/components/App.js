@@ -97,8 +97,15 @@ import BomDashboard from './views/masterdata/billofmaterial/BomDashboard';
 import NewBom from './views/masterdata/billofmaterial/WizardFormBom';
 import SingleBom from './views/masterdata/billofmaterial/SingleBom';
 import EditBom from './views/masterdata/billofmaterial/EditBom';
-import { deleteBom } from '../actions';
 import DeleteBom from './views/masterdata/billofmaterial/DeleteBom';
+import QuotationDashboard from './views/sales/quotations/QuotationDashboard';
+import NewQuotation from './views/sales/quotations/NewQuotation';
+import ViewQuotation from './views/sales/quotations/ViewQuotation';
+import DeleteQuotation from './views/sales/quotations/DeleteQuotation';
+import ApprovalsQuotation from './views/approvals/quotation/ApprovalsQuotation';
+import ApprovalsSingleQuotation from './views/approvals/quotation/ApprovalsSingleQuotation';
+import ApprovalsEditQuotation from './views/approvals/quotation/ApprovalsEditQuotation';
+import DeclineQuotation from './views/approvals/quotation/DeclineQuotation';
 
 
 
@@ -194,20 +201,34 @@ class App extends React.Component {
                     <PrivateRoute path="/new-invoice" component={NewInvoice} />
                     <PrivateRoute path="/edit-invoice/:id" component={EditInvoice} />
                     <PrivateRoute path="/delete-invoice/:id" component={DeleteInvoice} />
+
+                    <PrivateRoute path="/quotation-dashboard" component={QuotationDashboard} />
+                    <PrivateRoute path="/new-quotation" component={NewQuotation} />
+                    <PrivateRoute path="/view-quotation/:id" component={ViewQuotation} />
+                    <PrivateRoute path="/delete-quotation/:id" component={DeleteQuotation} />
+                    
                     <PrivateRoute path="/products-dashboard" component={ProductDashboard} />
                     <PrivateRoute path="/new-product" component={NewProductMaster} />
                     <PrivateRoute path="/single-product-master/:id" component={SingleProductMaster} />
                     <PrivateRoute path="/product-master-edit-details/:id" component={EditProductMaster} />
                     <PrivateRoute path="/delete-product-master/:id" component={DeleteProductMaster} />
+
                     <PrivateRoute path="/approvals-dashboard" component={ApprovalsDashboard} />
                     <PrivateRoute path="/approvals-raw" component={ApprovalsRaw} />
                     <PrivateRoute path="/approvals-single-raw/:id" component={ApprovalsSingleOrderRaw} />
                     <PrivateRoute path="/approvals-edit-raw/:id" component={ApprovalsEdirOrderRaw} />
                     <PrivateRoute path="/approvals-delete-raw/:id" component={DeclineOrderRaw} />
+
                     <PrivateRoute path="/approvals-packing" component={ApprovalsPacking} />
                     <PrivateRoute path="/approvals-single-packing/:id" component={ApprovalsSingleOrderPacking} />
                     <PrivateRoute path="/approvals-edit-packing/:id" component={ApprovalsEditOrderPacking} />
                     <PrivateRoute path="/approvals-delete-packing/:id" component={DeclineOrderPacking} />
+
+                    <PrivateRoute path="/approvals-quotations" component={ApprovalsQuotation} />
+                    <PrivateRoute path="/approvals-single-quotation/:id" component={ApprovalsSingleQuotation} />
+                    <PrivateRoute path="/approvals-edit-quotation/:id" component={ApprovalsEditQuotation} />
+                    <PrivateRoute path="/approvals-delete-quotation/:id" component={DeclineQuotation} />
+
                     <PrivateRoute path="/bom" component={BomDashboard} />
                     <PrivateRoute path="/new-bom" component={NewBom} />
                     <PrivateRoute path="/single-bom/:id" component={SingleBom} />
