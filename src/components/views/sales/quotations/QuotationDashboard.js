@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-
 import SearchQuotation from './SearchQuotation';
 import SearchQuotationByDate from './SearchQuotationByDate';
 import QuotationSearchResults from './QuotationSearchResults';

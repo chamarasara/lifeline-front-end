@@ -49,21 +49,48 @@ class ViewQuotation extends React.Component {
         let rates = this.props.quotation.productsList.map(rate => {
             return rate
         })
-        let totalValue=[]
+        let totalValue = []
         console.log(rates)
         for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
             let quantity = quantities[i]
             let rate = rates[i]
-            totalValue[i] = (quantity.quantity * rate.sellingPrice)/100*(100-quantity.discount);
+            totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
             console.log(totalValue)
-           //return totalValue
+            //return totalValue
         }
-        console.log(totalValue)    
-        return totalValue.map(value=>{
-            return(
-                <p key={rates.id}>{value.toFixed(2)}</p>
+        console.log(totalValue)
+        return totalValue.map(value => {
+            return (
+                <p key={Math.random()}>{value.toFixed(2)}</p>
             )
-        })   
+        })
+    }
+    getSubTotal() {
+        if (!this.props.quotation.productsList) {
+            return (
+                <div className="ui active centered inline loader"></div>
+            )
+        }
+        let quantities = this.props.quotation.products.map(product => {
+            return product
+        })
+        console.log(quantities)
+        let rates = this.props.quotation.productsList.map(rate => {
+            return rate
+        })
+        let totalValue = []
+        console.log(rates)
+        for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
+            let quantity = quantities[i]
+            let rate = rates[i]
+            totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
+            console.log(totalValue.reduce((a, b) => a + b, 0))
+            //return totalValue
+        }
+        console.log(totalValue)
+        return (
+            <p key={rates.id}>{totalValue.reduce((a, b) => a + b, 0).toFixed(2)}</p>
+        )
     }
     renderQuotationDetails() {
         if (!this.props.quotation.productsList) {
@@ -126,8 +153,6 @@ class ViewQuotation extends React.Component {
                 <td style={{ textAlign: "right" }}>
                     {this.getTotal()}
                 </td>
-
-
             </tr>
         )
     }
@@ -233,6 +258,12 @@ class ViewQuotation extends React.Component {
                         <tbody>
                             {this.renderQuotationDetails()}
                         </tbody>
+                        <tfoot>
+                            <tr colSpan="16">
+                                <th colSpan="7" style={{ textAlign: "right" }}>Sub Total:</th>        
+                            <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>                                                            
+                            </tr>                            
+                        </tfoot>
                     </table>
                     <div>
                         {this.renderPrintButton()}

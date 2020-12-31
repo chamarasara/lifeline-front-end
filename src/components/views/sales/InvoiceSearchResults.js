@@ -5,7 +5,7 @@ import moment from 'moment';
 import { fetchInvoices, fetchCustomer } from "../../../actions"
 class InvoiceList extends React.Component {
     componentDidMount() {
-        this.props.fetchInvoices()
+        //this.props.fetchInvoices()
     }
 
     // renderList() {
@@ -51,11 +51,20 @@ class InvoiceList extends React.Component {
         return this.props.invoices.map(invoice => {
             const date = invoice.date;
             const date2 = moment(date).format('DD / MM / YYYY, h:mm: a')
-            if (invoice.invoice_state ==="enabled") {
+            if (invoice.invoice_state === "enabled") {
                 return (
                     <tr key={invoice.id}>
                         <td>
                             {date2}
+                        </td>
+                        <td>
+                            {
+                                invoice.quotationDetails.map(quotation => {
+                                    return (
+                                        <span key={quotation.id}>{quotation.quotationNumber}</span>
+                                    )
+                                })
+                            }
                         </td>
                         <td>
                             {
@@ -77,46 +86,22 @@ class InvoiceList extends React.Component {
                         </td>
                         <td style={{ "textAlign": "right" }}>
                             {
-                                invoice.products.map(quantity => {
-                                    return (
-                                        <p key={Math.random()}>{quantity.quantity}</p>
-                                    )
+                                invoice.quotationDetails.map(quotation => {
+                                    return quotation.products.map(quantity => {
+                                        return (
+                                            <p key={Math.random()}>{quantity.quantity}</p>
+                                        )
+                                    })
+
                                 }
                                 )
                             }
                         </td>
-                        <td>
-                            {
-                                invoice.products.map(product => {
-                                    return (
-                                        <p key={product.id}>{product.uom}</p>
-                                    )
-                                })
-                            }
-                        </td>
                         <td style={{ "textAlign": "right" }}>
                             {
-                                invoice.products.map(product => {
+                                invoice.searchProducts.map(product => {
                                     return (
-                                        <p key={product.id}>{product.rate}</p>
-                                    )
-                                })
-                            }
-                        </td>
-                        <td>
-                            {
-                                invoice.products.map(product => {
-                                    return (
-                                        <p key={product.id}>{product.currency}</p>
-                                    )
-                                })
-                            }
-                        </td>
-                        <td style={{ "textAlign": "right" }}>
-                            {
-                                invoice.products.map(product => {
-                                    return (
-                                        <p key={product.id}>{product.rate * product.quantity} </p>
+                                        <p key={product.id}>{product.sellingPrice}</p>
                                     )
                                 })
                             }
@@ -127,7 +112,7 @@ class InvoiceList extends React.Component {
                     </tr>
                 )
             }
-            
+
         })
     }
     render() {
@@ -145,13 +130,11 @@ class InvoiceList extends React.Component {
                     <table className="ui very basic collapsing celled table">
                         <thead>
                             <tr><th>Date</th>
+                                <th>Quotation</th>
                                 <th>Company Name</th>
                                 <th>Products</th>
                                 <th>Quantities</th>
-                                <th>UOM</th>
                                 <th>Rate</th>
-                                <th>Currency</th>
-                                <th>Total</th>
                             </tr></thead>
                         <tbody>
                             {this.renderList()}
@@ -163,8 +146,8 @@ class InvoiceList extends React.Component {
     }
 }
 const mapToSatate = (state) => {
-    console.log(state)
+    console.log(state.searchInvoices)
     const invoices = Object.values(state.searchInvoices)
-    return { invoices: invoices };
+    return { invoices: invoices.reverse() };
 }
-export default connect(mapToSatate, { fetchInvoices, fetchCustomer})(InvoiceList);
+export default connect(mapToSatate, { fetchInvoices, fetchCustomer })(InvoiceList);

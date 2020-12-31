@@ -136,13 +136,7 @@ class NewInvoice extends React.Component {
                                     {this.renderQuotations()}
                                 </Field>
                             </div>
-                        </div>                        
-                        <div className="fields">
-                            <div className="sixteen wide field">
-                                <label>Products- </label>
-                                <FieldArray name="products" component={this.renderProductsDropDown} />
-                            </div>
-                        </div>
+                        </div>                                               
                         <div className="field">
                             <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>

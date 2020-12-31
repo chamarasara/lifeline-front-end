@@ -5,41 +5,10 @@ import moment from 'moment';
 import { fetchQuotations, fetchCustomer } from "../../../../actions"
 class QuotationSearchResults extends React.Component {
     componentDidMount() {
-        this.props.fetchQuotations()
+        //this.props.fetchQuotations()
     }
 
-    // renderList() {
-    //     return this.props.supplier.map(supplier => {
-    //         return (
-
-    //         )
-    //     })
-    // }
-    // getCustomerDetails() {
-    //     return this.props.quotations.map(invoice => {
-    //         this.props.fetchCustomer(invoice.customerId)
-    //         return (
-    //             <div>
-    //                 {}
-    //             </div>
-    //         )
-    //     })
-    // }
-    // renderProducts() {
-    //     return this.props.quotations.map(invoice => {
-    //         return invoice.productsList.map(product => {
-    //             console.log(product);
-    //             return (
-    //                 <td>
-    //                     {product.productName}
-    //                 </td>
-    //             )
-    //         }
-
-    //         )
-
-    //     })
-    // }
+    
     renderList() {
         if (!this.props.quotations) {
             return (
