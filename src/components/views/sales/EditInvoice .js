@@ -51,15 +51,12 @@ class EditInvoice extends React.Component {
     }
 
     getTotal() {
-        let quantities = this.props.invoice.quotationDetails.map(product => {
-            return product.products.map(p =>{
-                return p.quantity
-            })
+        let quantities = this.props.invoice.products.map(product => {
+            return product.quantity
+
         })
-        let discounts = this.props.invoice.quotationDetails.map(product => {
-            return product.products.map(p => {
-                return p.discount
-            })
+        let discounts = this.props.invoice.products.map(product => {
+            return product.discount
         })
         console.log(discounts)
         console.log(quantities)
@@ -70,25 +67,46 @@ class EditInvoice extends React.Component {
         console.log(rates)
         for (let i = 0; i < Math.min(quantities.length, discounts.length, rates.length); i++) {
             let quantity = quantities[i]
-            let q = quantity.map(i=>Number(i))
-            console.log(q)
             let discount = discounts[i]
-            let d = discount.map(i => Number(i))
-            console.log(d)
             let rate = rates[i]
-            console.log(rate)
-            let r = rates.map(i => Number(i))
-            console.log(r)
-            totalValue[i] = (quantity.map(i => Number(i)) * rates.map(i => Number(i))) ;
+            console.log(discount)
+            totalValue[i] = (quantity * rate)/100*(100-discount) ;
             console.log(totalValue)
             //return totalValue
         }
         console.log(totalValue)
         return totalValue.map(value => {
             return (
-                <p key={Math.random()}>{value}</p>
+                <p key={Math.random()}>{value.toFixed(2)}</p>
             )
         })
+    }
+    getSubTotal() {
+        if (!this.props.invoice.productsDetails) {
+            return (
+                <div className="ui active centered inline loader"></div>
+            )
+        }
+        let quantities = this.props.invoice.products.map(product => {
+            return product
+        })
+        console.log(quantities)
+        let rates = this.props.invoice.productsDetails.map(rate => {
+            return rate
+        })
+        let totalValue = []
+        console.log(rates)
+        for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
+            let quantity = quantities[i]
+            let rate = rates[i]
+            totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
+            console.log(totalValue.reduce((a, b) => a + b, 0))
+            //return totalValue
+        }
+        console.log(totalValue)
+        return (
+            <p key={rates.id}>{totalValue.reduce((a, b) => a + b, 0).toFixed(2)}</p>
+        )
     }
     renderInvoiceDetails() {
         return (
@@ -119,12 +137,10 @@ class EditInvoice extends React.Component {
                 </td>
                 <td style={{ textAlign: "right" }}>
                     {
-                        this.props.invoice.quotationDetails.map(quotation => {
-                            return quotation.products.map(quantity => {
+                        this.props.invoice.products.map(quantity => {
                                 return (
                                     <p key={Math.random()}>{quantity.quantity}</p>
                                 )
-                            })
                         }
                         )
                     }
@@ -139,24 +155,20 @@ class EditInvoice extends React.Component {
                 </td>
                 <td style={{ textAlign: "right" }}>
                     {
-                        this.props.invoice.quotationDetails.map(quotation => {
-                            return quotation.products.map(discount => {
+                        this.props.invoice.products.map(discount => {
                                 return (
                                     <p key={Math.random()}>{discount.discount}%</p>
                                 )
-                            })
                         }
                         )
                     }
                 </td>
                 <td style={{ textAlign: "right" }}>
                     {
-                        this.props.invoice.quotationDetails.map(quotation => {
-                            return quotation.products.map(currency => {
-                                return (
-                                    <p key={Math.random()}>{currency.currency}</p>
-                                )
-                            })
+                        this.props.invoice.products.map(currency => {
+                            return (
+                                <p key={Math.random()}>{currency.currency}</p>
+                            )
                         }
                         )
                     }
@@ -172,12 +184,7 @@ class EditInvoice extends React.Component {
         return (
             <div>
                 <p>
-                    <strong>Quotation Number:</strong>{this.props.invoice.quotationDetails.map(quotation => {
-                        return (
-                            <span key={quotation.id}>{quotation.quotationNumber}</span>
-                        )
-                    })
-                    }
+                    <strong>Quotation Number:</strong>{this.props.invoice.quotationNumber}
                 </p>
                 <p><strong>Company Name:</strong>{this.props.invoice.customer.map(customer => {
                     return (
@@ -314,20 +321,20 @@ class EditInvoice extends React.Component {
         return (
             <div>
                 <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
-                <p><b>Total Value:</b> </p>
+                <p><b>Total Value:</b> {this.getTotalAmount()}</p>
 
                 {this.renderPaymentsForm()}
             </div>
         )
     }
-    // getTotalAmount() {
-    //     const quantities = this.props.invoice.products.map(data => {
-    //         return data.quantity * data.rate
-    //     })
-    //     const total = quantities.reduce((a, b) => (a + b))
-    //     return total
+    getTotalAmount() {
+        const quantities = this.props.invoice.products.map(data => {
+            return data.quantity * data.rate
+        })
+        const total = quantities.reduce((a, b) => (a + b))
+        return total
 
-    // }
+    }
 
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
@@ -366,6 +373,12 @@ class EditInvoice extends React.Component {
                         <tbody>
                             {this.renderInvoiceDetails()}
                         </tbody>
+                        <tfoot>
+                            <tr colSpan="16">
+                                <th colSpan="7" style={{ textAlign: "right" }}>Sub Total:</th>
+                                <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
+                            </tr>
+                        </tfoot>
                     </table>
                     <div>
                         <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>

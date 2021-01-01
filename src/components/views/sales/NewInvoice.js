@@ -74,23 +74,11 @@ class NewInvoice extends React.Component {
                             <div className="six wide field">
                                 <Field name={`${products}.quantity`} type="number" required component="input" placeholder="Quantity" >
                                 </Field>
-                            </div>
+                            </div>  
                             <div className="six wide field">
-                                <Field name={`${products}.uom`} required component="select" placeholder="" type="text" >
-                                    <option>-UOM-</option>
-                                    <option value="Each">Each</option>
-                                    <option value="kg">kg</option>
-                                    <option value="l">l</option>
-                                    <option value="m">m</option>
-                                    <option value="ml">ml</option>
-                                    <option value="g">g</option>
-                                    <option value="cm">cm</option>
+                                <Field name={`${products}.discount`} type="number" required component="input" placeholder="Discount" >
                                 </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${products}.rate`} type="number" required component="input" placeholder="Rate" >
-                                </Field>
-                            </div>
+                            </div>                                                       
                             <div className="six wide field">
                                 <Field name={`${products}.currency`} required component="select" placeholder="" type="text" >
                                     <option>-Select Currency-</option>
@@ -136,7 +124,13 @@ class NewInvoice extends React.Component {
                                     {this.renderQuotations()}
                                 </Field>
                             </div>
-                        </div>                                               
+                        </div>                        
+                        <div className="fields">
+                            <div className="sixteen wide field">
+                                <label>Products- </label>
+                                <FieldArray name="products" component={this.renderProductsDropDown} />
+                            </div>
+                        </div>
                         <div className="field">
                             <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>

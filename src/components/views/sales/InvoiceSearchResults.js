@@ -58,13 +58,7 @@ class InvoiceList extends React.Component {
                             {date2}
                         </td>
                         <td>
-                            {
-                                invoice.quotationDetails.map(quotation => {
-                                    return (
-                                        <span key={quotation.id}>{quotation.quotationNumber}</span>
-                                    )
-                                })
-                            }
+                            {invoice.quotationNumber}
                         </td>
                         <td>
                             {
@@ -85,13 +79,11 @@ class InvoiceList extends React.Component {
                             }
                         </td>
                         <td style={{ "textAlign": "right" }}>
-                            {
-                                invoice.quotationDetails.map(quotation => {
-                                    return quotation.products.map(quantity => {
+                            {                                
+                                invoice.products.map(product => {                                    
                                         return (
-                                            <p key={Math.random()}>{quantity.quantity}</p>
+                                            <p key={Math.random()}>{product.quantity}</p>
                                         )
-                                    })
 
                                 }
                                 )
@@ -106,8 +98,19 @@ class InvoiceList extends React.Component {
                                 })
                             }
                         </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                invoice.products.map(product => {
+                                    return (
+                                        <p key={Math.random()}>{product.discount}%</p>
+                                    )
+
+                                }
+                                )
+                            }
+                        </td>
                         <td>
-                            <Link to={`/edit-invoice/${invoice.id}`} className="ui red button">View</Link>
+                            <Link to={`/edit-invoice/${invoice.id}`} className="ui blue button">View</Link>
                         </td>
                     </tr>
                 )
@@ -135,6 +138,7 @@ class InvoiceList extends React.Component {
                                 <th>Products</th>
                                 <th>Quantities</th>
                                 <th>Rate</th>
+                                <th>Discount</th>
                             </tr></thead>
                         <tbody>
                             {this.renderList()}
