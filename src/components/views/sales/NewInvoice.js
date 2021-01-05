@@ -99,9 +99,11 @@ class NewInvoice extends React.Component {
     }
     renderQuotations() {
         return this.props.quotations.map(quotation => {
-            return (
-                <option key={quotation._id} value={quotation.quotationNumber}>{quotation.quotationNumber}</option>
-            )
+            if (quotation.quotation_state === "Approved") {
+                return (
+                    <option key={quotation._id} value={quotation.quotationNumber}>{quotation.quotationNumber}</option>
+                )
+            }           
         })
     }
     render() {

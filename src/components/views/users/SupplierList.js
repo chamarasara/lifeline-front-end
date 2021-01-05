@@ -14,8 +14,8 @@ class SupplierList extends React.Component {
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
-                                {supplier.supplierName}
-                                <div className="sub header">{supplier.companyName}
+                                {supplier.companyName}
+                                <div className="sub header">{supplier.supplierName}
                                 </div>
                             </div>
                         </h4></td>

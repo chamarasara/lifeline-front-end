@@ -14,8 +14,8 @@ class CustomerList extends React.Component {
                     <td>
                         <h4 className="ui image header">
                             <div className="content">
-                                {customer.customerName}
-                                <div className="sub header">{customer.companyName}
+                                {customer.companyName}
+                                <div className="sub header">{customer.customerName}
                                 </div>
                             </div>
                         </h4></td>
