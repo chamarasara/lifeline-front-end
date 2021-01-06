@@ -82,13 +82,13 @@ class NewQuotation extends React.Component {
                                 </Field>
                             </div>
                             <div className="six wide field">
-                                <Field name={`${products}.discount`} type="number" required component={this.renderInput} placeholder="Discount" >
-                                </Field>
-                            </div>
-                            <div className="six wide field">
                                 <Field name={`${products}.quantity`} type="number" required component={this.renderInput} placeholder="Quantity" >
                                 </Field>
                             </div>
+                            <div className="six wide field">
+                                <Field name={`${products}.discount`} type="number" required component={this.renderInput} placeholder="Discount" >
+                                </Field>
+                            </div>                            
                             <div className="six wide field">
                                 <Field name={`${products}.currency`} required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Select Currency-</option>
