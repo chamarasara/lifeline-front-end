@@ -84,8 +84,6 @@ const mapStateToProps = (state, ownPorps) => {
     return { material: state.packingMaterials[ownPorps.match.params.id], initialValues: state.packingMaterials[ownPorps.match.params.id] };
 }
 const formWrapped = reduxForm({
-    form: 'editPackingMaterialMrpFour',
-    destroyOnUnmount: false,
-    forceUnregisterOnUnmount: true
+    form: 'editPackingMaterialMrpFour'
 })(EditPackingMaterialMrpFour);
 export default connect(mapStateToProps, { fetchPackingMaterial, editPackingMaterial })(formWrapped);
