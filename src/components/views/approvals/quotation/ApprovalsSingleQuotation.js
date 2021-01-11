@@ -40,7 +40,9 @@ class ApprovalsSingleQuotation extends React.Component {
             )
         })
     }
-
+    formatNumber = (num) => {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
     getTotal() {
         let quantities = this.props.quotation.products.map(product => {
             return product
@@ -61,7 +63,7 @@ class ApprovalsSingleQuotation extends React.Component {
         console.log(totalValue)
         return totalValue.map(value => {
             return (
-                <p key={Math.random()}>{value.toFixed(2)}</p>
+                <p key={Math.random()}>{this.formatNumber(value.toFixed(2))}</p>
             )
         })
     }
@@ -89,7 +91,7 @@ class ApprovalsSingleQuotation extends React.Component {
         }
         console.log(totalValue)
         return (
-            <p key={rates.id}>{totalValue.reduce((a, b) => a + b, 0).toFixed(2)}</p>
+            <p key={rates.id}>{this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))}</p>
         )
     }
     renderQuotationDetails() {

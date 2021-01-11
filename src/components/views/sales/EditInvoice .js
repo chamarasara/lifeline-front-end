@@ -77,9 +77,12 @@ class EditInvoice extends React.Component {
         console.log(totalValue)
         return totalValue.map(value => {
             return (
-                <p key={Math.random()}>{value.toFixed(2)}</p>
+                <p key={Math.random()}>{this.formatNumber(value.toFixed(2))}</p>
             )
         })
+    }
+    formatNumber = (num) => {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
     getSubTotal() {
         if (!this.props.invoice.productsDetails) {
@@ -105,7 +108,7 @@ class EditInvoice extends React.Component {
         }
         console.log(totalValue)
         return (
-            <p key={Math.random()}>{totalValue.reduce((a, b) => a + b, 0).toFixed(2)}</p>
+            <p key={Math.random()}>{this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))}</p>
         )
     }
     renderInvoiceDetails() {
@@ -322,7 +325,7 @@ class EditInvoice extends React.Component {
         let totalCash = this.props.invoice.paymentsAll.map(cash => {
             if (!cash.cashPayments) {
                 return 0
-            } else if (cash.cashPayments ) {
+            } else if (cash.cashPayments) {
                 return cash.cashPayments.map(ca => {
                     console.log(ca.cashAmount)
                     return ca.cashAmount
@@ -346,12 +349,11 @@ class EditInvoice extends React.Component {
         return (
             <div>
                 <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
-                <p><b>Total Value:</b> {this.getSubTotal()}</p>               
+                <p><b>Total Value:</b> {this.getSubTotal()}</p>
                 {this.renderPaymentsForm()}
             </div>
         )
-    }
-
+    }    
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
     }
