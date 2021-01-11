@@ -45,16 +45,7 @@ class QuotationSearchResults extends React.Component {
                                     )
                                 })
                             }
-                        </td>
-                        <td>
-                            {
-                                quotation.productsList.map(product => {
-                                    return (
-                                        <p key={product.id}>{product.baseUnitMeasure}</p>
-                                    )
-                                })
-                            }
-                        </td>
+                        </td>                        
                         <td style={{ "textAlign": "right" }}>
                             {
                                 quotation.products.map(quantity => {
@@ -82,29 +73,9 @@ class QuotationSearchResults extends React.Component {
                                     )
                                 })
                             }
-                        </td>
+                        </td>                                                
                         <td>
-                            {
-                                quotation.products.map(product => {
-                                    return (
-                                        <p key={product.id}>{product.currency}</p>
-                                    )
-                                })
-                            }
-                        </td>
-                        <td style={{ "textAlign": "right" }}>
-                            {
-                                quotation.productsList.map(product => {
-
-                                    return (
-                                        <p key={product.id}>{product.sellingPrice} </p>
-                                    )
-
-                                })
-                            }
-                        </td>
-                        <td>
-                            <Link to={`/view-quotation/${quotation.id}`} className="ui red button">View</Link>
+                            <Link to={`/view-quotation/${quotation.id}`} className="ui blue button">View</Link>
                         </td>
                     </tr>
                 )
@@ -130,12 +101,9 @@ class QuotationSearchResults extends React.Component {
                                 <th>No</th>
                                 <th>Company Name</th>
                                 <th>Products</th>
-                                <th>UOM</th>
                                 <th>Quantities</th>
                                 <th>Rate</th>
-                                <th>Discount</th>
-                                <th>Currency</th>
-                                <th>Total</th>
+                                <th>Discount</th>                               
                             </tr></thead>
                         <tbody>
                             {this.renderList()}
