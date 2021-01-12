@@ -55,6 +55,7 @@ class InvoiceList extends React.Component {
                 return (
                     <tr key={invoice.id}>
                         <td>
+                            {invoice.invoiceNumber}<br/>
                             {date2}
                         </td>
                         <td>
@@ -79,11 +80,11 @@ class InvoiceList extends React.Component {
                             }
                         </td>
                         <td style={{ "textAlign": "right" }}>
-                            {                                
-                                invoice.products.map(product => {                                    
-                                        return (
-                                            <p key={Math.random()}>{product.quantity}</p>
-                                        )
+                            {
+                                invoice.products.map(product => {
+                                    return (
+                                        <p key={Math.random()}>{product.quantity}</p>
+                                    )
 
                                 }
                                 )
@@ -132,7 +133,7 @@ class InvoiceList extends React.Component {
                     <h4>All Invoices</h4>
                     <table className="ui very basic collapsing celled table">
                         <thead>
-                            <tr><th>Date</th>
+                            <tr><th>Invoice No</th>
                                 <th>Quotation</th>
                                 <th>Company Name</th>
                                 <th>Products</th>
