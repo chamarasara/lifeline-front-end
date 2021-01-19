@@ -77,6 +77,7 @@ import {
     EDIT_QUOTATION,
     FETCH_QUOTATIONS,
     FETCH_QUOTATION,
+    FETCH_QUOTATION_FOR_INVOICE,
     DELETE_QUOTATION,
     SEARCH_QUOTATIONS_RESULT
 } from './types';
@@ -1012,6 +1013,19 @@ export const editInvoice = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_INVOICE, payload: response.data });
+    window.location.reload()
+};
+export const disableInvoice = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_INVOICE, payload: response.data });
     history.push("/invoice-dashboard");
     window.location.reload()
 };
@@ -1104,6 +1118,19 @@ export const fetchQuotation = (id) => async dispatch => {
     const response = await api.get(`api/sales/quotations/single-quotation/${id}`, header);
     console.log(response)
     dispatch({ type: FETCH_QUOTATION, payload: response.data[0] });
+};
+//get quotation for invoice creation
+export const fetchQuotationForInvoice = (quotationNumber) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`api/sales/quotations/single-quotation-invoice/${quotationNumber}`, header);
+    console.log(response)
+    dispatch({ type: FETCH_QUOTATION_FOR_INVOICE, payload: response.data[0] });
 };
 //Edit quotation
 export const editQuotation = (id, formValues) => async dispatch => {

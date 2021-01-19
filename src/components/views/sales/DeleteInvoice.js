@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from "react-router-dom";
 import Modal from '../../Modal';
 import history from '../../history';
-import { fetchInvoice, editInvoice } from "../../../actions";
+import { fetchInvoice, disableInvoice } from "../../../actions";
 
 class DeleteInvoice extends React.Component {
 
@@ -13,7 +13,7 @@ class DeleteInvoice extends React.Component {
     }
     onSubmit = (formValues) => {
         const invoice_state = "disabled";
-        this.props.editInvoice(this.props.invoice._id,{...formValues, invoice_state})
+        this.props.disableInvoice(this.props.invoice._id,{...formValues, invoice_state})
     }
     renderInput = ({ input, label, placeholder, type, meta }) => {
         return (
@@ -54,7 +54,7 @@ class DeleteInvoice extends React.Component {
     // onSubmit = (formValues) => {
     //     console.log(formValues)
     //     //formValues.userType.id = parseInt(formValues.userType.id)
-    //     this.props.editInvoice(this.props.invoice._id, formValues)
+    //     this.props.disableInvoice(this.props.invoice._id, formValues)
     // }
     renderContent() {
         if (!this.props.invoice) {
@@ -79,4 +79,4 @@ const mapToSatate = (state, ownPorps) => {
 const formWrapped = reduxForm({
     form: 'disableInvoice'
 })(DeleteInvoice);
-export default connect(mapToSatate, { fetchInvoice, editInvoice })(formWrapped);
+export default connect(mapToSatate, { fetchInvoice, disableInvoice })(formWrapped);

@@ -4,7 +4,8 @@ import {
     EDIT_QUOTATION,
     FETCH_QUOTATIONS,
     FETCH_QUOTATION,
-    DELETE_QUOTATION
+    DELETE_QUOTATION,
+    FETCH_QUOTATION_FOR_INVOICE
 
 } from '../../actions/types';
 
@@ -14,6 +15,8 @@ export default (state = {}, action) => {
             return { ...state, ..._.mapKeys(action.payload, 'id') };
         case FETCH_QUOTATION:
             return { ...state, [action.payload.id]: action.payload };
+        case FETCH_QUOTATION_FOR_INVOICE:
+            return { ...state, [action.payload.quotationNumber]: action.payload };
         case CREATE_QUOTATION:
             return { ...state, [action.payload.id]: action.payload };
         case EDIT_QUOTATION:

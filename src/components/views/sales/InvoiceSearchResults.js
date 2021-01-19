@@ -59,7 +59,11 @@ class InvoiceList extends React.Component {
                             {date2}
                         </td>
                         <td>
-                            {invoice.quotationNumber}
+                            {invoice.quotation.map(quotation=>{
+                                return(
+                                    <span key={quotation.quotationNumber}>{quotation.quotationNumber}</span>
+                                )
+                            })}
                         </td>
                         <td>
                             {

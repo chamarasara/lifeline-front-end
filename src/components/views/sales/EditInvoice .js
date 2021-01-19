@@ -98,7 +98,6 @@ class EditInvoice extends React.Component {
             return rate
         })
         let totalValue = []
-        console.log(rates)
         for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
             let quantity = quantities[i]
             let rate = rates[i]
@@ -106,9 +105,9 @@ class EditInvoice extends React.Component {
             console.log(totalValue.reduce((a, b) => a + b, 0))
             //return totalValue
         }
-        console.log(totalValue)
+
         return (
-            <p key={Math.random()}>{this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))}</p>
+            <span key={Math.random()}>{this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))}</span>
         )
     }
     renderInvoiceDetails() {
@@ -188,38 +187,53 @@ class EditInvoice extends React.Component {
         return (
             <div>
                 <p>
-                    <strong>Quotation Number:</strong>{this.props.invoice.quotationNumber}
+                    <strong>Quotation Number:</strong>{this.props.invoice.quotation.map(quotation => {
+                        return (
+                            <span key={quotation.id}>{quotation.quotationNumber}</span>
+                        )
+                    })}
                 </p>
-                <p><strong>Company Name:</strong>{this.props.invoice.customer.map(customer => {
-                    return (
-                        <span key={customer.id}>{customer.companyName}</span>
-                    )
-                })
-                }</p>
-                <p><strong>Address:</strong> {this.props.invoice.customer.map(customer => {
-                    return (
-                        <span key={customer.id}>
-                            {customer.communicationAddress.no},
-                            {customer.communicationAddress.lane},
-                            {customer.communicationAddress.city},
-                            {customer.communicationAddress.country},
-                            {customer.communicationAddress.postalCode}.
-                        </span>
-                    )
-                })
-                }</p>
-                <p><strong>Email: </strong>{this.props.invoice.customer.map(customer => {
-                    return (
-                        <span key={customer.id}>{customer.email}</span>
-                    )
-                })
-                }</p>
-                <p><strong>Contact Number: </strong>{this.props.invoice.customer.map(customer => {
-                    return (
-                        <span key={customer.id}>{customer.mobileNo}</span>
-                    )
-                })
-                }</p>
+                <p>
+                    <strong>Company Name:</strong>{this.props.invoice.customer.map(customer => {
+                        return (
+                            <span key={customer.id}>{customer.companyName}</span>
+                        )
+                    })
+                    }
+                </p>
+                <p>
+                    <strong>Remarks:</strong>{this.props.invoice.remarks}
+                </p>
+                <p>
+                    <strong>Address:</strong> {this.props.invoice.customer.map(customer => {
+                        return (
+                            <span key={customer.id}>
+                                {customer.communicationAddress.no},
+                                {customer.communicationAddress.lane},
+                                {customer.communicationAddress.city},
+                                {customer.communicationAddress.country},
+                                {customer.communicationAddress.postalCode}.
+                            </span>
+                        )
+                    })
+                    }
+                </p>
+                <p>
+                    <strong>Email: </strong>{this.props.invoice.customer.map(customer => {
+                        return (
+                            <span key={customer.id}>{customer.email}</span>
+                        )
+                    })
+                    }
+                </p>
+                <p>
+                    <strong>Contact Number: </strong>{this.props.invoice.customer.map(customer => {
+                        return (
+                            <span key={customer.id}>{customer.mobileNo}</span>
+                        )
+                    })
+                    }
+                </p>
                 <p><strong>Date: </strong>{moment(this.props.invoice.date).format('DD/MM/YYYY')}
 
                 </p>
@@ -236,6 +250,10 @@ class EditInvoice extends React.Component {
                         <div className="fields">
                             <div className="five wide field">
                                 <Field name={`${cashPayments}.cashAmount`} type="number" required component="input" placeholder="Cash Amount" >
+                                </Field>
+                            </div>
+                            <div className="five wide field">
+                                <Field name={`${cashPayments}.remarks`} type="text" required component="input" placeholder="Remarks" >
                                 </Field>
                             </div>
                             <div className="four wide field">
@@ -276,8 +294,11 @@ class EditInvoice extends React.Component {
                             </div>
                         </div>
                     </li>)}
+                    <li>
+                        <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Cheque Payment</button>
+                    </li>
                 </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Cheque Payment</button>
+
             </div>
         )
     }
@@ -321,39 +342,166 @@ class EditInvoice extends React.Component {
             </form>
         )
     }
-    getTotalPaid() {
+
+    renderPaidCashAmount() {
         let totalCash = this.props.invoice.paymentsAll.map(cash => {
             if (!cash.cashPayments) {
-                return 0
-            } else if (cash.cashPayments) {
-                return cash.cashPayments.map(ca => {
-                    console.log(ca.cashAmount)
-                    return ca.cashAmount
-                })
+                return (
+                    <tr key={Math.random()}>
+                        <td colSpan="3">
+                            -
+                        </td>
+                        <td colSpan="1">
+                            -
+                        </td>
+                    </tr>
+                )
             }
+            return cash.cashPayments.map(ca => {
+                return (
+                    <tr key={Math.random()}>
+                        <td colSpan="3">
+                            {ca.remarks}
+                        </td>
+                        <td colSpan="1">
+                            {ca.cashAmount}
+                        </td>
+                    </tr>
+                )
+            })
         })
-        let totalCheque = this.props.invoice.paymentsAll.map(cheque => {
-            //console.log(cheque.chequePayments)
+        return totalCash
+    }
+    totalPaidCash() {
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        let amount = this.props.invoice.paymentsAll.map(cash => {
+            console.log(cash.cashPayments)
+            return cash.cashPayments.map(amount => {
+                var convAmount =parseInt(amount.cashAmount)
+                console.log(convAmount)
+                console.log(typeof(convAmount))
+                return convAmount
+            })
+        })    
+        var sum = 0;   
+        for (let i = 0; i < amount.length; i++) {
+            sum += amount[i];            
+        }
+        console.log(sum)
+        console.log(amount.reduce(reducer))
+        return (
+            <span key={Math.random()}>{this.formatNumber(amount.reduce((a, b) => a + b, 0))}</span>
+        )
+    }
+    renderPaidBankAmount() {
+        let totalCash = this.props.invoice.paymentsAll.map(cheque => {
             if (!cheque.chequePayments) {
-                return 0
-            } else {
-                return cheque.chequePayments.map(ch => {
-                    console.log(ch.chequeAmount)
-                    return ch.chequeAmount
-                })
+                return (
+                    <tr key={Math.random()}>
+                        <td>
+                            -
+                        </td>
+                        <td>
+                            -
+                        </td>
+                        <td>
+                            -
+                        </td>
+                        <td>
+                            -
+                        </td>
+                    </tr>
+                )
             }
-
+            return cheque.chequePayments.map(ca => {
+                return (
+                    <tr key={Math.random()}>
+                        <td>
+                            {ca.bankName}
+                        </td>
+                        <td>
+                            {ca.chequeNumber}
+                        </td>
+                        <td>
+                            {ca.chequeDate}
+                        </td>
+                        <td>
+                            {ca.chequeAmount}
+                        </td>
+                    </tr>
+                )
+            })
         })
+        console.log(typeof (totalCash))
+        console.log(totalCash)
+        return totalCash
+    }
+    totalPaidCheque() {
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        let amount = this.props.invoice.paymentsAll.map(cash => {
+            console.log(cash)
+            return cash.chequePayments.map(amount => {
+                var convAmount = parseInt(amount.chequeAmount)
+                console.log(convAmount)
+                console.log(typeof (convAmount))
+                return convAmount
+            })
+        })
+        var sum = 0;
+        for (let i = 0; i < amount.length; i++) {
+            sum += amount[i];
+        }
+        console.log(sum)
+        console.log(amount.reduce(reducer))
+        return (
+            <span key={Math.random()}>{this.formatNumber(amount.reduce((a, b) => a + b, 0))}</span>
+        )
     }
     renderPayments = () => {
         return (
             <div>
                 <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
-                <p><b>Total Value:</b> {this.getSubTotal()}</p>
+                <p><b>Total value:</b> {this.getSubTotal()}</p>
+               
+                <div>
+                    <table className="ui   structured celled table">
+                        <thead>
+                            <tr>
+                                <th colSpan="4">Cheque Payments</th>
+                            </tr>
+                            <tr>
+                                <th>Bank Name</th>
+                                <th>Cheque Number</th>
+                                <th>Cheque Date</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderPaidBankAmount()}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table className="ui  structured celled table">
+                        <thead>
+                            <tr>
+                                <th colSpan="4">Cash Payments</th>
+                            </tr>
+                            <tr>
+                                <th colSpan="3">Remarks</th>
+                                <th colSpan="1">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderPaidCashAmount()}
+                        </tbody>
+                    </table>
+                </div>
                 {this.renderPaymentsForm()}
             </div>
         )
-    }    
+    }
+
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
     }
