@@ -68,10 +68,14 @@ class NewQuotation extends React.Component {
             )
         })
     }
-    renderProductsDropDown = ({ fields }) => {
+    renderProductsDropDown = ({ fields, meta: { error, submitFailed } }) => {
         return (
             <div>
                 <ul>
+                    <li>
+                        <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Product</button>
+                        {submitFailed && error && <span style={{ color: "red" }}>{error}</span>}
+                    </li>
                     {fields.map((products, index) => <li key={index}>
                         <label htmlFor={products}>Product #{index + 1}</label>
                         <div className="fields">
@@ -88,7 +92,7 @@ class NewQuotation extends React.Component {
                             <div className="six wide field">
                                 <Field name={`${products}.discount`} type="number" required component={this.renderInput} placeholder="Discount" >
                                 </Field>
-                            </div>                            
+                            </div>
                             <div className="six wide field">
                                 <Field name={`${products}.currency`} required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Select Currency-</option>
@@ -102,8 +106,6 @@ class NewQuotation extends React.Component {
                         </div>
                     </li>)}
                 </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Product</button>
-
             </div>
         )
     }
@@ -114,6 +116,7 @@ class NewQuotation extends React.Component {
                     <h3>Create Quotation</h3>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="six wide field">
+                            Customer Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
                             <Field name="customerId" component={this.renderSelectField} placeholder="" type="text" >
                                 <option>-Select Customer-</option>
                                 {this.renderCustomers()}
@@ -121,7 +124,7 @@ class NewQuotation extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="sixteen wide field">
-                                <label>Products- </label>
+                                Products <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <FieldArray name="products" component={this.renderProductsDropDown} />
                             </div>
                         </div>
@@ -141,24 +144,33 @@ const validate = (formValues) => {
     if (!formValues.customerId) {
         errors.customerId = 'Required';
     }
-    if (!formValues.products) {
-        errors.products = 'Please add products';
+    if (!formValues.products || !formValues.products.length) {
+        errors.products = { _error: 'At least one product must be entered' }
+    } else {
+        const productsArrayErrors = []
+        formValues.products.forEach((product, index) => {
+            const productErrors = {}
+            if (!product || !product.id) {
+                productErrors.id = 'Required'
+                productsArrayErrors[index] = productErrors
+            }
+            if (!product || !product.quantity) {
+                productErrors.quantity = 'Required'
+                productsArrayErrors[index] = productErrors
+            }
+            if (!product || !product.discount) {
+                productErrors.discount = 'Required'
+                productsArrayErrors[index] = productErrors
+            }
+            if (!product || !product.currency) {
+                productErrors.currency = 'Required'
+                productsArrayErrors[index] = productErrors
+            }
+        })
+        if (productsArrayErrors.length) {
+            errors.products = productsArrayErrors
+        }
     }
-    // if (!formValues.address) {
-    //     errors.address = 'Please enter the Number of the Address';
-    // }
-    // if (!formValues.nic) {
-    //     errors.nic = 'Please enter the ID Nummber';
-    // }
-    // if (!formValues.mobileNo) {
-    //     errors.mobileNo = 'Please enter Phone Number';
-    // }
-    // if (!formValues.email) {
-    //     errors.email = 'Please enter Email';
-    // }
-    // if (!formValues.gender) {
-    //     errors.gender = 'Please enter the Gender';
-    // }
     return errors;
 }
 const mapStateToProps = (state) => {
