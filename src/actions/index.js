@@ -79,7 +79,13 @@ import {
     FETCH_QUOTATION,
     FETCH_QUOTATION_FOR_INVOICE,
     DELETE_QUOTATION,
-    SEARCH_QUOTATIONS_RESULT
+    SEARCH_QUOTATIONS_RESULT,
+    NEW_FINISH_GOOD_INVENTORY,
+    EDIT_FINISH_GOOD_INVENTORY,
+    FETCH_FINISH_GOOD_INVENTORY,
+    FETCH_FINISH_GOODS_INVENTORY,
+    DISABLE_FINISH_GOOD_INVENTORY,
+    SEARCH_FINISH_GOODS_INVENTORY
 } from './types';
 
 //create user
@@ -1293,6 +1299,92 @@ export const deleteBom = (id) => async dispatch => {
     dispatch({ type: DELETE_BOM, payload: id });
     history.push('/bom')
     window.location.reload()
+};
+
+//create finish good inventory
+export const createFinishGoodInventory = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    console.log(user)
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('api/inventory/finish-good/new-finish-good-inventory', { ...formValues, user }, header);
+    console.log(response)
+    dispatch({ type: CREATE_INVOICE, payload: response.data });
+    window.location.reload()
+
+};
+//List finish good inventory
+export const fetchFinishGoodsInventory = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('api/inventory/finish-good/all-finish-goods-inventory/', header);
+    console.log(response)
+    dispatch({ type: FETCH_FINISH_GOODS_INVENTORY, payload: response.data });
+};
+//View finish good inventory
+export const fetchFinishGoodInventory = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`api/inventory/finish-good/single-finish-good-inventory/${id}`, header);
+    dispatch({ type: FETCH_FINISH_GOOD_INVENTORY, payload: response.data[0] });
+};
+//Edit finish good inventory
+export const updateFinishGoodInventory = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_INVOICE, payload: response.data });
+    window.location.reload()
+};
+//Disable finish good inventory
+export const reviseFinishGoodInventory = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/inventory/finish-good/update-finish-good-inventory/${id}`, { ...formValues }, header);
+    dispatch({ type: DISABLE_FINISH_GOOD_INVENTORY, payload: response.data });
+    history.push("/finish-good-inventory-dashboard/");
+    window.location.reload()
+};
+//Search finish goods inventory
+//Search quotation
+export const searchFinishGoodsInventory = (formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('api/inventory/finish-good/search-finish-good-inventory/', { formValues }, header);
+    dispatch({ type: SEARCH_FINISH_GOODS_INVENTORY, payload: response.data });
 };
 //Autheticate User
 export function signInAction({ userName, password }, history) {

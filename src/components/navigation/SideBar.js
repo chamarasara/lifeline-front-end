@@ -21,7 +21,7 @@ class SideBar extends React.Component {
         const user = jwt_decode(token);
         console.log(user)
         if (!this.props.user) {
-            return(
+            return (
                 <div className="ui active inline loader"></div>
             )
         }
@@ -41,6 +41,10 @@ class SideBar extends React.Component {
                             <i className="bullhorn icon"></i>
                         Sales
                     </Link>
+                        <Link to={"/inventory-dashboard"} className="item">
+                            <i className="cubes icon"></i>
+                        Inventory
+                    </Link>
                         <Link to={"/approvals-dashboard"} className="item">
                             <i className="list icon"></i>
                         Approvals
@@ -55,7 +59,7 @@ class SideBar extends React.Component {
                             <Link to="/userprofile" className="ui label">
                                 <img className="ui right spaced avatar image" src={this.props.user.avatar} alt={"user profile"} />
                                 {this.props.user.userName}
-                        </Link>
+                            </Link>
                             <div className="item">
                                 <button onClick={this.submit} className="ui primary button">Logout</button>
                             </div>
@@ -82,7 +86,7 @@ class SideBar extends React.Component {
                             <Link to="/userprofile" className="ui label">
                                 <img className="ui right spaced avatar image" src={this.props.user.avatar} alt={"user profile"} />
                                 {this.props.user.userName}
-                        </Link>
+                            </Link>
                             <div className="item">
                                 <button onClick={this.submit} className="ui primary button">Logout</button>
                             </div>

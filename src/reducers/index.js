@@ -19,6 +19,7 @@ import searchPurchaseOrdersPacking  from "./sales/searchPurchaseOrdersPackingRed
 import bomReducer from "./master/bomReducer";
 import quotationReducer from "./sales/quotationReducer";
 import searchQuotationReducer from "./sales/searchQuotationReducer";
+import inventoryFinishGoodReducer from "./inventory/inventoryFinishGoodReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -40,5 +41,6 @@ export default combineReducers({
     purchaseOrdersRaw: purchaseOrderRawReducer,
     purchaseOrdersPacking: purchaseOrderPackingReducer,
     bom:bomReducer,
-    searchInvoices: searchInvoicesReducer
+    searchInvoices: searchInvoicesReducer,
+    finishGoodInventory: inventoryFinishGoodReducer
 });

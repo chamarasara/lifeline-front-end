@@ -106,6 +106,11 @@ import ApprovalsQuotation from './views/approvals/quotation/ApprovalsQuotation';
 import ApprovalsSingleQuotation from './views/approvals/quotation/ApprovalsSingleQuotation';
 import ApprovalsEditQuotation from './views/approvals/quotation/ApprovalsEditQuotation';
 import DeclineQuotation from './views/approvals/quotation/DeclineQuotation';
+import InventoryDashboard from './views/inventory/InventoryDashboard';
+import NewFinishGoodInventory from './views/inventory/finishgoodinventory/NewFinishGood';
+import FinishGoodInventoyDashboard from './views/inventory/finishgoodinventory/FinishGoodDashboard';
+import ReviseFinishGood from './views/inventory/finishgoodinventory/ReviseFinishGood';
+import SingleFinishGood from './views/inventory/finishgoodinventory/SingleFinishGood';
 
 
 
@@ -233,7 +238,13 @@ class App extends React.Component {
                     <PrivateRoute path="/new-bom" component={NewBom} />
                     <PrivateRoute path="/single-bom/:id" component={SingleBom} />
                     <PrivateRoute path="/edit-bom/:id" component={EditBom} />
-                    <PrivateRoute path="/delete-bom/:id" component={DeleteBom} />                    
+                    <PrivateRoute path="/delete-bom/:id" component={DeleteBom} />   
+                    
+                    <PrivateRoute path="/inventory-dashboard" component={InventoryDashboard} /> 
+                    <PrivateRoute path="/finish-good-inventory-dashboard" component={FinishGoodInventoyDashboard} /> 
+                    <PrivateRoute path="/new-finish-good-inventory" component={NewFinishGoodInventory} /> 
+                    <PrivateRoute path="/single-finish-good-inventory/:id" component={SingleFinishGood} /> 
+                    <PrivateRoute path="/revise-finish-good-inventory/:id" component={ReviseFinishGood} /> 
                 </Router>
             </div>
         ) 
