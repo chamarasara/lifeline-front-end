@@ -102,6 +102,6 @@ const mapToSatate = (state) => {
     const orders = Object.values(state.searchPurchaseOrdersPacking)
     //delete orders['searchText']
     console.log(orders)
-    return { orders: orders };
+    return { orders: orders.reverse() };
 }
 export default connect(mapToSatate, { searchPurchaseOrdersPacking, fetchCustomer })(PurchaseOrderPackingSearchResults);

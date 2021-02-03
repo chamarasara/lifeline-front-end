@@ -103,6 +103,6 @@ class PurchaseOrderRawSearchResults extends React.Component {
 }
 const mapToSatate = (state) => {
     const orders = Object.values(state.searchPurchaseOrdersRaw)
-    return { orders: orders };
+    return { orders: orders.reverse() };
 }
 export default connect(mapToSatate, { searchPurchaseOrdersRaw, fetchSupplier })(PurchaseOrderRawSearchResults);
