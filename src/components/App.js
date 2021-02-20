@@ -111,6 +111,15 @@ import NewFinishGoodInventory from './views/inventory/finishgoodinventory/NewFin
 import FinishGoodInventoyDashboard from './views/inventory/finishgoodinventory/FinishGoodDashboard';
 import ReviseFinishGood from './views/inventory/finishgoodinventory/ReviseFinishGood';
 import SingleFinishGood from './views/inventory/finishgoodinventory/SingleFinishGood';
+import DistributorDashboard from './views/masterdata/distributormaster/DistributorDashboard';
+import NewDistributor from './views/masterdata/distributormaster/NewDistributor';
+import DistributorProfile from './views/masterdata/distributormaster/DistributorProfile';
+import EditDistributor from './views/masterdata/distributormaster/EditDistributor';
+import DeleteDistributor from './views/masterdata/distributormaster/DeleteDistributor';
+import EditManagementData from './views/masterdata/finishgoods/EditManagementData';
+import EditFinancialData from './views/masterdata/finishgoods/EditFinancialData';
+import EditDistributorData from './views/masterdata/finishgoods/EditDistributorData';
+import EditQualityData from './views/masterdata/finishgoods/EditQualityData';
 
 
 
@@ -148,6 +157,13 @@ class App extends React.Component {
                     <PrivateRoute path="/customer-profile/:id" component={CustomerProfile} />
                     <PrivateRoute path="/edit-customer/:id" component={EditCustomer} />
                     <PrivateRoute path="/delete-customer/:id" component={DeleteCustomer} />
+
+                    <PrivateRoute path="/distributor-dashboard" component={DistributorDashboard} />
+                    <PrivateRoute path="/new-distributor" component={NewDistributor} />
+                    <PrivateRoute path="/distributor-profile/:id" component={DistributorProfile} />
+                    <PrivateRoute path="/edit-distributor/:id" component={EditDistributor} />
+                    <PrivateRoute path="/delete-distributor/:id" component={DeleteDistributor} />
+
                     <PrivateRoute path="/supplier" component={Supplier} />
                     <PrivateRoute path="/new-supplier" component={NewSupplier} />
                     <PrivateRoute path="/supplier-profile/:id" component={SupplierProfile} />
@@ -175,12 +191,18 @@ class App extends React.Component {
                     <PrivateRoute path="/edit-packing-material-mrp-four/:id" component={EditPackingMaterialMrpFour} /> 
                     <PrivateRoute path="/edit-packing-material-plant-one/:id" component={EditPackingMaterialPlantOne} />                    
                     <PrivateRoute path="/edit-packing-material-plant-two/:id" component={EditPackingMaterialPlantTwo} />  
-                    <PrivateRoute path="/delete-packing-material/:id" component={DeletePackingMaterial} />   
+                    <PrivateRoute path="/delete-packing-material/:id" component={DeletePackingMaterial} />  
+
                     <PrivateRoute path="/finish-goods" component={FinishGoodDashboard} /> 
                     <PrivateRoute path="/new-finish-good" component={NewFinishGood} />  
                     <PrivateRoute path="/single-finish-good-material/:id" component={SingleFinishGoodMaterial} />
                     <PrivateRoute path="/finish-good-edit-details/:id" component={EditFinishGoodMaterial} />
-                    <PrivateRoute path="/delete-finish-good-material/:id" component={DeleteFinishGoodMaterial} />                     
+                    <PrivateRoute path="/finish-good-edit-management-details/:id" component={EditManagementData} />
+                    <PrivateRoute path="/finish-good-edit-financial-details/:id" component={EditFinancialData} />
+                    <PrivateRoute path="/finish-good-edit-distributor-details/:id" component={EditDistributorData} />
+                    <PrivateRoute path="/finish-good-edit-quality-details/:id" component={EditQualityData} />
+                    <PrivateRoute path="/delete-finish-good-material/:id" component={DeleteFinishGoodMaterial} />  
+
                     <PrivateRoute path="/semi-finish-goods" component={SemiFinishGoodDashboard} />
                     <PrivateRoute path="/new-semi-finish-good" component={NewSemiFinishGood} />
                     <PrivateRoute path="/single-semi-finish-good-material/:id" component={SingleSemiFinishGoodMaterial} />
@@ -244,7 +266,9 @@ class App extends React.Component {
                     <PrivateRoute path="/finish-good-inventory-dashboard" component={FinishGoodInventoyDashboard} /> 
                     <PrivateRoute path="/new-finish-good-inventory" component={NewFinishGoodInventory} /> 
                     <PrivateRoute path="/single-finish-good-inventory/:id" component={SingleFinishGood} /> 
-                    <PrivateRoute path="/revise-finish-good-inventory/:id" component={ReviseFinishGood} /> 
+                    <PrivateRoute path="/revise-finish-good-inventory/:id" component={ReviseFinishGood} />
+                    
+                    
                 </Router>
             </div>
         ) 

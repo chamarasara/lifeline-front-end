@@ -76,7 +76,6 @@ class NewRawMaterial extends React.Component {
                     </li>)}
                 </ul>
                 <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Suppliers</button>
-
             </div>
         )
     }

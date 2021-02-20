@@ -38,7 +38,7 @@ class FinishGoodMaterialList extends React.Component {
                         {material.productState}
                     </td>
                     <td>
-                        <Link to={`/single-finish-good-material/${material._id}`} className="ui blue button">View</Link>
+                        <Link to={`/single-finish-good-material/${material.id}`} className="ui blue button">View</Link>
                     </td>
                 </tr>
             )

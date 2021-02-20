@@ -20,6 +20,7 @@ import bomReducer from "./master/bomReducer";
 import quotationReducer from "./sales/quotationReducer";
 import searchQuotationReducer from "./sales/searchQuotationReducer";
 import inventoryFinishGoodReducer from "./inventory/inventoryFinishGoodReducer";
+import distributorReducer from "./master/distributorReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -27,6 +28,7 @@ export default combineReducers({
     userRoles: userRoleReducer,
     customer: customerReducer,
     supplier: supplierReducer,
+    distributor: distributorReducer,
     rawMaterials: rawMaterialReducer,
     packingMaterials: packingMaterialReducer,
     semiFinishGoods: semiFinishGoodsReducer,

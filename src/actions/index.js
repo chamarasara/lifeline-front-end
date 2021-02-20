@@ -25,6 +25,11 @@ import {
     FETCH_SUPPLIER,
     FETCH_SUPPLIERS,
     DELETE_SUPPLIER,
+    NEW_DISTRIBUTOR,
+    EDIT_DISTRIBUTOR,
+    FETCH_DISTRIBUTOR,
+    FETCH_DISTRIBUTORS,
+    DELETE_DISTRIBUTOR,
     CREATE_RAW_MATERIAL,
     EDIT_RAW_MATERIAL,
     FETCH_RAW_MATERIAL,
@@ -317,7 +322,7 @@ export const fetchSuppliers = () => async dispatch => {
         }
     };
     const response = await api.get('api/master-data/supplier-master/all-suppliers', header);
-    console.log(response)
+
     dispatch({ type: FETCH_SUPPLIERS, payload: response.data });
 };
 //View single supplier
@@ -330,7 +335,7 @@ export const fetchSupplier = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/master-data/supplier-master/single-supplier/${id}`, header);
-    console.log(response)
+
     dispatch({ type: FETCH_SUPPLIER, payload: response.data });
 };
 //Edit supplier
@@ -343,7 +348,7 @@ export const editSupplier = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/master-data/supplier-master/update-supplier/${id}`, { ...formValues }, header);
-    console.log(response)
+
     dispatch({ type: EDIT_SUPPLIER, payload: response.data });
     history.push(`/supplier-profile/${id}`);
 };
@@ -360,6 +365,74 @@ export const deleteSupplier = (id) => async dispatch => {
     dispatch({ type: DELETE_SUPPLIER, payload: id });
     history.push('/supplier')
 };
+//create distributor
+export const createDistributor = formValues => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/master-data/distributor-master/new-distributor', { ...formValues, user }, header);
+    dispatch({ type: NEW_DISTRIBUTOR, payload: response.data });
+    history.push('/distributor-dashboard');
+    window.location.reload()
+};
+//List all distributors
+export const fetchDistributors = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/master-data/distributor-master/all-distributors', header);
+    dispatch({ type: FETCH_DISTRIBUTORS, payload: response.data });
+};
+//View single distributor
+export const fetchDistributor = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/master-data/distributor-master/single-distributor/${id}`, header);
+    console.log(response.data)
+    dispatch({ type: FETCH_DISTRIBUTOR, payload: response.data[0] });
+};
+//Edit distributor
+export const editDistributor = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/distributor-master/update-distributor/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_DISTRIBUTOR, payload: response.data });
+    history.push(`/distributor-profile/${formValues.id}`)
+    window.location.reload()
+};
+//Delete distributor
+export const deleteDistributor = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/master-data/distributor-master/delete-distributor/${id}`, header);
+    dispatch({ type: DELETE_DISTRIBUTOR, payload: id });
+    history.push('/distributor-dashboard');
+    //window.location.reload()
+};
 //create raw material
 export const createRawMaterial = formValues => async dispatch => {
     console.log(formValues)
@@ -372,7 +445,7 @@ export const createRawMaterial = formValues => async dispatch => {
         }
     };
     const response = await api.post('/api/master-data/raw-material/new-raw-material/', { ...formValues, user }, header);
-    console.log(response)
+
     dispatch({ type: CREATE_RAW_MATERIAL, payload: response.data });
     history.push("/raw-material/");
     window.location.reload()
@@ -400,7 +473,7 @@ export const fetchRawMaterial = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/master-data/raw-material/single-raw-material/${id}`, header);
-    console.log(response)
+
     dispatch({ type: FETCH_RAW_MATERIAL, payload: response.data[0] });
 };
 //Edit raw material
@@ -414,7 +487,7 @@ export const editRawMaterial = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`api/master-data/raw-material/update-raw-material/${id}`, { ...formValues }, header);
-    console.log(response)
+
     dispatch({ type: EDIT_RAW_MATERIAL, payload: response.data });
 
     history.push(`/single-raw-material/${formValues.id}`);
@@ -430,7 +503,6 @@ export const deleteRawMaterial = (id) => async dispatch => {
         }
     };
     await api.delete(`/api/master-data/raw-material/delete-raw-material/${id}`, header);
-    console.log(id)
     dispatch({ type: DELETE_RAW_MATERIAL, payload: id });
     history.push('/raw-material')
     window.location.reload()
@@ -446,7 +518,7 @@ export const createPackingaterial = formValues => async dispatch => {
         }
     };
     const response = await api.post('/api/master-data/packing-material/new-packing-material', { ...formValues, user }, header);
-    console.log(response)
+
     dispatch({ type: CREATE_PACKING_MATERIAL, payload: response.data });
     history.push('/packing-material');
     window.location.reload()
@@ -474,7 +546,7 @@ export const fetchPackingMaterial = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/master-data/packing-material/single-packing-material/${id}`, header);
-    console.log(response)
+
     dispatch({ type: FETCH_PACKING_MATERIAL, payload: response.data[0] });
 };
 //Edit packing material
@@ -487,7 +559,7 @@ export const editPackingMaterial = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/master-data/packing-material/update-packing-material/${id}`, { ...formValues }, header);
-    console.log(response)
+
     dispatch({ type: EDIT_PACKING_MATERIAL, payload: response.data });
     history.push(`/single-packing-material/${formValues.id}`);
 };
@@ -517,7 +589,7 @@ export const createSemiFinishGood = formValues => async dispatch => {
         }
     };
     const response = await api.post('/api/master-data/semi-finish-good/new-semi-finish-good-material', { ...formValues, user }, header);
-    console.log(response)
+
     dispatch({ type: CREATE_SFG_MATERIAL, payload: response.data });
     history.push('/semi-finish-goods');
     window.location.reload()
@@ -532,7 +604,7 @@ export const fetchSemiFinishGoods = () => async dispatch => {
         }
     };
     const response = await api.get('/api/master-data/semi-finish-good/all-semi-finish-good-materials', header);
-    console.log(response)
+
     dispatch({ type: FETCH_SFG_MATERIALS, payload: response.data });
 };
 //View SFG packing material
@@ -545,7 +617,7 @@ export const fetchSemiFinishGood = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/master-data/semi-finish-good/single-semi-finish-good-material/${id}`, header);
-    console.log(response)
+
     dispatch({ type: FETCH_SFG_MATERIAL, payload: response.data });
 };
 //Edit SFG material
@@ -558,7 +630,7 @@ export const editSemiFinishGood = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/master-data/semi-finish-good/update-semi-finish-good-material/${id}`, { ...formValues }, header);
-    console.log(response)
+
     dispatch({ type: EDIT_SFG_MATERIAL, payload: response.data });
 
     history.push(`/single-semi-finish-good-material/${id}`);
@@ -605,7 +677,7 @@ export const fetchFinishGoods = () => async dispatch => {
         }
     };
     const response = await api.get('/api/master-data/finish-good/all-finish-good-materials', header);
-    console.log(response)
+
     dispatch({ type: FETCH_FG_MATERIALS, payload: response.data });
 };
 //View FG  material
@@ -619,7 +691,7 @@ export const fetchFinishGood = (id) => async dispatch => {
     };
     const response = await api.get(`/api/master-data/finish-good/single-finish-good-material/${id}`, header);
     console.log(response)
-    dispatch({ type: FETCH_FG_MATERIAL, payload: response.data });
+    dispatch({ type: FETCH_FG_MATERIAL, payload: response.data[0] });
 };
 //Edit FG material
 export const editFinishGood = (id, formValues) => async dispatch => {
@@ -631,10 +703,10 @@ export const editFinishGood = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/master-data/finish-good/update-finish-good-material/${id}`, { ...formValues }, header);
-    console.log(response)
-    dispatch({ type: EDIT_FG_MATERIAL, payload: response.data });
 
-    history.push(`/single-finish-good-material/${id}`);
+    dispatch({ type: EDIT_FG_MATERIAL, payload: response.data });
+    history.push(`/single-finish-good-material/${formValues.id}`);
+    window.location.reload()
 };
 //Delete FG material
 export const deleteFinishGood = (id) => async dispatch => {
@@ -662,7 +734,7 @@ export const createProductMaster = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/master-data/product-master/new-product', { ...formValues }, header);
-    console.log(response)
+
     dispatch({ type: CREATE_PRODUCT_MASTER, payload: response.data });
     history.push('/products-dashboard');
     window.location.reload()
@@ -677,7 +749,7 @@ export const fetchProductsMaster = () => async dispatch => {
         }
     };
     const response = await api.get('/api/master-data/product-master/all-products', header);
-    console.log(response)
+
     dispatch({ type: FETCH_PRODUCTS_MASTER, payload: response.data });
 };
 //View Product Master
@@ -690,7 +762,7 @@ export const fetchProductMaster = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/master-data/product-master/single-product/${id}`, header);
-    console.log(response)
+
     dispatch({ type: FETCH_PRODUCT_MASTER, payload: response.data });
 };
 //Edit Product Master
@@ -736,7 +808,7 @@ export const createPurchaseOrderRaw = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues, user }, header);
-    console.log(response)
+
     dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.data });
     window.location.reload()
 
@@ -751,7 +823,7 @@ export const fetchPurchaseOrdersRaw = () => async dispatch => {
         }
     };
     const response = await api.get('/api/sales/purchase-orders-raw/all-purchase-orders-raw', header);
-    console.log(response)
+
     dispatch({ type: FETCH_PURCHASE_ORDERS_RAW, payload: response.data });
 };
 //View purchase order raw
@@ -884,7 +956,7 @@ export const fetchPurchaseOrderPacking = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/sales/purchase-orders-packing/single-purchase-order-packing/${id}`, header);
-    console.log(response)
+
     dispatch({ type: FETCH_PURCHASE_ORDER_PACKING, payload: response.data[0] });
 };
 //Edit purchase order raw
@@ -978,7 +1050,7 @@ export const createInvoice = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/sales/invoices/new-invoice', { ...formValues, user }, header);
-    console.log(response)
+
     dispatch({ type: CREATE_INVOICE, payload: response.data });
     window.location.reload()
 
@@ -1122,7 +1194,7 @@ export const fetchQuotation = (id) => async dispatch => {
         }
     };
     const response = await api.get(`api/sales/quotations/single-quotation/${id}`, header);
-    console.log(response)
+
     dispatch({ type: FETCH_QUOTATION, payload: response.data[0] });
 };
 //get quotation for invoice creation
@@ -1135,7 +1207,7 @@ export const fetchQuotationForInvoice = (quotationNumber) => async dispatch => {
         }
     };
     const response = await api.get(`api/sales/quotations/single-quotation-invoice/${quotationNumber}`, header);
-    console.log(response)
+
     dispatch({ type: FETCH_QUOTATION_FOR_INVOICE, payload: response.data[0] });
 };
 //Edit quotation
@@ -1314,7 +1386,7 @@ export const createFinishGoodInventory = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/inventory/finish-good/new-finish-good-inventory', { ...formValues, user }, header);
-    console.log(response)
+
     dispatch({ type: CREATE_INVOICE, payload: response.data });
     window.location.reload()
 
@@ -1329,7 +1401,7 @@ export const fetchFinishGoodsInventory = () => async dispatch => {
         }
     };
     const response = await api.get('api/inventory/finish-good/all-finish-goods-inventory/', header);
-    console.log(response)
+
     dispatch({ type: FETCH_FINISH_GOODS_INVENTORY, payload: response.data });
 };
 //View finish good inventory

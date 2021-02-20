@@ -61,14 +61,16 @@ class NewFinishGood extends React.Component {
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
-                    <h3>Create Finish Good</h3>
+                    <h3>Basic Data</h3>
                     <form className="ui mini form error" onSubmit={handleSubmit}>
                         <div className="fields">
-                            <div className="eight wide field">
+                            <div className="twelve wide field">
                                 Product Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="productName" component={this.renderInput} placeholder="Product Name" type="text" />
-                            </div>
-                            <div className="four wide field">
+                            </div>                            
+                        </div>
+                        <div className="fields">     
+                            <div className="three wide field">
                                 Product Category <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="productCategory" component={this.renderSelectField} type="text" >
                                     <option>-Select Product Category-</option>
@@ -76,10 +78,8 @@ class NewFinishGood extends React.Component {
                                     <option value="Cosmetics">Cosmetics</option>
                                     <option value="Other">Other</option>
                                 </Field>
-                            </div>
-                        </div>
-                        <div className="fields">
-                            <div className="four wide field">
+                            </div>  
+                            <div className="three wide field">
                                 Unit of Measure <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="baseUnitMeasure" required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-UOM-</option>
@@ -91,8 +91,8 @@ class NewFinishGood extends React.Component {
                                     <option value="g">g</option>
                                     <option value="cm">cm</option>
                                 </Field>
-                            </div>
-                            <div className="four wide field">
+                            </div>                    
+                            <div className="three wide field">
                                 Division <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="division" required component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Select Division-</option>
@@ -111,7 +111,7 @@ class NewFinishGood extends React.Component {
                                     <option value="Powder">Powder</option>
                                 </Field>
                             </div>
-                            <div className="four wide field">
+                            <div className="three wide field">
                                 Material State <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="productState" component={this.renderSelectField} type="text" >
                                     <option>-Select Material Status-</option>
@@ -120,18 +120,16 @@ class NewFinishGood extends React.Component {
                                 </Field>
                             </div>
                         </div>
-                        <div className="fields">
+                        <div className="fields">                            
                             <div className="four wide field">
-                                Selling Price <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="sellingPrice" component={this.renderInput} placeholder="Selling Price" type="number" />
+                                Units in a Pack <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="unitsInPack" component={this.renderInput} placeholder="Units in a Pack" type="number" />
                             </div>
-                        </div>
-                        <div className="fields">
                             <div className="four wide field">
-                                Bar Code <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="barCode" component={this.renderInput} placeholder="Bar Code" type="number" />
+                                Minimum Selling Units <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="minimumSellingUnits" component={this.renderInput} placeholder="Minimum Selling Units" type="number" />
                             </div>
-                        </div>
+                        </div>                        
                         <div className="fields">
                             <div className="four wide field">
                                 <Field name="productDescription" component="textarea" placeholder="Peoduct Description(Optional)" type="text" />
@@ -139,7 +137,7 @@ class NewFinishGood extends React.Component {
                         </div>                       
                         <div className="field">
                             <Link to={"/finish-goods"} className="ui button">Back</Link>
-                            <button type="submit" className="ui primary button">Submit</button>
+                            <button type="submit" className="ui primary button">Next</button>
                         </div>
                     </form>
                 </div>
@@ -162,15 +160,15 @@ const validate = (formValues) => {
     if (!formValues.division) {
         errors.division = 'Required!';
     }
-    if (!formValues.materialState) {
-        errors.materialState = 'Required!';
+    if (!formValues.productState) {
+        errors.productState = 'Required!';
     }
-    if (!formValues.barCode) {
-        errors.barCode = 'Required!';
+    if (!formValues.unitsInPack) {
+        errors.unitsInPack = 'Required!';
     }
-    if (!formValues.sellingPrice) {
-        errors.sellingPrice = 'Required!';
-    }
+    if (!formValues.minimumSellingUnits) {
+        errors.minimumSellingUnits = 'Required!';
+    }    
     return errors;
 }
 const mapStateToProps = (state) => {
