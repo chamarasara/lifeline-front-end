@@ -120,6 +120,22 @@ import EditManagementData from './views/masterdata/finishgoods/EditManagementDat
 import EditFinancialData from './views/masterdata/finishgoods/EditFinancialData';
 import EditDistributorData from './views/masterdata/finishgoods/EditDistributorData';
 import EditQualityData from './views/masterdata/finishgoods/EditQualityData';
+import EmployeeDashboard from './views/hr/employees/EmployeeDashboard';
+import NewEmployee from './views/hr/employees/NewEmployee';
+import EmployeeProfile from './views/hr/employees/EmployeeProfile';
+import EditEmployee from './views/hr/employees/EditEmployee';
+import DeleteEmployee from './views/masterdata/employeemaster/DeleteMasterEmployee';
+import HrDashboard from './views/hr/HrDashboard';
+import SalariesDashboard from './views/hr/salaries/SalariesDashboard';
+import NewSalary from './views/hr/salaries/NewSalary';
+import SingleSalary from './views/hr/salaries/SingleSalary';
+import EditSalary from './views/hr/salaries/EditSalary';
+import DeleteSalary from './views/hr/salaries/DeleteSalary';
+import EmployeeMasterDashboard from './views/masterdata/employeemaster/EmployeeMasterDashboard';
+import AssignAllowances from './views/masterdata/employeemaster/AssignAllowances';
+import EmployeeMasterProfile from './views/masterdata/employeemaster/EmployeeMasterProfile';
+import EditMasterEmployee from './views/masterdata/employeemaster/EditMasterEmployee';
+import DeleteMasterEmployee from './views/masterdata/employeemaster/DeleteMasterEmployee';
 
 
 
@@ -163,6 +179,19 @@ class App extends React.Component {
                     <PrivateRoute path="/distributor-profile/:id" component={DistributorProfile} />
                     <PrivateRoute path="/edit-distributor/:id" component={EditDistributor} />
                     <PrivateRoute path="/delete-distributor/:id" component={DeleteDistributor} />
+
+                    <PrivateRoute path="/employee-dashboard" component={EmployeeDashboard} />
+                    <PrivateRoute path="/new-employee" component={NewEmployee} />
+                    <PrivateRoute path="/employee-profile/:id" component={EmployeeProfile} />
+                    <PrivateRoute path="/edit-employee/:id" component={EditEmployee} />
+                    <PrivateRoute path="/delete-employee/:id" component={DeleteEmployee} />
+
+                    <PrivateRoute path="/employee-master-dashboard" component={EmployeeMasterDashboard} />
+                    <PrivateRoute path="/assign-allowances" component={AssignAllowances} />
+                    <PrivateRoute path="/employee-master-profile/:id" component={EmployeeMasterProfile} />
+                    <PrivateRoute path="/edit-master-employee/:id" component={EditMasterEmployee} />
+                    <PrivateRoute path="/delete-master-employee/:id" component={DeleteMasterEmployee} />
+                    <PrivateRoute path="/assign-allowances-master/:id" component={AssignAllowances} />
 
                     <PrivateRoute path="/supplier" component={Supplier} />
                     <PrivateRoute path="/new-supplier" component={NewSupplier} />
@@ -268,7 +297,12 @@ class App extends React.Component {
                     <PrivateRoute path="/single-finish-good-inventory/:id" component={SingleFinishGood} /> 
                     <PrivateRoute path="/revise-finish-good-inventory/:id" component={ReviseFinishGood} />
                     
-                    
+                    <PrivateRoute path="/hr-dashboard/" component={HrDashboard} />
+                    <PrivateRoute path="/salaries-dashboard/" component={SalariesDashboard} />
+                    <PrivateRoute path="/new-salary/" component={NewSalary} />
+                    <PrivateRoute path="/single-salary/:id" component={SingleSalary} />
+                    <PrivateRoute path="/edit-salary/:id" component={EditSalary} />
+                    <PrivateRoute path="/delete-salary/:id" component={DeleteSalary} />
                 </Router>
             </div>
         ) 

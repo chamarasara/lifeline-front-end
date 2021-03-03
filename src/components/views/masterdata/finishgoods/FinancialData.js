@@ -66,27 +66,24 @@ class FinancialData extends React.Component {
                             <div className="four wide field">
                                 Selling Price <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="sellingPrice" component={this.renderInput} placeholder="Selling Price" type="number" />
-                            </div>
-                            <div className="four wide field">
-                                Factory Price  <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="factoryPrice" component={this.renderInput} placeholder="Factory Price" type="number" />
-                            </div>
-                        </div>
-                        <div className="fields">
-                            <div className="four wide inline  field">
-                                Distributor Margin % <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="distributorMargin" component={this.renderInput} placeholder="Distributor Margin %" type="number" />
-                                <div className="ui pointing label">
-                                    {this.props.distributorMarginTotal}
-                                </div>
-                            </div>
+                            </div>                             
                             <div className="four wide inline field">
                                 Retailer Margin %<span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="retailerMargin" component={this.renderInput} placeholder="Retailer Margin %" type="number" />
                                 <div className="ui pointing label">
                                     {this.props.retailerMarginTotal}
                                 </div>
-                            </div>
+                            </div> 
+                            <div className="four wide inline  field">
+                                Distributor Margin % <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="distributorMargin" component={this.renderInput} placeholder="Distributor Margin %" type="number" />
+                                <div className="ui pointing label">
+                                    {this.props.factoryPrice}
+                                </div>
+                            </div>                          
+                        </div>
+                        <div className="fields">
+                            <h5>Factory Price: {this.props.factoryPrice}</h5>
                         </div>
                         <div className="fields">
                             <div className="four wide field">
@@ -94,10 +91,10 @@ class FinancialData extends React.Component {
                                 <Field name="maximumDiscount" component={this.renderInput} placeholder="Maximum Discount %" type="number" />
                             </div>
                             <div className="four wide field">
-                                Free Issues <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Free Issues (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
                                 <Field name="freeIssues" component={this.renderInput} placeholder="Free Issues" type="number" />
                             </div>
-                        </div>                       
+                        </div>
                         <div className="field">
                             <button type="button" className="ui  button" onClick={previousPage}>
                                 Previous
@@ -122,9 +119,9 @@ const validate = (formValues) => {
     if (!formValues.retailerMargin) {
         errors.retailerMargin = 'Required!';
     }
-    if (!formValues.freeIssues) {
-        errors.freeIssues = 'Required!';
-    }
+    // if (!formValues.freeIssues) {
+    //     errors.freeIssues = 'Required!';
+    // }
     if (!formValues.maximumDiscount) {
         errors.maximumDiscount = 'Required!';
     }
@@ -139,9 +136,9 @@ const mapStateToProps = (state) => {
     const sellingPrice = selector(state, 'sellingPrice')
     const distributorMargin = selector(state, 'distributorMargin')
     const retailerMargin = selector(state, 'retailerMargin')
-    const distributorMarginTotal = sellingPrice * distributorMargin / 100
-    const retailerMarginTotal = sellingPrice * retailerMargin / 100
-    return { sellingPrice: sellingPrice, distributorMarginTotal, retailerMarginTotal };
+    const retailerMarginTotal = sellingPrice / 100 * (100 - retailerMargin)
+    const factoryPrice = retailerMarginTotal / 100 * (100 - distributorMargin)
+    return { sellingPrice: sellingPrice, factoryPrice, retailerMarginTotal };
 }
 const formWrapped = reduxForm({
     form: 'newFinishGood',

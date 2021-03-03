@@ -205,6 +205,9 @@ class EditInvoice extends React.Component {
                     <strong>Remarks:</strong>{this.props.invoice.remarks}
                 </p>
                 <p>
+                    <strong>Customer Reference: </strong>{this.props.invoice.reference}
+                </p>
+                <p>
                     <strong>Address:</strong> {this.props.invoice.customer.map(customer => {
                         return (
                             <span key={customer.id}>

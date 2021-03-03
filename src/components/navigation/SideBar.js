@@ -49,6 +49,10 @@ class SideBar extends React.Component {
                             <i className="list icon"></i>
                         Approvals
                     </Link>
+                        <Link to={"/hr-dashboard"} className="item">
+                            <i className="address card icon"></i>
+                        HR
+                    </Link>
                         <Link to={"/settings"} className="item">
                             <i className="cogs icon"></i>
                         Settings

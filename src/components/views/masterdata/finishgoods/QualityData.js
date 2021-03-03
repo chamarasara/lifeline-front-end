@@ -64,13 +64,13 @@ class QualityData extends React.Component {
                     <form className="ui mini form error" onSubmit={handleSubmit}>                                               
                         <div className="fields">
                             <div className="eight wide field">
-                                Shelf Life <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="shelfLife" component={this.renderInput} placeholder="Shelf Life" type="text" />
+                                Shelf Life (Months)<span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="shelfLife" component={this.renderInput} placeholder="Shelf Life" type="number" />
                             </div>
                         </div>
                         <div className="fields">
                             <div className="eight wide field">
-                                Perfume Code <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Perfume Code (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
                                 <Field name="perfumeCode" component={this.renderInput} placeholder="Perfume Code" type="text" />
                             </div>
                         </div>                                 
@@ -92,9 +92,9 @@ const validate = (formValues) => {
     if (!formValues.shelfLife) {
         errors.shelfLife = 'Required!';
     }    
-    if (!formValues.perfumeCode) {
-        errors.perfumeCode = 'Required!';
-    }    
+    // if (!formValues.perfumeCode) {
+    //     errors.perfumeCode = 'Required!';
+    // }    
     return errors;
 }
 // const mapStateToProps = (state) => {

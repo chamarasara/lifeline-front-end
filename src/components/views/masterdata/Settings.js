@@ -48,6 +48,11 @@ class Settings extends React.Component {
                             </Link>
                         </div>
                         <div className="column">
+                            <Link to={"/employee-master-dashboard"} className="massive ui blue button">
+                                Employee Master
+                            </Link>
+                        </div>
+                        <div className="column">
                             <button className="massive ui blue button">
                                 Quality Master
                             </button>

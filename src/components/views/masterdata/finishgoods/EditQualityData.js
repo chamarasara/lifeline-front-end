@@ -84,7 +84,7 @@ class EditQualityData extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="eight wide field">
-                                Perfume Code <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                Perfume Code (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
                                 <Field name="perfumeCode" component={this.renderInput} placeholder="Perfume Code" type="text" />
                             </div>
                         </div>                            
@@ -103,9 +103,9 @@ const validate = (formValues) => {
     if (!formValues.shelfLife) {
         errors.shelfLife = 'Required!';
     }
-    if (!formValues.perfumeCode) {
-        errors.perfumeCode = 'Required!';
-    }
+    // if (!formValues.perfumeCode) {
+    //     errors.perfumeCode = 'Required!';
+    // }
     return errors;
 }
 const mapStateToProps = (state, ownPorps) => {

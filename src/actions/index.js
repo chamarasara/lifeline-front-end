@@ -90,7 +90,18 @@ import {
     FETCH_FINISH_GOOD_INVENTORY,
     FETCH_FINISH_GOODS_INVENTORY,
     DISABLE_FINISH_GOOD_INVENTORY,
-    SEARCH_FINISH_GOODS_INVENTORY
+    SEARCH_FINISH_GOODS_INVENTORY,
+    NEW_EMPLOYEE,
+    EDIT_EMPLOYEE,
+    FETCH_EMPLOYEE,
+    FETCH_EMPLOYEES,
+    DELETE_EMPLOYEE,
+    NEW_SALARY,
+    EDIT_SALARY,
+    FETCH_SALARY,
+    FETCH_SALARIES,
+    DELETE_SALARY,
+    SEARCH_SALARIES_RESULT
 } from './types';
 
 //create user
@@ -432,6 +443,120 @@ export const deleteDistributor = (id) => async dispatch => {
     dispatch({ type: DELETE_DISTRIBUTOR, payload: id });
     history.push('/distributor-dashboard');
     //window.location.reload()
+};
+//create employee
+export const createEmployee = formValues => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/master-data/employee-master/new-employee/', { ...formValues, user }, header);
+    dispatch({ type: NEW_EMPLOYEE, payload: response.data });
+    history.push('/employee-dashboard');
+    window.location.reload()
+};
+//List all employees
+export const fetchEmployees = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/master-data/employee-master/all-employees/', header);
+    dispatch({ type: FETCH_EMPLOYEES, payload: response.data });
+};
+//View single employee
+export const fetchEmployee = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/master-data/employee-master/single-employee/${id}`, header);
+    console.log(response.data)
+    dispatch({ type: FETCH_EMPLOYEE, payload: response.data });
+};
+//Edit employee
+export const editEmployee = (id, formValues) => async dispatch => {
+    
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/employee-master/update-employee/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_EMPLOYEE, payload: response.data });
+    history.push(`/employee-profile/${formValues._id}`)
+    window.location.reload()
+};
+//Edit employee master
+export const editMasterEmployee = (id, formValues) => async dispatch => {
+
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/employee-master/update-employee/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_EMPLOYEE, payload: response.data });
+    history.push(`/employee-master-profile/${formValues._id}`)
+    window.location.reload()
+};
+//Edit employee
+export const assignAllowances = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/employee-master/update-employee/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_EMPLOYEE, payload: response.data });
+    history.push(`/employee-master-profile/${formValues._id}`)
+    window.location.reload()
+};
+//Delete employee
+export const deleteEmployee = (id) => async dispatch => {
+    console.log(id)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/master-data/employee-master/delete-employee/${id}`, header);
+    dispatch({ type: DELETE_EMPLOYEE, payload: id });
+    history.push('/employee-dashboard');
+    window.location.reload()
+};
+//Delete employee master
+export const deleteMasterEmployee = (id) => async dispatch => {
+    console.log(id)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/master-data/employee-master/delete-employee/${id}`, header);
+    dispatch({ type: DELETE_EMPLOYEE, payload: id });
+    history.push('/employee-master-dashboard');
+    window.location.reload()
 };
 //create raw material
 export const createRawMaterial = formValues => async dispatch => {
@@ -898,7 +1023,7 @@ export const searchPurchaseOrdersRaw = (formValues) => async dispatch => {
     console.log(response.data);
     dispatch({ type: SEARCH_PURCHASE_ORDERS_RESULT_RAW, payload: response.data });
 };
-//Print purchase oreder rawa
+//Print purchase oreder raw
 export const printPurchaseOrderRaw = (id) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
@@ -1050,7 +1175,6 @@ export const createInvoice = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/sales/invoices/new-invoice', { ...formValues, user }, header);
-
     dispatch({ type: CREATE_INVOICE, payload: response.data });
     window.location.reload()
 
@@ -1387,7 +1511,7 @@ export const createFinishGoodInventory = formValues => async dispatch => {
     };
     const response = await api.post('api/inventory/finish-good/new-finish-good-inventory', { ...formValues, user }, header);
 
-    dispatch({ type: CREATE_INVOICE, payload: response.data });
+    dispatch({ type: NEW_FINISH_GOOD_INVENTORY, payload: response.data });
     window.location.reload()
 
 };
@@ -1427,7 +1551,7 @@ export const updateFinishGoodInventory = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
-    dispatch({ type: EDIT_INVOICE, payload: response.data });
+    dispatch({ type: EDIT_FINISH_GOOD_INVENTORY, payload: response.data });
     window.location.reload()
 };
 //Disable finish good inventory
@@ -1457,6 +1581,109 @@ export const searchFinishGoodsInventory = (formValues) => async dispatch => {
     };
     const response = await api.post('api/inventory/finish-good/search-finish-good-inventory/', { formValues }, header);
     dispatch({ type: SEARCH_FINISH_GOODS_INVENTORY, payload: response.data });
+};
+//create employee
+export const createSalary = formValues => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/hr/salaries/new-salary/', { ...formValues, user }, header);
+    dispatch({ type: NEW_SALARY, payload: response.data });
+    window.location.reload()
+};
+//List all distributors
+export const fetchSalaries = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/hr/salaries/all-salaries/', header);
+    dispatch({ type: FETCH_SALARIES, payload: response.data });
+};
+//View single distributor
+export const fetchSalary = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/hr/salaries/single-salary/${id}`, header);
+    console.log(response.data)
+    dispatch({ type: FETCH_SALARY, payload: response.data[0] });
+};
+//Edit distributor
+export const editSalary = (id, formValues) => async dispatch => {
+
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/hr/salaries/update-salary/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_SALARY, payload: response.data });
+    history.push(`/single-salary/${formValues.id}`)
+    window.location.reload()
+};
+//Delete distributor
+export const deleteSalary = (id) => async dispatch => {
+    console.log(id)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/hr/salaries/delete-salary/${id}`, header);
+    dispatch({ type: DELETE_SALARY, payload: id });
+    history.push('/salaries-dashboard');
+    window.location.reload()
+};
+//Print salary sheet
+export const printSalary = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=purchaseorderrm.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/hr/salaries/print-salary/${id}`, { responseType: 'arraybuffer' }, header, { id });
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
+//Search salary 
+export const searchSalaries = (formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    console.log(formValues)
+    const response = await api.post('/api/hr/salaries/search-salary/', { formValues }, header);
+    console.log(response.data);
+    dispatch({ type: SEARCH_SALARIES_RESULT, payload: response.data });
 };
 //Autheticate User
 export function signInAction({ userName, password }, history) {

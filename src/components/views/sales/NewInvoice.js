@@ -150,6 +150,10 @@ class NewInvoice extends React.Component {
                                 Remarks (Optional)
                                 <Field name="remarks" type="text" component="input" placeholder="Remarks" />
                             </div>
+                            <div className="six wide field">
+                                Customer Reference (Optional)
+                                <Field name="reference" type="text" component="input" placeholder="Cusomer Reference" />
+                            </div>
                         </div>
                         <div className="fields">
                             <div className="sixteen wide field">
