@@ -54,7 +54,7 @@ class NewSalary extends React.Component {
             </div>
         </div>
     )
-    onSubmit = (formValues) => {        
+    onSubmit = (formValues) => {                
         this.props.createSalary(formValues)
     }
     render() {
@@ -99,7 +99,13 @@ class NewSalary extends React.Component {
                                 OT Rate per hour (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
                                 <Field name="overTimeRate" component={this.renderInput} required placeholder="OT Rate per hour" type="number" />
                             </div>
-                        </div>                                              
+                        </div> 
+                        <div className="fields">
+                            <div className="five wide field">
+                                Attendace Allowance(Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
+                                <Field name="attendanceAllowance" component={this.renderInput} required placeholder="Attendance Allowance" type="number" />
+                            </div>                           
+                        </div>
                         <div className="fields">
                             <div className="four wide field">
                                 Company Loan Recovery (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>

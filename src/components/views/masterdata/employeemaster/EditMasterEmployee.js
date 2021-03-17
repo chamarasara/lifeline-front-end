@@ -226,9 +226,6 @@ const validate = (formValues) => {
     if (!formValues.mobileNo1) {
         errors.mobileNo1 = 'Required';
     }
-    if (!formValues.email) {
-        errors.email = 'Required';
-    }
     if (!formValues.creditPeriod) {
         errors.creditPeriod = 'Required';
     }

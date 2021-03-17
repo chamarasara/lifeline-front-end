@@ -15,7 +15,7 @@ class SingleSalary extends React.Component {
     getTotalIncome() {
         const totalIncome = this.props.salary.employeeDetails.map(employee => {
             return employee.basicSalary + employee.foodAllowance + employee.vehicleAllowance +
-                employee.fuelAllowance + employee.transportAllowance + employee.telephoneAllowance + employee.bonus + (this.props.salary.overTimeHours * this.props.salary.overTimeRate)
+                employee.fuelAllowance + employee.transportAllowance + employee.telephoneAllowance + employee.bonus + (this.props.salary.overTimeHours * this.props.salary.overTimeRate) + this.props.salary.attendanceAllowance
         })
         return totalIncome[0]
     }
@@ -164,6 +164,9 @@ class SingleSalary extends React.Component {
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td><strong>Variable Allowances</strong></td>
+                                    </tr>
+                                    <tr>
                                         <td><span style={{ paddingLeft: "20px" }}>OT</span></td>
                                         <td style={{ textAlign: "right" }}>{this.props.salary.overTimeHours * this.props.salary.overTimeRate}</td>
                                     </tr>
@@ -178,6 +181,10 @@ class SingleSalary extends React.Component {
                                                 })
                                             }
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style={{ paddingLeft: "20px" }}>Attendace Allowance</span></td>
+                                        <td style={{ textAlign: "right" }}>{this.props.salary.attendanceAllowance}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Gross Earnings</strong></td>

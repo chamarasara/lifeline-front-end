@@ -141,6 +141,12 @@ class EditSalary extends React.Component {
                             </div>
                         </div>
                         <div className="fields">
+                            <div className="five wide field">
+                                Attendace Allowance(Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
+                                <Field name="attendanceAllowance" component={this.renderInput} required placeholder="Attendance Allowance" type="number" />
+                            </div>
+                        </div>
+                        <div className="fields">
                             <div className="four wide field">
                                 Company Loan Recovery (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
                                 <Field name="loanRecovery" component={this.renderInput} required placeholder="Company Loan Recovery " type="number" />
