@@ -1,10 +1,10 @@
 import React from "react";
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { searchInvoices } from '../../../actions';
+import { searchReturnInvoices } from '../../../../actions';
 
 
-class SearchInvoiceByDate extends React.Component {
+class SearchReturnInvoiceByDate extends React.Component {
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -30,7 +30,7 @@ class SearchInvoiceByDate extends React.Component {
         window.location.reload()
     }
     onSubmit = (formValues) => {
-        this.props.searchInvoices(formValues)
+        this.props.searchReturnInvoices(formValues)
         console.log(formValues)
     }
     render() {
@@ -65,7 +65,7 @@ const validate = (formValues) => {
 const formWrapped = reduxForm({
     form: 'sortInvoices',
     validate: validate
-})(SearchInvoiceByDate);
+})(SearchReturnInvoiceByDate);
 
 
-export default connect(null, { searchInvoices })(formWrapped);
+export default connect(null, { searchReturnInvoices })(formWrapped);

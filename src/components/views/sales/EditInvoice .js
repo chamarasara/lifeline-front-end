@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import { Link } from 'react-router-dom'
-import { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice } from '../../../actions';
+import { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice, printReturnInvoice, fetchReturnInvoice } from '../../../actions';
 
 class EditInvoice extends React.Component {
 
     componentDidMount() {
         this.props.fetchCustomers()
-        this.props.fetchProductsMaster()
         this.props.fetchInvoice(this.props.match.params.id)
+        this.props.fetchReturnInvoice(this.props.match.params.id)
         console.log(this.props.match.params.id)
     }
 
@@ -81,6 +81,37 @@ class EditInvoice extends React.Component {
             )
         })
     }
+    getReturnsTotal() {
+        let quantities = this.props.returnInvoice.products.map(product => {
+            return product.quantity
+
+        })
+        let discounts = this.props.returnInvoice.products.map(product => {
+            return product.discount
+        })
+        console.log(discounts)
+        console.log(quantities)
+        let rates = this.props.returnInvoice.productsDetails.map(rate => {
+            return rate.sellingPrice
+        })
+        let totalValue = []
+        console.log(rates)
+        for (let i = 0; i < Math.min(quantities.length, discounts.length, rates.length); i++) {
+            let quantity = quantities[i]
+            let discount = discounts[i]
+            let rate = rates[i]
+            console.log(discount)
+            totalValue[i] = (quantity * rate) / 100 * (100 - discount);
+            console.log(totalValue)
+            //return totalValue
+        }
+        console.log(totalValue)
+        return totalValue.map(value => {
+            return (
+                <p key={Math.random()}>{this.formatNumber(value.toFixed(2))}</p>
+            )
+        })
+    }
     formatNumber = (num) => {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
@@ -106,9 +137,28 @@ class EditInvoice extends React.Component {
             //return totalValue
         }
 
-        return (
-            <span key={Math.random()}>{this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))}</span>
-        )
+        return this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))
+    }
+    getReturnsSubTotal() {
+        if (!this.props.returnInvoice) {
+            return (0)
+        }
+        let quantities = this.props.returnInvoice.products.map(product => {
+            return product
+        })
+        let rates = this.props.returnInvoice.productsDetails.map(rate => {
+            return rate
+        })
+        let totalValue = []
+        for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
+            let quantity = quantities[i]
+            let rate = rates[i]
+            totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
+            //console.log(totalValue.reduce((a, b) => a + b, 0))
+            //return totalValue
+        }
+
+        return this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))
     }
     renderInvoiceDetails() {
         return (
@@ -180,6 +230,141 @@ class EditInvoice extends React.Component {
                     {this.getTotal()}
                 </td>
             </tr>
+        )
+
+    }
+    renderButtons() {
+        if (!this.props.returnInvoice) {
+            return (
+                <div>
+                    <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
+                    <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                    <Link to={`/new-return-invoice/${this.props.match.params.id}`} type="button" className="ui primary button">Returns</Link>
+                    <Link to={`/delete-invoice/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
+                    <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                    <Link to={`/delete-invoice/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                </div>
+            )
+        }
+    }
+    renderReturnInvoiceDetails() {
+        console.log(this.props.returnInvoice)
+        if (!this.props.returnInvoice) {
+            return (
+                <div className="pusher">
+
+                </div>
+            )
+        }
+        return (
+            <div>
+                <div>
+                    <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                        <thead className="full-width">
+                            <tr>
+                                <th colSpan="12" style={{ color: "red" }}><h4>Return Invoice Details</h4></th>
+                            </tr>
+                            <tr>
+                                <th>Product Code</th>
+                                <th>Product Name</th>
+                                <th>UOM</th>
+                                <th style={{ textAlign: "right" }}>Quantity</th>
+                                <th style={{ textAlign: "right" }}>Rate</th>
+                                <th style={{ textAlign: "right" }}>Discount</th>
+                                <th style={{ textAlign: "right" }}>Currency</th>
+                                <th style={{ textAlign: "right" }}>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {this.props.returnInvoice.productsDetails.map(product => {
+                                        return (
+                                            <p key={product.id}>FG{product.productCode}</p>
+                                        )
+                                    })
+                                    }
+                                </td>
+                                <td>
+                                    {this.props.returnInvoice.productsDetails.map(product => {
+                                        return (
+                                            <p key={product.id}>{product.productName}</p>
+                                        )
+                                    })
+                                    }
+                                </td>
+                                <td>
+                                    {this.props.returnInvoice.productsDetails.map(product => {
+                                        return (
+                                            <p key={product.id}>{product.baseUnitMeasure}</p>
+                                        )
+                                    })
+                                    }
+                                </td>
+                                <td style={{ textAlign: "right" }}>
+                                    {
+                                        this.props.returnInvoice.products.map(quantity => {
+                                            console.log(quantity)
+                                            return (
+                                                <p key={Math.random()}>{quantity.quantity}</p>
+                                            )
+                                        }
+                                        )
+                                    }
+                                </td>
+                                <td style={{ textAlign: "right" }}>
+                                    {this.props.returnInvoice.productsDetails.map(product => {
+                                        return (
+                                            <p key={product.id}>{product.sellingPrice}</p>
+                                        )
+                                    })
+                                    }
+                                </td>
+                                <td style={{ textAlign: "right" }}>
+                                    {
+                                        this.props.returnInvoice.products.map(discount => {
+                                            return (
+                                                <p key={Math.random()}>{discount.discount}%</p>
+                                            )
+                                        }
+                                        )
+                                    }
+                                </td>
+                                <td style={{ textAlign: "right" }}>
+                                    {
+                                        this.props.returnInvoice.products.map(currency => {
+                                            return (
+                                                <p key={Math.random()}>{currency.currency}</p>
+                                            )
+                                        }
+                                        )
+                                    }
+                                </td>
+                                <td style={{ textAlign: "right" }}>
+                                    {this.getReturnsTotal()}
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr colSpan="16">
+                                <th colSpan="7" style={{ textAlign: "right" }}>Sub Total:</th>
+                                <th colSpan="8" style={{ textAlign: "right" }}>{this.getReturnsSubTotal()}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div style={{ paddingTop: "10px" }}>
+                    <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
+                    <button type="button" onClick={this.onClickReturnInvoice} className="ui primary button">Print</button>
+                </div>
+            </div>
         )
 
     }
@@ -380,15 +565,15 @@ class EditInvoice extends React.Component {
         let amount = this.props.invoice.paymentsAll.map(cash => {
             console.log(cash.cashPayments)
             return cash.cashPayments.map(amount => {
-                var convAmount =parseInt(amount.cashAmount)
+                var convAmount = parseInt(amount.cashAmount)
                 console.log(convAmount)
-                console.log(typeof(convAmount))
+                console.log(typeof (convAmount))
                 return convAmount
             })
-        })    
-        var sum = 0;   
+        })
+        var sum = 0;
         for (let i = 0; i < amount.length; i++) {
-            sum += amount[i];            
+            sum += amount[i];
         }
         console.log(sum)
         console.log(amount.reduce(reducer))
@@ -461,11 +646,13 @@ class EditInvoice extends React.Component {
         )
     }
     renderPayments = () => {
+        console.log(parseInt(this.getSubTotal()) - parseInt(this.getReturnsSubTotal()))
+        console.log(this.getSubTotal())
         return (
             <div>
                 <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
                 <p><b>Total value:</b> {this.getSubTotal()}</p>
-               
+                <p><b>Total returns:</b> {this.getReturnsSubTotal()}</p>
                 <div>
                     <table className="ui   structured celled table">
                         <thead>
@@ -508,7 +695,9 @@ class EditInvoice extends React.Component {
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
     }
-
+    onClickReturnInvoice = () => {        
+        this.props.printReturnInvoice(this.props.returnInvoice.id)
+    }
     render() {
         if (!this.props.invoice) {
             return (
@@ -550,10 +739,9 @@ class EditInvoice extends React.Component {
                         </tfoot>
                     </table>
                     <div>
-                        <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
-                        <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
-                        <Link to={`/delete-invoice/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                        {this.renderButtons()}
                     </div>
+                    {this.renderReturnInvoiceDetails()}
                     {this.renderPayments()}
                 </div>
                 <div>
@@ -565,13 +753,13 @@ class EditInvoice extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     const customers = Object.values(state.customer)
-    const products = Object.values(state.productMaster)
     const invoice = state.invoices[ownProps.match.params.id]
-    console.log(invoice)
-    return { errorMessage: state, customers: customers, products: products, invoice: invoice, initialValues: invoice };
+    const returnInvoice = state.returnInvoices[ownProps.match.params.id]
+    console.log(state)
+    return { errorMessage: state, customers: customers, invoice: invoice, initialValues: invoice, returnInvoice };
 }
 const formWrapped = reduxForm({
     form: 'invoicePayments'
 })(EditInvoice);
 
-export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice })(formWrapped);
+export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice, printReturnInvoice, fetchReturnInvoice })(formWrapped);

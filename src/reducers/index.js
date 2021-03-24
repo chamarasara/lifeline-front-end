@@ -24,6 +24,8 @@ import distributorReducer from "./master/distributorReducer";
 import employeeReducer from "./master/employeeReducer";
 import salaryReducer from "./hr/salaryReducer";
 import searchSalariesReducer from "./hr/searchSalariesReducer";
+import returnInvoiceReducer from "./sales/returnInvoiceReducer";
+import searchReturnInvoicesReducer from "./sales/searchReturnInvoicesReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -41,6 +43,7 @@ export default combineReducers({
     searchPurchaseOrdersRaw: searchPurchaseOrdersRawReducer,
     searchPurchaseOrdersPacking: searchPurchaseOrdersPacking,
     invoices: invoiceReducer,
+    returnInvoices: returnInvoiceReducer,
     quotations: quotationReducer,
     searchQuotations: searchQuotationReducer,
     form: formReducer,
@@ -48,6 +51,7 @@ export default combineReducers({
     purchaseOrdersPacking: purchaseOrderPackingReducer,
     bom:bomReducer,
     searchInvoices: searchInvoicesReducer,
+    searchReturnInvoices: searchReturnInvoicesReducer,
     finishGoodInventory: inventoryFinishGoodReducer,
     salary:salaryReducer,
     searchSalary:searchSalariesReducer

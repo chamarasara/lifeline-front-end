@@ -73,6 +73,13 @@ import {
     FETCH_INVOICE,
     DELETE_INVOICE,
     SEARCH_INVOICES_RESULT,
+    CREATE_RETURN_INVOICE,
+    EDIT_RETURN_INVOICE,
+    FETCH_RETURN_INVOICE,
+    NO_RETURN_INVOICE,
+    FETCH_RETURN_INVOICES,
+    DELETE_RETURN_INVOICE,
+    SEARCH_RETURN_INVOICES_RESULT,
     CREATE_BOM,
     EDIT_BOM,
     FETCH_BOMS,
@@ -83,7 +90,6 @@ import {
     FETCH_QUOTATIONS,
     FETCH_QUOTATION,
     FETCH_QUOTATION_FOR_INVOICE,
-    DELETE_QUOTATION,
     SEARCH_QUOTATIONS_RESULT,
     NEW_FINISH_GOOD_INVENTORY,
     EDIT_FINISH_GOOD_INVENTORY,
@@ -486,7 +492,7 @@ export const fetchEmployee = (id) => async dispatch => {
 };
 //Edit employee
 export const editEmployee = (id, formValues) => async dispatch => {
-    
+
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -1215,7 +1221,21 @@ export const editInvoice = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_INVOICE, payload: response.data });
-    window.location.reload()
+    //window.location.reload()
+};
+export const updateInvoice = (id, haveReturns) => async dispatch => {
+    
+    const formValues = {}
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues,haveReturns }, header);
+    dispatch({ type: EDIT_INVOICE, payload: response.data });
+    //window.location.reload()
 };
 export const disableInvoice = (id, formValues) => async dispatch => {
     console.log(formValues)
@@ -1247,6 +1267,7 @@ export const deleteInvoice = (id) => async dispatch => {
 };
 //Search invoices
 export const searchInvoices = (formValues) => async dispatch => {
+    console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -1272,6 +1293,144 @@ export const printInvoice = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/sales/invoices/print-invoice/${id}`, { responseType: 'arraybuffer' }, header, { id });
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
+//create return invoice
+export const createReturnInvoice = formValues => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    console.log(user)
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/sales/return-invoices/new-return-invoice', { ...formValues, user }, header);
+    console.log(response)
+    dispatch({ type: CREATE_RETURN_INVOICE, payload: response.data });
+    history.push(`/edit-invoice/${formValues.id}`)
+    //window.location.reload()
+
+};
+//List all invoice
+export const fetchReturnInvoices = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('api/sales/return-invoices/all-return-invoices', header);
+    dispatch({ type: FETCH_RETURN_INVOICES, payload: response.data });
+};
+//View invoice
+export const fetchReturnInvoice = (id) => async dispatch => {
+    console.log(id)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/sales/return-invoices/single-return-invoice/${id}`, header);
+    console.log(response.data[0])
+    if (response.data[0] === undefined || response.data[0] === null) {
+        dispatch({ type: NO_RETURN_INVOICE, payload: "No Return Invoice" });
+    } if (response.data[0]) {
+        dispatch({ type: FETCH_RETURN_INVOICE, payload: response.data[0] });
+    }
+    // return async (dispatch) => {
+    //     try {
+    //         const response = await api.get(`/api/sales/return-invoices/single-return-invoice/${id}`, header);
+    //         console.log(response)
+    //         dispatch({ type: FETCH_RETURN_INVOICE, payload: response.data[0] });
+    //     } catch (error) {
+    //         console.log("Go")
+    //         dispatch({
+    //             type: NO_RETURN_INVOICE,
+    //             payload: 'No Return Invoices'
+    //         });
+    //     }
+    // };
+
+};
+//Edit invoice
+export const editReturnInvoice = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_INVOICE, payload: response.data });
+    window.location.reload()
+};
+export const disableReturnInvoice = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_INVOICE, payload: response.data });
+    history.push("/invoice-dashboard");
+    window.location.reload()
+};
+//Delete invoice
+export const deleteReturnInvoice = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    await api.delete(`/api/sales/invoices/delete-invoice/${id}`, header);
+    dispatch({ type: DELETE_INVOICE, payload: id });
+    history.push('/invoice-dashboard')
+    //window.location.reload()
+};
+//Search invoices
+export const searchReturnInvoices = (formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    console.log(formValues)
+    const response = await api.post('api/sales/return-invoices/search-return-invoices/', { formValues }, header);
+    console.log(response.data);
+    dispatch({ type: SEARCH_RETURN_INVOICES_RESULT, payload: response.data });
+};
+//Print invoice
+export const printReturnInvoice = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=invoice.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/sales/return-invoices/print-return-invoice/${id}`, { responseType: 'arraybuffer' }, header, { id });
     //Create a Blob from the PDF Stream
     const file = new Blob([response.data], { type: 'application/pdf' });
     //Build a URL from the file

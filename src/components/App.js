@@ -136,6 +136,9 @@ import AssignAllowances from './views/masterdata/employeemaster/AssignAllowances
 import EmployeeMasterProfile from './views/masterdata/employeemaster/EmployeeMasterProfile';
 import EditMasterEmployee from './views/masterdata/employeemaster/EditMasterEmployee';
 import DeleteMasterEmployee from './views/masterdata/employeemaster/DeleteMasterEmployee';
+import NewReturnInvoice from './views/sales/returninvoices/NewReturnInvoice';
+import ReturnInvoiceDashboard from './views/sales/returninvoices/ReturnInvoiceDashboard';
+import SingleReturnInvoice from './views/sales/returninvoices/SingleReturnInvoice ';
 
 
 
@@ -243,12 +246,14 @@ class App extends React.Component {
                     <PrivateRoute path="/edit-semi-finish-good-plant-one/:id" component={EditSemiFinishGoodMaterialPlantOne} />
                     <PrivateRoute path="/edit-semi-finish-good-plant-two/:id" component={EditSemiFinishGoodMaterialPlantTwo} />
                     <PrivateRoute path="/delete-semi-finish-good-material/:id" component={DeleteSemiFinishGoodMaterial} />  
+
                     <PrivateRoute path="/sales-dashboard" component={SalesDashboard} />
                     <PrivateRoute path="/purchase-order-dashboard" component={PurchaseOrderDashboard} />
                     <PrivateRoute path="/purchase-order-dashboard-raw" component={PurchaseOrderDashboardRaw} />
                     <PrivateRoute path="/purchase-order-dashboard-packing" component={PurchaseOrderDashboardPacking} />
                     <PrivateRoute path="/new-purchase-order-raw" component={NewPurchaseOrderRaw} />
                     <PrivateRoute path="/new-purchase-order-packing" component={NewPurchaseOrderPacking} />
+
                     <PrivateRoute path="/invoice-dashboard" component={InvoiceDashboard} />                    
                     <PrivateRoute path="/single-purchase-order-raw/:id" component={SinglePurchaseOrderRaw} />
                     <PrivateRoute path="/delete-purchase-order-raw/:id" component={DeletePurchaseOrderRaw} />
@@ -257,6 +262,10 @@ class App extends React.Component {
                     <PrivateRoute path="/new-invoice" component={NewInvoice} />
                     <PrivateRoute path="/edit-invoice/:id" component={EditInvoice} />
                     <PrivateRoute path="/delete-invoice/:id" component={DeleteInvoice} />
+                    
+                    <PrivateRoute path="/return-invoice-dashboard" component={ReturnInvoiceDashboard} />
+                    <PrivateRoute path="/new-return-invoice/:id" component={NewReturnInvoice} />
+                    <PrivateRoute path="/single-return-invoice/:id" component={SingleReturnInvoice} />
 
                     <PrivateRoute path="/quotation-dashboard" component={QuotationDashboard} />
                     <PrivateRoute path="/new-quotation" component={NewQuotation} />
