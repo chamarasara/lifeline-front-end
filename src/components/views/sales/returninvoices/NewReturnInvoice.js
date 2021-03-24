@@ -177,8 +177,8 @@ class NewReturnInvoice extends React.Component {
     onSubmit = (formValues) => {
         console.log(formValues)
         this.props.createReturnInvoice(formValues)
-        const haveReturns ="Yes"
-        this.props.updateInvoice(formValues._id, haveReturns )
+        const haveReturns = true
+        this.props.updateInvoice(formValues._id, haveReturns)
     }
 
     onClick = () => {
