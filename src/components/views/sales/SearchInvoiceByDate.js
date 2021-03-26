@@ -18,11 +18,22 @@ class SearchInvoiceByDate extends React.Component {
         return (
             <div className="field">
                 <label>{label}</label>
-                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
+                <input {...input} placeholder={placeholder} type={type} autoComplete="on" />
                 {this.renderError(meta)}
             </div>
         );
     }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+                {this.renderError(meta)}
+            </div>
+        </div>
+    )
     // onChange = (e) => {
     //     this.props.searchArticlesByDate(e.target.value)
     // }
@@ -37,13 +48,13 @@ class SearchInvoiceByDate extends React.Component {
         return (
             <div className="search-bar">
                 <form className="ui form mini" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                    <div className="fields">
+                    <div className="fields">                                       
                         <div className="six field">
-                            <Field name="startDate" component={this.renderInput} label="Start Date" placeholder="Start Date" type="date" />
+                            <Field name="startDate" component={this.renderInput} label="Start Date"  type="date" />
                         </div>
                         <div className="six field">
-                            <Field name="endDate" component={this.renderInput} label="End Date" placeholder="End Date" type="date" />
-                        </div>                        
+                            <Field name="endDate" component={this.renderInput} label="End Date"  type="date" />
+                        </div>
                     </div>
                     <button type="submit" className="ui primary mini button">Search</button>
                     <button onClick={this.onClick} className="ui red mini button">Clear</button>
