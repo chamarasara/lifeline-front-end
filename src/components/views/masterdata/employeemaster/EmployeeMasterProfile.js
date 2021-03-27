@@ -166,9 +166,17 @@ class EmployeeMasterProfile extends React.Component {
                                         <td data-label="amount" style={{ textAlign: "right" }}>{this.props.employee.foodAllowance}</td>
                                     </tr>
                                     <tr>
+                                        <td data-label="description">Accommodation Allowance</td>
+                                        <td data-label="amount" style={{ textAlign: "right" }}>{this.props.employee.accommodationAllowance}</td>
+                                    </tr>
+                                    <tr>
                                         <td data-label="description">Bonus</td>
                                         <td data-label="amount" style={{ textAlign: "right" }}>{this.props.employee.bonus}</td>
                                     </tr>
+                                    <tr>
+                                        <td data-label="description">Accommodation Employee</td>
+                                        <td data-label="amount" style={{ textAlign: "right" }}>({this.props.employee.accomodationEmployee})</td>
+                                    </tr>                                    
                                 </tbody>
                             </table>
                             <Link to={`/assign-allowances-master/${this.props.employee._id}`} className="ui primary button">

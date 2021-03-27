@@ -1221,7 +1221,7 @@ export const editInvoice = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_INVOICE, payload: response.data });
-    //window.location.reload()
+    window.location.reload()
 };
 export const updateInvoice = (id, haveReturns) => async dispatch => {
     

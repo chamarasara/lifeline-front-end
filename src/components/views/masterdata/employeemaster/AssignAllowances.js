@@ -54,7 +54,7 @@ class AssignAllowances extends React.Component {
         const epfCompany = basicSalary * 0.12
         const epfEmployee = basicSalary * 0.08
         const etfEmployee = basicSalary * 0.03
-        this.props.assignAllowances(this.props.employee._id, {...formValues, epfCompany, epfEmployee, etfEmployee})
+        this.props.assignAllowances(this.props.employee._id, { ...formValues, epfCompany, epfEmployee, etfEmployee })
     }
     render() {
         console.log(this.props.employee)
@@ -101,8 +101,19 @@ class AssignAllowances extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="four wide field">
+                                Accommodation Allowance(Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
+                                <Field name="accommodationAllowance" component={this.renderInput} required placeholder="Accommodation Allowance" type="number" />
+                            </div>
+                            <div className="four wide field">
                                 Bonus (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
                                 <Field name="bonus" component={this.renderInput} required placeholder="Bonus" type="number" />
+                            </div>
+                        </div>
+                        <strong>Deductions (-)</strong>
+                        <div className="fields">                            
+                            <div className="four wide field">
+                                Accommodation Employee  (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
+                                <Field name="accomodationEmployee" component={this.renderInput} required placeholder="Accommodation Employee" type="number" />
                             </div>
                         </div>
                         <div className="field">
