@@ -1223,6 +1223,20 @@ export const editInvoice = (id, formValues) => async dispatch => {
     dispatch({ type: EDIT_INVOICE, payload: response.data });
     window.location.reload()
 };
+//Update dispatch note
+export const updateDispatchNote = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`api/sales/invoices/update-dispatch-note/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_INVOICE, payload: response.data });
+    window.location.reload()
+};
 export const updateInvoice = (id, haveReturns) => async dispatch => {
     
     const formValues = {}
@@ -1293,6 +1307,26 @@ export const printInvoice = (id) => async dispatch => {
         }
     };
     const response = await api.get(`/api/sales/invoices/print-invoice/${id}`, { responseType: 'arraybuffer' }, header, { id });
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
+//Print invoice
+export const printDispatchNote = (id, dispatchId) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=invoice.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/sales/invoices/print-print-dispatch-note/${id}/${dispatchId}`, { responseType: 'arraybuffer' }, header, { id });
     //Create a Blob from the PDF Stream
     const file = new Blob([response.data], { type: 'application/pdf' });
     //Build a URL from the file

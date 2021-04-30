@@ -1,10 +1,12 @@
 import React from 'react';
+import { Tab } from 'semantic-ui-react'
 import { Field, reduxForm, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import { Link } from 'react-router-dom'
-import { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice, printReturnInvoice, fetchReturnInvoice } from '../../../actions';
+import NewDispatchNote from "./dispatchNotes/NewDispatchNote";
+import { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice, printReturnInvoice, fetchReturnInvoice, printDispatchNote } from '../../../actions';
 
 class EditInvoice extends React.Component {
 
@@ -71,6 +73,37 @@ class EditInvoice extends React.Component {
             let rate = rates[i]
             console.log(discount)
             totalValue[i] = (quantity * rate) / 100 * (100 - discount);
+            console.log(totalValue)
+            //return totalValue
+        }
+        console.log(totalValue)
+        return totalValue.map(value => {
+            return (
+                <p key={Math.random()}>{this.formatNumber(value.toFixed(2))}</p>
+            )
+        })
+    }
+    getDiscountValue() {
+        let quantities = this.props.invoice.products.map(product => {
+            return product.quantity
+
+        })
+        let discounts = this.props.invoice.products.map(product => {
+            return product.discount
+        })
+        console.log(discounts)
+        console.log(quantities)
+        let rates = this.props.invoice.productsDetails.map(rate => {
+            return rate.sellingPrice
+        })
+        let totalValue = []
+        console.log(rates)
+        for (let i = 0; i < Math.min(quantities.length, discounts.length, rates.length); i++) {
+            let quantity = quantities[i]
+            let discount = discounts[i]
+            let rate = rates[i]
+            console.log(discount)
+            totalValue[i] = (quantity * rate) / 100 * (discount);
             console.log(totalValue)
             //return totalValue
         }
@@ -217,6 +250,9 @@ class EditInvoice extends React.Component {
                     }
                 </td>
                 <td style={{ textAlign: "right" }}>
+                    {this.getDiscountValue()}
+                </td>
+                <td style={{ textAlign: "right" }}>
                     {
                         this.props.invoice.products.map(currency => {
                             return (
@@ -231,6 +267,73 @@ class EditInvoice extends React.Component {
                 </td>
             </tr>
         )
+
+    }
+    renderDispatchTables() {
+        if (!this.props.invoice.dispatchNotes) {
+            return (
+                <div>
+                    <p style={{textAlign:"center"}}>No Dispatch Notes Found</p>
+                </div>
+            )
+        }
+        return this.props.invoice.dispatchNotes.map(dispatchNote => {
+            return (
+                <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                    <thead className="full-width">
+                        <tr>
+                            <th colSpan="4">
+                                <tr><h4 style={{ color: "red" }}>Dispatch Note</h4></tr>
+                                <tr><p>Date-{moment(dispatchNote.date).format('DD MM YYYY, h:mm A')}</p></tr>
+                                <tr><p>Remarks-{dispatchNote.remarks}</p></tr>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Product Code</th>
+                            <th>Product Name</th>
+                            <th style={{ textAlign: "right" }}>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {this.props.invoice.productsDetails.map(product => {
+                                    return (
+                                        <p key={product.id}>FG{product.productCode}</p>
+                                    )
+                                })
+                                }
+                            </td>
+                            <td>
+                                {this.props.invoice.productsDetails.map(product => {
+                                    return (
+                                        <p key={product.id}>{product.productName}</p>
+                                    )
+                                })
+                                }
+                            </td>
+                            <td style={{ textAlign: "right" }}>
+                                {
+                                    dispatchNote.data.map(data => {
+                                        console.log(data)
+                                        return (
+                                            <p key={Math.random()}>{data.quantity}</p>
+                                        )
+                                    }
+                                    )
+
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr colSpan="12">
+                            <th colSpan="7" style={{ textAlign: "right" }}><button type="button" onClick={() => this.printDispatchNote(dispatchNote.dispatchId)} className="ui primary button">Print</button></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            )
+        })
 
     }
     renderButtons() {
@@ -257,8 +360,8 @@ class EditInvoice extends React.Component {
         console.log(this.props.returnInvoice)
         if (!this.props.returnInvoice) {
             return (
-                <div className="pusher">
-
+                <div className="">
+                    <p>No Returns Found</p>
                 </div>
             )
         }
@@ -370,61 +473,66 @@ class EditInvoice extends React.Component {
     }
     renderCustomerDetails() {
         return (
-            <div>
-                <p>
-                    <strong>Quotation Number:</strong>{this.props.invoice.quotation.map(quotation => {
-                        return (
-                            <span key={quotation.id}>{quotation.quotationNumber}</span>
-                        )
-                    })}
-                </p>
-                <p>
-                    <strong>Company Name:</strong>{this.props.invoice.customer.map(customer => {
-                        return (
-                            <span key={customer.id}>{customer.companyName}</span>
-                        )
-                    })
-                    }
-                </p>
-                <p>
-                    <strong>Remarks:</strong>{this.props.invoice.remarks}
-                </p>
-                <p>
-                    <strong>Customer Reference: </strong>{this.props.invoice.reference}
-                </p>
-                <p>
-                    <strong>Address:</strong> {this.props.invoice.customer.map(customer => {
-                        return (
-                            <span key={customer.id}>
-                                {customer.communicationAddress.no},
-                                {customer.communicationAddress.lane},
-                                {customer.communicationAddress.city},
-                                {customer.communicationAddress.country},
-                                {customer.communicationAddress.postalCode}.
-                            </span>
-                        )
-                    })
-                    }
-                </p>
-                <p>
-                    <strong>Email: </strong>{this.props.invoice.customer.map(customer => {
-                        return (
-                            <span key={customer.id}>{customer.email}</span>
-                        )
-                    })
-                    }
-                </p>
-                <p>
-                    <strong>Contact Number: </strong>{this.props.invoice.customer.map(customer => {
-                        return (
-                            <span key={customer.id}>{customer.mobileNo}</span>
-                        )
-                    })
-                    }
-                </p>
-                <p><strong>Date: </strong>{moment(this.props.invoice.date).format('DD/MM/YYYY')}
+            <div style={{ paddingBottom: "30px" }} className="ui onr column doubling stackable grid container">
+                <div>
+                    <div className="ui list">
+                        <div className="item">
+                            <strong>Quotation Number:</strong>{this.props.invoice.quotation.map(quotation => {
+                                return (
+                                    <span key={quotation.id}>{quotation.quotationNumber}</span>
+                                )
+                            })}
+                        </div>
+                        <div className="item">
+                            <strong>Company Name:</strong>{this.props.invoice.customer.map(customer => {
+                                return (
+                                    <span key={customer.id}>{customer.companyName}</span>
+                                )
+                            })
+                            }
+                        </div>
+                        <div className="item">
+                            <strong>Remarks:</strong>{this.props.invoice.remarks}
+                        </div>
+                        <div className="item">
+                            <strong>Customer Reference: </strong>{this.props.invoice.reference}
+                        </div>
+                        <div className="item">
+                            <strong>Address:</strong> {this.props.invoice.customer.map(customer => {
+                                return (
+                                    <span key={customer.id}>
+                                        {customer.communicationAddress.no},
+                                        {customer.communicationAddress.lane},
+                                        {customer.communicationAddress.city},
+                                        {customer.communicationAddress.country},
+                                        {customer.communicationAddress.postalCode}.
+                                    </span>
+                                )
+                            })
+                            }
+                        </div>
+                        <div className="item">
+                            <strong>Email: </strong>{this.props.invoice.customer.map(customer => {
+                                return (
+                                    <span key={customer.id}>{customer.email}</span>
+                                )
+                            })
+                            }
+                        </div>
 
-                </p>
+                        <div className="item">
+                            <strong>Contact Number: </strong>{this.props.invoice.customer.map(customer => {
+                                return (
+                                    <span key={customer.id}>{customer.mobileNo}</span>
+                                )
+                            })
+                            }
+                        </div>
+                        <div className="item">
+                            <strong>Date: </strong>{moment(this.props.invoice.date).format('DD/MM/YYYY')}
+                        </div>
+                    </div>
+                </div>
             </div>
         )
 
@@ -695,9 +803,14 @@ class EditInvoice extends React.Component {
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
     }
-    onClickReturnInvoice = () => {        
+    onClickReturnInvoice = () => {
         this.props.printReturnInvoice(this.props.returnInvoice.id)
     }
+    printDispatchNote = (dispatchId) => {
+        console.log(dispatchId)
+        this.props.printDispatchNote(this.props.invoice.id, dispatchId)
+    }
+
     render() {
         if (!this.props.invoice) {
             return (
@@ -707,11 +820,10 @@ class EditInvoice extends React.Component {
                 </div>
             )
         }
-        return (
-            <div className="pusher">
-                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "80px" }}>
-                    <h3>Invoice #{this.props.invoice.invoiceNumber}</h3>
-                    {this.renderCustomerDetails()}
+
+        const panes = [
+            {
+                menuItem: 'Invoice Details', render: () => <Tab.Pane attached={false}>
                     <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
                         <thead className="full-width">
                             <tr>
@@ -723,7 +835,8 @@ class EditInvoice extends React.Component {
                                 <th>UOM</th>
                                 <th style={{ textAlign: "right" }}>Quantity</th>
                                 <th style={{ textAlign: "right" }}>Rate</th>
-                                <th style={{ textAlign: "right" }}>Discount</th>
+                                <th style={{ textAlign: "right" }}>Discount (%)</th>
+                                <th style={{ textAlign: "right" }}>Discount Amount</th>
                                 <th style={{ textAlign: "right" }}>Currency</th>
                                 <th style={{ textAlign: "right" }}>Total</th>
                             </tr>
@@ -741,8 +854,29 @@ class EditInvoice extends React.Component {
                     <div>
                         {this.renderButtons()}
                     </div>
-                    {this.renderReturnInvoiceDetails()}
-                    {this.renderPayments()}
+
+                </Tab.Pane>
+            },
+            { menuItem: 'Returns Details', render: () => <Tab.Pane attached={false}>{this.renderReturnInvoiceDetails()}</Tab.Pane> },
+            {
+                menuItem: 'Dispatch Details', render: () =>
+                    <Tab.Pane attached={false}>
+                        <div>
+                            <NewDispatchNote data={this.props.invoice} />
+                            <div>
+                                {this.renderDispatchTables()}
+                            </div>
+                        </div>
+                    </Tab.Pane>
+            },
+            { menuItem: 'Payments Details', render: () => <Tab.Pane attached={false}>{this.renderPayments()}</Tab.Pane> },
+        ]
+        return (
+            <div className="pusher">
+                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "80px" }}>
+                    <h3>Invoice #{this.props.invoice.invoiceNumber}</h3>
+                    {this.renderCustomerDetails()}
+                    <Tab menu={{ pointing: true }} panes={panes} />
                 </div>
                 <div>
                 </div>
@@ -762,4 +896,4 @@ const formWrapped = reduxForm({
     form: 'invoicePayments'
 })(EditInvoice);
 
-export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice, printReturnInvoice, fetchReturnInvoice })(formWrapped);
+export default connect(mapStateToProps, { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice, printReturnInvoice, printDispatchNote, fetchReturnInvoice })(formWrapped);
