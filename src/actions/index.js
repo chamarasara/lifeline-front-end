@@ -1183,7 +1183,7 @@ export const createInvoice = formValues => async dispatch => {
     const response = await api.post('api/sales/invoices/new-invoice', { ...formValues, user }, header);
     dispatch({ type: CREATE_INVOICE, payload: response.data });
     console.log(response)
-    //window.location.reload()
+    window.location.reload()
 
 };
 //List all invoice
