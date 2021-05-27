@@ -48,7 +48,7 @@ class ApprovalsSingleQuotation extends React.Component {
             return product
         })
         console.log(quantities)
-        let rates = this.props.quotation.productsList.map(rate => {
+        let rates = this.props.quotation.products.map(rate => {
             return rate
         })
         let totalValue = []
@@ -129,7 +129,7 @@ class ApprovalsSingleQuotation extends React.Component {
                 })
                 }</td>
                 <td style={{ textAlign: "right" }}>
-                    {this.props.quotation.productsList.map(product => {
+                    {this.props.quotation.products.map(product => {
                         return (
                             <p key={product.id}>{product.sellingPrice}</p>
                         )

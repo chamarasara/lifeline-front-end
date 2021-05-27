@@ -120,6 +120,12 @@ class NewSalary extends React.Component {
                                 <Field name="noPay" component={this.renderInput} required placeholder="No Pay" type="number" />
                             </div>
                         </div>
+                        <div className="fields">
+                            <div className="four wide field">
+                                Salary Advance Recovery (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
+                                <Field name="salaryAdvance" component={this.renderInput} required placeholder="Salary Advance Recovery " type="number" />
+                            </div>                            
+                        </div>
                         <div className="field">
                             <Link to={"/salaries-dashboard"} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>

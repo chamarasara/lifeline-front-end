@@ -260,7 +260,7 @@ export const createCustomer = formValues => async dispatch => {
     };
     const response = await api.post('/api/master-data/customer-master/new-customer', { ...formValues, user }, header);
     dispatch({ type: CREATE_CUSTOMER, payload: response.data });
-    console.log(formValues)
+    //console.log(formValues)
     history.push('/customer');
 };
 //List all customers
@@ -1182,7 +1182,8 @@ export const createInvoice = formValues => async dispatch => {
     };
     const response = await api.post('api/sales/invoices/new-invoice', { ...formValues, user }, header);
     dispatch({ type: CREATE_INVOICE, payload: response.data });
-    window.location.reload()
+    console.log(response)
+    //window.location.reload()
 
 };
 //List all invoice
@@ -1787,7 +1788,8 @@ export const createSalary = formValues => async dispatch => {
     };
     const response = await api.post('/api/hr/salaries/new-salary/', { ...formValues, user }, header);
     dispatch({ type: NEW_SALARY, payload: response.data });
-    window.location.reload()
+    console.log(response)
+    //window.location.reload()
 };
 //List all distributors
 export const fetchSalaries = () => async dispatch => {

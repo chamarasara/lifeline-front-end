@@ -47,20 +47,17 @@ class ViewQuotation extends React.Component {
         let quantities = this.props.quotation.products.map(product => {
             return product
         })
-        console.log(quantities)
-        let rates = this.props.quotation.productsList.map(rate => {
+        let rates = this.props.quotation.products.map(rate => {
             return rate
         })
         let totalValue = []
-        console.log(rates)
         for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
             let quantity = quantities[i]
             let rate = rates[i]
             totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
-            console.log(totalValue)
             //return totalValue
         }
-        console.log(totalValue)
+
         return totalValue.map(value => {
             return (
                 <p key={Math.random()}>{this.formatNumber(value.toFixed(2))}</p>
@@ -68,7 +65,7 @@ class ViewQuotation extends React.Component {
         })
     }
     getSubTotal() {
-        if (!this.props.quotation.productsList) {
+        if (!this.props.quotation.products) {
             return (
                 <div className="ui active centered inline loader"></div>
             )
@@ -76,23 +73,30 @@ class ViewQuotation extends React.Component {
         let quantities = this.props.quotation.products.map(product => {
             return product
         })
-        console.log(quantities)
-        let rates = this.props.quotation.productsList.map(rate => {
+        let rates = this.props.quotation.products.map(rate => {
             return rate
         })
         let totalValue = []
-        console.log(rates)
         for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
             let quantity = quantities[i]
             let rate = rates[i]
             totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
-            console.log(totalValue.reduce((a, b) => a + b, 0))
             //return totalValue
         }
-        console.log(totalValue)
         return (
             <p key={rates.id}>{this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))}</p>
         )
+    }
+    getProductSellingPrice() {
+        const productsArrayPrice = this.props.quotation.products.map(price => {
+            return price.sellingPrice
+        })
+
+        return productsArrayPrice.map(sellingPrice => {
+            return (
+                <p key={Math.random()}>{sellingPrice}</p>
+            )
+        })
     }
     renderQuotationDetails() {
         if (!this.props.quotation.productsList) {
@@ -129,7 +133,7 @@ class ViewQuotation extends React.Component {
                 })
                 }</td>
                 <td style={{ textAlign: "right" }}>
-                    {this.props.quotation.productsList.map(product => {
+                    {this.props.quotation.products.map(product => {
                         return (
                             <p key={product.id}>{product.sellingPrice}</p>
                         )
@@ -262,9 +266,9 @@ class ViewQuotation extends React.Component {
                         </tbody>
                         <tfoot>
                             <tr colSpan="16">
-                                <th colSpan="7" style={{ textAlign: "right" }}>Sub Total:</th>        
-                            <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>                                                            
-                            </tr>                            
+                                <th colSpan="7" style={{ textAlign: "right" }}>Sub Total:</th>
+                                <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
+                            </tr>
                         </tfoot>
                     </table>
                     <div>

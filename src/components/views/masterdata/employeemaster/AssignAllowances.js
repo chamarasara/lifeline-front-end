@@ -108,9 +108,13 @@ class AssignAllowances extends React.Component {
                                 Bonus (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
                                 <Field name="bonus" component={this.renderInput} required placeholder="Bonus" type="number" />
                             </div>
+                            <div className="four wide field">
+                                OT Rate (hourly) (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
+                                <Field name="overTimeRate" component={this.renderInput} required placeholder="OT Rate" type="number" />
+                            </div>
                         </div>
                         <strong>Deductions (-)</strong>
-                        <div className="fields">                            
+                        <div className="fields">
                             <div className="four wide field">
                                 Accommodation Employee  (Optional)<span style={{ color: "white", fontSize: "18px" }}>*</span>
                                 <Field name="accomodationEmployee" component={this.renderInput} required placeholder="Accommodation Employee" type="number" />

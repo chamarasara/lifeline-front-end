@@ -1,5 +1,6 @@
 import React from 'react';
-import { Field, reduxForm, FieldArray } from 'redux-form';
+import { reduxForm } from 'redux-form';
+import { Tab } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
@@ -93,23 +94,20 @@ class SingleReturnInvoice extends React.Component {
         let discounts = this.props.invoice.products.map(product => {
             return product.discount
         })
-        console.log(discounts)
-        console.log(quantities)
-        let rates = this.props.invoice.productsDetails.map(rate => {
+
+        let rates = this.props.invoice.products.map(rate => {
             return rate.sellingPrice
         })
         let totalValue = []
-        console.log(rates)
-        for (let i = 0; i < Math.min(quantities.length, discounts.length, rates.length); i++) {
+
+        for (let i = 0; i < Math.min(quantities.length); i++) {
             let quantity = quantities[i]
             let discount = discounts[i]
             let rate = rates[i]
-            console.log(discount)
             totalValue[i] = (quantity * rate) / 100 * (100 - discount);
-            console.log(totalValue)
             //return totalValue
         }
-        console.log(totalValue)
+
         return totalValue.map(value => {
             return (
                 <p key={Math.random()}>{this.formatNumber(value.toFixed(2))}</p>
@@ -117,7 +115,7 @@ class SingleReturnInvoice extends React.Component {
         })
     }
     getSubTotal() {
-        if (!this.props.invoice.productsDetails) {
+        if (!this.props.invoice.products) {
             return (
                 <div className="ui active centered inline loader"></div>
             )
@@ -125,12 +123,12 @@ class SingleReturnInvoice extends React.Component {
         let quantities = this.props.invoice.products.map(product => {
             return product
         })
-        console.log(quantities)
-        let rates = this.props.invoice.productsDetails.map(rate => {
+
+        let rates = this.props.invoice.products.map(rate => {
             return rate
         })
         let totalValue = []
-        for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
+        for (let i = 0; i < Math.min(quantities.length); i++) {
             let quantity = quantities[i]
             let rate = rates[i]
             totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
@@ -147,11 +145,11 @@ class SingleReturnInvoice extends React.Component {
         let quantities = this.props.returnInvoice.products.map(product => {
             return product
         })
-        let rates = this.props.returnInvoice.productsDetails.map(rate => {
+        let rates = this.props.returnInvoice.products.map(rate => {
             return rate
         })
         let totalValue = []
-        for (let i = 0; i < Math.min(quantities.length, rates.length); i++) {
+        for (let i = 0; i < Math.min(quantities.length); i++) {
             let quantity = quantities[i]
             let rate = rates[i]
             totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
@@ -227,7 +225,7 @@ class SingleReturnInvoice extends React.Component {
                                     }
                                 </td>
                                 <td style={{ textAlign: "right" }}>
-                                    {this.props.returnInvoice.productsDetails.map(product => {
+                                    {this.props.returnInvoice.products.map(product => {
                                         return (
                                             <p key={product.id}>{product.sellingPrice}</p>
                                         )
@@ -269,7 +267,7 @@ class SingleReturnInvoice extends React.Component {
                     </table>
                 </div>
                 <div style={{ paddingTop: "10px" }}>
-                    <Link to={"/return-invoice-dashboard"} type="button" className="ui button">Back</Link>                    
+                    <Link to={"/return-invoice-dashboard"} type="button" className="ui button">Back</Link>
                     <button type="button" onClick={this.onClickReturnInvoice} className="ui primary button">Print</button>
                 </div>
             </div>
@@ -342,7 +340,7 @@ class SingleReturnInvoice extends React.Component {
                                     }
                                 </td>
                                 <td style={{ textAlign: "right" }}>
-                                    {this.props.invoice.productsDetails.map(product => {
+                                    {this.props.invoice.products.map(product => {
                                         return (
                                             <p key={product.id}>{product.sellingPrice}</p>
                                         )
@@ -384,7 +382,7 @@ class SingleReturnInvoice extends React.Component {
                     </table>
                 </div>
                 <div style={{ paddingTop: "10px" }}>
-                    <Link to={"/return-invoice-dashboard"} type="button" className="ui button">Back</Link>                    
+                    <Link to={"/return-invoice-dashboard"} type="button" className="ui button">Back</Link>
                 </div>
             </div>
         )
@@ -456,13 +454,16 @@ class SingleReturnInvoice extends React.Component {
                 </div>
             )
         }
+        const panes = [
+            { menuItem: 'Returns Details', render: () => <Tab.Pane attached={false}>{this.renderReturnInvoiceDetails()}</Tab.Pane> },
+            { menuItem: 'Invoice Details', render: () => <Tab.Pane attached={false}>{this.renderInvoiceDetails()}</Tab.Pane> },
+        ]
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "80px" }}>
                     <h3>Return Invoice #{this.props.returnInvoice.returnInvoiceNumber}</h3>
                     {this.renderCustomerDetails()}
-                    {this.renderReturnInvoiceDetails()}
-                    {this.renderInvoiceDetails()}
+                    <Tab menu={{ pointing: true }} panes={panes} />
                 </div>
                 <div>
                 </div>

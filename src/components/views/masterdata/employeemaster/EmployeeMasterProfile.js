@@ -174,6 +174,10 @@ class EmployeeMasterProfile extends React.Component {
                                         <td data-label="amount" style={{ textAlign: "right" }}>{this.props.employee.bonus}</td>
                                     </tr>
                                     <tr>
+                                        <td data-label="description">OT Rate </td>
+                                        <td data-label="overTimeRate" style={{ textAlign: "right" }}>{this.props.employee.overTimeRate}</td>
+                                    </tr>
+                                    <tr>
                                         <td data-label="description">Accommodation Employee</td>
                                         <td data-label="amount" style={{ textAlign: "right" }}>({this.props.employee.accomodationEmployee})</td>
                                     </tr>                                    

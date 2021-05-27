@@ -8,7 +8,76 @@ class QuotationSearchResults extends React.Component {
         //this.props.fetchQuotations()
     }
 
-    
+    getProductSellingPrice() {
+        const productsArray = this.props.quotations.map(price => {
+            console.log(price)
+            return price.products
+        })
+        const productsListArray = this.props.quotations.map(price => {
+            return price.productsList
+        })
+        const sellingPriceProductsArray = productsArray.map(price => {
+            //console.log(price)
+            return price.map(sellingPrice => {
+                console.log(sellingPrice.sellingPrice)
+                return sellingPrice.sellingPrice
+            })
+        })
+        const sellingPriceProductsListArray = productsListArray.map(price => {
+            //console.log(price)
+            return price.map(sellingPrice => {
+                console.log(sellingPrice.sellingPrice)
+                return sellingPrice.sellingPrice
+            })
+        })
+        const price = sellingPriceProductsArray.map(price => {
+            console.log(price[0])
+            return price
+        })
+        const price2 = sellingPriceProductsListArray.map(price => {
+            console.log(price[0])
+            return price
+        })
+        
+        console.log(price)
+        console.log(price2)
+        if (!price[0]===undefined) {
+            return price.map(price=>{
+                return(
+                    <p key={Math.random()}>{price.sellingPrice}</p>
+                )
+            })
+        }else{
+            return price2.map(price => {
+                return (
+                    <p key={Math.random()}>{price.sellingPrice}</p>
+                )
+            })
+        }
+        //console.log(sellingPriceArray[1])
+        // const productsArrayPrice = this.props.quotations.products.map(price => {
+        //     //console.log(price.sellingPrice)
+        //     return price.sellingPrice
+        // })
+        // const productsDetailsArrayPrice = this.props.quotations.productsList.map(price => {
+        //     return price.sellingPrice
+        // })
+
+        // if (!productsArrayPrice[0] === undefined) {
+        //     return productsArrayPrice.map(sellingPrice => {
+        //         return (
+        //             <p key={Math.random()}>{sellingPrice.sellingPrice}</p>
+        //         )
+        //     })
+        // } else {
+        //     return productsDetailsArrayPrice.map(sellingPrice => {
+        //         return (
+        //             <p key={Math.random()}>{sellingPrice}</p>
+        //         )
+        //     })
+
+        // }
+    }
     renderList() {
         if (!this.props.quotations) {
             return (
@@ -21,12 +90,12 @@ class QuotationSearchResults extends React.Component {
             console.log(quotation)
             const date = quotation.date;
             const date2 = moment(date).format('DD/MM/YYYY, h:mm: a')
-            if (quotation.quotation_state === "Pending" || quotation.quotation_state==="Approved" ) {
+            if (quotation.quotation_state === "Pending" || quotation.quotation_state === "Approved") {
                 return (
                     <tr key={quotation.id}>
                         <td>
-                            {quotation.quotationNumber}<br/>
-                            <span style={{color:"red"}}>{quotation.quotation_state}</span>
+                            {quotation.quotationNumber}<br />
+                            <span style={{ color: "red" }}>{quotation.quotation_state}</span>
                         </td>
                         <td>
                             {
@@ -45,7 +114,7 @@ class QuotationSearchResults extends React.Component {
                                     )
                                 })
                             }
-                        </td>                        
+                        </td>
                         <td style={{ "textAlign": "right" }}>
                             {
                                 quotation.products.map(quantity => {
@@ -57,12 +126,14 @@ class QuotationSearchResults extends React.Component {
                             }
                         </td>
                         <td style={{ "textAlign": "right" }}>
+                            
                             {
-                                quotation.productsList.map(product => {
+                                quotation.products.map(sellingPrice => {
                                     return (
-                                        <p key={product.id}>{product.sellingPrice}</p>
+                                        <p key={Math.random()}>{sellingPrice.sellingPrice}</p>
                                     )
-                                })
+                                }
+                                )
                             }
                         </td>
                         <td style={{ "textAlign": "right" }}>
@@ -73,7 +144,7 @@ class QuotationSearchResults extends React.Component {
                                     )
                                 })
                             }
-                        </td>                                                
+                        </td>
                         <td>
                             <Link to={`/view-quotation/${quotation.id}`} className="ui blue button">View</Link>
                         </td>
@@ -103,7 +174,7 @@ class QuotationSearchResults extends React.Component {
                                 <th>Products</th>
                                 <th>Quantities</th>
                                 <th>Rate</th>
-                                <th>Discount</th>                               
+                                <th>Discount</th>
                             </tr></thead>
                         <tbody>
                             {this.renderList()}

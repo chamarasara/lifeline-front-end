@@ -60,7 +60,7 @@ class ReturnInvoiceSearchResults extends React.Component {
                     </td>
                     <td style={{ "textAlign": "right" }}>
                         {
-                            invoice.searchProducts.map(product => {
+                            invoice.products.map(product => {
                                 return (
                                     <p key={product.id}>{product.sellingPrice}</p>
                                 )

@@ -13,30 +13,25 @@ class SingleSalary extends React.Component {
         this.props.printSalary(this.props.match.params.id)
     }
     getTotalIncome() {
-        const totalIncome = this.props.salary.employeeDetails.map(employee => {
-            return employee.basicSalary + employee.foodAllowance + employee.vehicleAllowance +
-                employee.fuelAllowance + employee.transportAllowance + employee.telephoneAllowance + employee.bonus + employee.accommodationAllowance + (this.props.salary.overTimeHours * this.props.salary.overTimeRate) + this.props.salary.attendanceAllowance
-        })
-        return totalIncome[0]
+
+        return this.props.salary.basicSalary + this.props.salary.foodAllowance + this.props.salary.vehicleAllowance +
+            this.props.salary.fuelAllowance + this.props.salary.transportAllowance + this.props.salary.telephoneAllowance +
+            this.props.salary.bonus + this.props.salary.accommodationAllowance +
+            (this.props.salary.overTimeHours * this.props.salary.overTimeRate) + this.props.salary.attendanceAllowance
+
     }
 
     getTotalDeduction() {
-        const etf = this.props.salary.employeeDetails.map(employee => {
-            return employee.epfEmployee
-        })
-        const accommodationEmployee = this.props.salary.employeeDetails.map(employee => {
-            return employee.accomodationEmployee
-        })
-        console.log(accommodationEmployee[0])
-        const other = this.props.salary.loanRecovery + this.props.salary.stampDuty + this.props.salary.noPay
-        return etf[0] + other + accommodationEmployee[0]
+        const etf = this.props.salary.epfEmployee
+        const accommodationEmployee = this.props.salary.accomodationEmployee
+        const other = this.props.salary.loanRecovery + this.props.salary.stampDuty + this.props.salary.noPay + this.props.salary.salaryAdvance
+        return etf + other + accommodationEmployee
     }
+
     getTotalOtherBenifits() {
-        const total = this.props.salary.employeeDetails.map(employee => {
-            return employee.insuaranceCost + employee.uniformCost + employee.epfCompany + employee.etfEmployee
-        })
-        return total[0]
+        return this.props.salary.insuaranceCost + this.props.salary.uniformCost + this.props.salary.epfCompany + this.props.salary.etfEmployee
     }
+
     render() {
         if (!this.props.salary) {
             return (
@@ -96,11 +91,7 @@ class SingleSalary extends React.Component {
                                         <td>Basic Salary</td>
                                         <td style={{ textAlign: "right" }}>
                                             {
-                                                this.props.salary.employeeDetails.map(employee => {
-                                                    return (
-                                                        <span key={employee.id}>{employee.basicSalary}</span>
-                                                    )
-                                                })
+                                                this.props.salary.basicSalary
                                             }
                                         </td>
                                     </tr>
@@ -111,11 +102,7 @@ class SingleSalary extends React.Component {
                                         <td><span style={{ paddingLeft: "20px" }}>Vehicle Allowance</span></td>
                                         <td style={{ textAlign: "right" }}>
                                             {
-                                                this.props.salary.employeeDetails.map(employee => {
-                                                    return (
-                                                        <span key={employee.id}>{employee.vehicleAllowance}</span>
-                                                    )
-                                                })
+                                                this.props.salary.vehicleAllowance
                                             }
                                         </td>
                                     </tr>
@@ -123,11 +110,7 @@ class SingleSalary extends React.Component {
                                         <td><span style={{ paddingLeft: "20px" }}>Fuel Allowance</span></td>
                                         <td style={{ textAlign: "right" }}>
                                             {
-                                                this.props.salary.employeeDetails.map(employee => {
-                                                    return (
-                                                        <span key={employee.id}>{employee.fuelAllowance}</span>
-                                                    )
-                                                })
+                                                this.props.salary.fuelAllowance
                                             }
                                         </td>
                                     </tr>
@@ -135,11 +118,7 @@ class SingleSalary extends React.Component {
                                         <td><span style={{ paddingLeft: "20px" }}>Transport Allowance</span></td>
                                         <td style={{ textAlign: "right" }}>
                                             {
-                                                this.props.salary.employeeDetails.map(employee => {
-                                                    return (
-                                                        <span key={employee.id}>{employee.transportAllowance}</span>
-                                                    )
-                                                })
+                                                this.props.salary.transportAllowance
                                             }
                                         </td>
                                     </tr>
@@ -147,11 +126,7 @@ class SingleSalary extends React.Component {
                                         <td><span style={{ paddingLeft: "20px" }}>Telephone Allowance</span></td>
                                         <td style={{ textAlign: "right" }}>
                                             {
-                                                this.props.salary.employeeDetails.map(employee => {
-                                                    return (
-                                                        <span key={employee.id}>{employee.telephoneAllowance}</span>
-                                                    )
-                                                })
+                                                this.props.salary.telephoneAllowance
                                             }
                                         </td>
                                     </tr>
@@ -159,11 +134,7 @@ class SingleSalary extends React.Component {
                                         <td><span style={{ paddingLeft: "20px" }}>Food Allowance</span></td>
                                         <td style={{ textAlign: "right" }}>
                                             {
-                                                this.props.salary.employeeDetails.map(employee => {
-                                                    return (
-                                                        <span key={employee.id}>{employee.foodAllowance}</span>
-                                                    )
-                                                })
+                                                this.props.salary.foodAllowance
                                             }
                                         </td>
                                     </tr>
@@ -171,11 +142,7 @@ class SingleSalary extends React.Component {
                                         <td><span style={{ paddingLeft: "20px" }}>Accommodation Allowance</span></td>
                                         <td style={{ textAlign: "right" }}>
                                             {
-                                                this.props.salary.employeeDetails.map(employee => {
-                                                    return (
-                                                        <span key={employee.id}>{employee.accommodationAllowance}</span>
-                                                    )
-                                                })
+                                                this.props.accommodationAllowance
                                             }
                                         </td>
                                     </tr>
@@ -190,11 +157,7 @@ class SingleSalary extends React.Component {
                                         <td><span style={{ paddingLeft: "20px" }}>Bonus</span></td>
                                         <td style={{ textAlign: "right" }}>
                                             {
-                                                this.props.salary.employeeDetails.map(employee => {
-                                                    return (
-                                                        <span key={employee.id}>{employee.bonus}</span>
-                                                    )
-                                                })
+                                                this.props.salary.bonus
                                             }
                                         </td>
                                     </tr>
@@ -222,7 +185,7 @@ class SingleSalary extends React.Component {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span style={{ paddingLeft: "20px" }}>Accommodation Employee</span></td>                                  
+                                        <td><span style={{ paddingLeft: "20px" }}>Accommodation Employee</span></td>
                                         <td style={{ textAlign: "right" }}>
                                             {
                                                 this.props.salary.employeeDetails.map(employee => {
@@ -236,6 +199,10 @@ class SingleSalary extends React.Component {
                                     <tr>
                                         <td><span style={{ paddingLeft: "20px" }}>Loan Recovery</span></td>
                                         <td style={{ textAlign: "right" }}>{this.props.salary.loanRecovery}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style={{ paddingLeft: "20px" }}>Salary Advance Recovery</span></td>
+                                        <td style={{ textAlign: "right" }}>{this.props.salary.salaryAdvance}</td>
                                     </tr>
                                     <tr>
                                         <td><span style={{ paddingLeft: "20px" }}>Stamp Duty</span></td>
