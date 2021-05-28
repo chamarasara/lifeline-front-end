@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import { fetchFinishGoods, createFinishGoodInventory } from '../../../../actions';
 import { Link } from 'react-router-dom'
@@ -82,16 +82,19 @@ class NewFinishGood extends React.Component {
                                     {this.renderProducts()}
                                 </Field>
                             </div>
-
                         </div>
                         <div className="fields">
-                            <div className="four wide field">
+                            <div className="two wide field">
                                 Quantity <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="quantity" required component={this.renderInput} placeholder="Quantity" type="number" />
                             </div>
-                            <div className="four wide field">
+                            <div className="three wide field">
                                 Batch Number <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="batchNumber" required component={this.renderInput} placeholder="Batch Number" type="text" />
+                            </div>
+                            <div className="three wide field">
+                                Manufacturing Date <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="manufacturingDate" required component={this.renderInput} type="date" />
                             </div>
                         </div>
                         <div className="fields">
@@ -122,15 +125,22 @@ const validate = (formValues) => {
     if (!formValues.batchNumber) {
         errors.batchNumber = 'Required!';
     }
+    if (!formValues.manufacturingDate) {
+        errors.manufacturingDate = 'Required!';
+    }
     return errors;
-}
-const mapStateToProps = (state) => {
-    const products = Object.values(state.finishGoods)
-    console.log(products)
-    return { products: products };
 }
 const formWrapped = reduxForm({
     form: 'newFinishGoodInventory',
     validate: validate
 })(NewFinishGood);
+
+const selector = formValueSelector('newFinishGoodInventory')
+
+const mapStateToProps = (state) => {
+    const products = Object.values(state.finishGoods)
+    const getManufaturingDate = selector(state, 'manufacturingDate')
+    return { products: products, getManufaturingDate: getManufaturingDate };
+}
+
 export default connect(mapStateToProps, { fetchFinishGoods, createFinishGoodInventory })(formWrapped);

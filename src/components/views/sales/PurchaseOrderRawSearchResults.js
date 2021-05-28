@@ -29,6 +29,9 @@ class PurchaseOrderRawSearchResults extends React.Component {
                             {date2}
                         </td>
                         <td>
+                            {order.orderNumber}
+                        </td>
+                        <td>
                             {
                                 order.searchSupplier.map(supplier1 => {
                                     return (
@@ -86,6 +89,7 @@ class PurchaseOrderRawSearchResults extends React.Component {
                         <thead>
                             <tr>
                                 <th>Date</th>
+                                <th>Order No</th>
                                 <th>Company Name</th>
                                 <th>Order State</th>
                                 <th>Raw Materials</th>

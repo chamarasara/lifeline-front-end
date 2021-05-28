@@ -939,7 +939,6 @@ export const createPurchaseOrderRaw = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues, user }, header);
-
     dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.data });
     window.location.reload()
 
@@ -1706,7 +1705,7 @@ export const createFinishGoodInventory = formValues => async dispatch => {
     const response = await api.post('api/inventory/finish-good/new-finish-good-inventory', { ...formValues, user }, header);
 
     dispatch({ type: NEW_FINISH_GOOD_INVENTORY, payload: response.data });
-    window.location.reload()
+    //window.location.reload()
 
 };
 //List finish good inventory

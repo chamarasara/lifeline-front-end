@@ -79,7 +79,7 @@ class EditQualityData extends React.Component {
                         <div className="fields">
                             <div className="eight wide field">
                                 Shelf Life <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <Field name="shelfLife" component={this.renderInput} placeholder="Shelf Life" type="text" />
+                                <Field name="shelfLife" component={this.renderInput} placeholder="Shelf Life" type="number" />
                             </div>
                         </div>
                         <div className="fields">
