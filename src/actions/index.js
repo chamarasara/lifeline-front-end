@@ -1705,7 +1705,7 @@ export const createFinishGoodInventory = formValues => async dispatch => {
     const response = await api.post('api/inventory/finish-good/new-finish-good-inventory', { ...formValues, user }, header);
     console.log(response)
     dispatch({ type: NEW_FINISH_GOOD_INVENTORY, payload: response.data });
-    //window.location.reload()
+    window.location.reload()
 
 };
 //List finish good inventory
