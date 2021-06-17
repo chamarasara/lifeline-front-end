@@ -162,6 +162,32 @@ class EditInvoice extends React.Component {
 
         return this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))
     }
+    getSubTotalWithTransportCost() {
+        if (!this.props.invoice.products) {
+            return (
+                <div className="ui active centered inline loader"></div>
+            )
+        }
+        let quantities = this.props.invoice.products.map(product => {
+            return product
+        })
+        let transportCost = this.props.invoice.transportCost
+        let rates = this.props.invoice.products.map(rate => {
+            return rate
+        })
+        let totalValue = []
+        for (let i = 0; i < Math.min(quantities.length); i++) {
+            let quantity = quantities[i]
+            let rate = rates[i]
+            totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
+
+            console.log(totalValue.reduce((a, b) => a + b, 0))
+            //return totalValue
+        }
+        const total = totalValue.reduce((a, b) => a + b, 0)
+        const subtotal = total + this.renderTransportCost()
+        return this.formatNumber(subtotal.toFixed(2))
+    }
     getReturnsSubTotal() {
         if (!this.props.returnInvoice) {
             return (0)
@@ -790,6 +816,13 @@ class EditInvoice extends React.Component {
             </div>
         )
     }
+    renderTransportCost() {
+        if (!this.props.invoice.transportCost) {
+            return 0
+        }else{
+            return this.props.invoice.transportCost
+        }
+    }
 
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
@@ -836,8 +869,16 @@ class EditInvoice extends React.Component {
                         </tbody>
                         <tfoot>
                             <tr colSpan="16">
-                                <th colSpan="7" style={{ textAlign: "right" }}>Sub Total:</th>
+                                <th colSpan="7" style={{ textAlign: "right" }}></th>
                                 <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
+                            </tr>
+                            <tr colSpan="16">
+                                <th colSpan="7" style={{ textAlign: "right" }}>(+) Transport Cost:</th>
+                                <th colSpan="8" style={{ textAlign: "right" }}>{this.formatNumber(this.renderTransportCost().toFixed(2))}</th>
+                            </tr>
+                            <tr colSpan="16">
+                                <th colSpan="7" style={{ textAlign: "right" }}>Subtotal:</th>
+                                <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotalWithTransportCost()}</th>
                             </tr>
                         </tfoot>
                     </table>

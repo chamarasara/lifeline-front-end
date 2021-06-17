@@ -1,5 +1,6 @@
 import React from 'react';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { Field, reduxForm, formValueSelector, getFormValues } from 'redux-form';
+import moment from 'moment'
 import { connect } from 'react-redux';
 import { fetchFinishGoods, createFinishGoodInventory } from '../../../../actions';
 import { Link } from 'react-router-dom'
@@ -49,13 +50,6 @@ class NewFinishGood extends React.Component {
             </div>
         </div>
     )
-    renderSuppliers() {
-        return this.props.supplier.map(supplier => {
-            return (
-                <option key={supplier.id} value={supplier.id}>{supplier.companyName}</option>
-            )
-        })
-    }
 
     renderProducts() {
         return this.props.products.map(product => {
@@ -64,6 +58,25 @@ class NewFinishGood extends React.Component {
             )
         })
     }
+    renderManufaturingDelayField() {
+
+        const userInputDate = new Date(this.props.getManufaturingDate);
+        const currentDate = new Date();
+
+        var diff = new Date(currentDate.getTime() - userInputDate.getTime());
+        const diffDays = diff.getUTCDate() - 1
+
+        if (diffDays >= 7) {
+           return(
+               <div className="eight wide field">
+                   <span style={{ color: "red", fontSize: "14px" }}>The manufacturing date that you enterd is older more than 7 days. Please enter the reason for the delay! *</span>
+                   <Field name="reasonForDelay" required component={this.renderInput} placeholder="Reason for the delay" type="text" />
+               </div>
+           )
+        }
+
+    }
+  
     onSubmit = (formValues) => {
         console.log(formValues)
         this.props.createFinishGoodInventory(formValues)
@@ -80,6 +93,7 @@ class NewFinishGood extends React.Component {
                                 <Field name="productId" type="text" required component={this.renderSelectField} >
                                     <option>-Select Product-</option>
                                     {this.renderProducts()}
+                                   
                                 </Field>
                             </div>
                         </div>
@@ -96,6 +110,9 @@ class NewFinishGood extends React.Component {
                                 Manufacturing Date <span style={{ color: "red", fontSize: "18px" }}>*</span>
                                 <Field name="manufacturingDate" required component={this.renderInput} type="date" />
                             </div>
+                        </div>
+                        <div className="fields">
+                            {this.renderManufaturingDelayField()}
                         </div>
                         <div className="fields">
                             <div className="four wide field">
@@ -115,6 +132,7 @@ class NewFinishGood extends React.Component {
 }
 //Form input validation
 const validate = (formValues) => {
+
     const errors = {}
     if (!formValues.productId) {
         errors.productId = 'Required!';
@@ -128,8 +146,10 @@ const validate = (formValues) => {
     if (!formValues.manufacturingDate) {
         errors.manufacturingDate = 'Required!';
     }
+    
     return errors;
 }
+
 const formWrapped = reduxForm({
     form: 'newFinishGoodInventory',
     validate: validate

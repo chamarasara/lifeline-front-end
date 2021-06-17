@@ -45,7 +45,7 @@ class ReviseFinishGood extends React.Component {
                     </div>
                     <div className="field">
                         <button type="submit" className="ui red button">Revise</button>
-                        <Link to={"/finish-good-inventory-dashboard/"} className="ui cancel button">Cancel</Link>
+                        <Link to={`/single-finish-good-inventory/${this.props.finishGood.id}`} className="ui cancel button">Cancel</Link>
                     </div>
                 </form>
             </React.Fragment>
@@ -67,7 +67,7 @@ class ReviseFinishGood extends React.Component {
             <Modal header="Revise Finish Good"
                 content={this.renderContent()}
                 actions={this.renderActions()}
-                onDismiss={() => history.push("/finish-good-inventory-dashboard/")}
+                onDismiss={() => history.push(`/single-finish-good-inventory/${this.props.finishGood.id}`)}
             />
         );
     }

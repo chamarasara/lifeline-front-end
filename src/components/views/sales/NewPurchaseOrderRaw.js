@@ -24,8 +24,39 @@ class NewPurchaseOrder extends React.Component {
             <div className="field">
                 <label>{label}</label>
                 <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
+                {this.renderError(meta)}
             </div>
         );
+    }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+                {this.renderError(meta)}
+            </div>
+        </div>
+    )
+    renderError({ error, touched }) {
+        if (touched && error) {
+            return (
+                <div className="ui error message">
+                    <div className="Header">{error}</div>
+                </div>
+            );
+        }
+    }
+    errorMessage() {
+        if (this.props.errorMessage) {
+            console.log(this.props)
+            return (
+                <div className="ui error message">
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
     }
     renderRawMaterials() {
         return this.props.rawMaterials.map(rawMaterial => {
@@ -34,10 +65,11 @@ class NewPurchaseOrder extends React.Component {
             )
         })
     }
-    renderRawMaterialsDropDown = ({ fields }) => {
+    renderRawMaterialsDropDown = ({ fields, meta: { error, submitFailed } }) => {
         return (
             <div>
                 <ul>
+                    
                     {fields.map((rawMaterials, index) => <li key={index}>
                         <label htmlFor={rawMaterials}>Material #{index + 1}</label>
                         <div className="fields">
@@ -48,11 +80,11 @@ class NewPurchaseOrder extends React.Component {
                                 </Field>
                             </div>
                             <div className="four wide field">
-                                <Field name={`${rawMaterials}.quantity`} type="number" required component="input" placeholder="Quantity" >
+                                <Field name={`${rawMaterials}.quantity`} type="number" required component={this.renderInput} placeholder="Quantity" >
                                 </Field>
                             </div>
                             <div className="four wide field">
-                                <Field name={`${rawMaterials}.uom`} type="text" required component="select" placeholder="UOM" >
+                                <Field name={`${rawMaterials}.uom`} type="text" required component={this.renderRawMaterialsDropDown} placeholder="UOM" >
                                     <option>-UOM-</option>
                                     <option value="Each">Each</option>
                                     <option value="kg">kg</option>
@@ -69,12 +101,14 @@ class NewPurchaseOrder extends React.Component {
                         </div>
                     </li>)}
                 </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Raw Material</button>
-
+                <li>
+                    <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Raw Material</button>
+                    {submitFailed && error && <span style={{ color: "red" }}>{error}</span>}
+                </li>
             </div>
         )
     }
-  
+
     onSubmit = (formValues) => {
         this.props.createPurchaseOrderRaw(formValues)
     }
@@ -86,7 +120,7 @@ class NewPurchaseOrder extends React.Component {
                     <h3>Create Purchase Order RM</h3>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="six wide field">
-                            <Field name="supplierId" component="select" placeholder="" type="text" >
+                            <Field name="supplierId" component={this.renderSelectField} placeholder="" type="text" >
                                 <option>-Select Supplier-</option>
                                 {this.rendeSuppliers()}
                             </Field>
@@ -96,7 +130,7 @@ class NewPurchaseOrder extends React.Component {
                                 <label>Raw Materials- </label>
                                 <FieldArray name="rawMaterials" component={this.renderRawMaterialsDropDown} />
                             </div>
-                        </div>                        
+                        </div>
                         <div className="field">
                             <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>
@@ -108,31 +142,40 @@ class NewPurchaseOrder extends React.Component {
     }
 }
 //Form input validation
-// const validate = (formValues) => {
-//     const errors = {}
-//     if (!formValues.firstName) {
-//         errors.firstName = 'Please enter First Name';
-//     }
-//     if (!formValues.lastName) {
-//         errors.lastName = 'Please enter Last Name';
-//     }
-//     if (!formValues.address) {
-//         errors.address = 'Please enter the Number of the Address';
-//     }
-//     if (!formValues.nic) {
-//         errors.nic = 'Please enter the ID Nummber';
-//     }
-//     if (!formValues.mobileNo) {
-//         errors.mobileNo = 'Please enter Phone Number';
-//     }
-//     if (!formValues.email) {
-//         errors.email = 'Please enter Email';
-//     }
-//     if (!formValues.gender) {
-//         errors.gender = 'Please enter the Gender';
-//     }
-//     return errors;
-// }
+const validate = (formValues) => {
+    const errors = {}
+    if (!formValues.supplierId) {
+        errors.supplierId = 'Required';
+    }
+    if (!formValues.rawMaterials || !formValues.rawMaterials.length) {
+        errors.rawMaterials = { _error: 'At least one material must be entered' }
+    } else {
+        const rawMaterialsArrayErrors = []
+        formValues.rawMaterials.forEach((rawMaterials, index) => {
+            const productErrors = {}
+            if (!rawMaterials || !rawMaterials.id) {
+                productErrors.id = 'Required'
+                rawMaterialsArrayErrors[index] = productErrors
+            }
+            if (!rawMaterials || !rawMaterials.quantity) {
+                productErrors.quantity = 'Required'
+                rawMaterialsArrayErrors[index] = productErrors
+            }
+            if (!rawMaterials || !rawMaterials.currency) {
+                productErrors.currency = 'Required'
+                rawMaterialsArrayErrors[index] = productErrors
+            }
+        })
+        if (rawMaterialsArrayErrors.length) {
+            errors.rawMaterials = rawMaterialsArrayErrors
+        }
+    }
+    return errors;
+}
+const formWrapped = reduxForm({
+    form: 'newPurchaseOrderRm',
+    validate: validate
+})(NewPurchaseOrder);
 const mapStateToProps = (state) => {
     console.log(state)
     const suppliers = Object.values(state.supplier)
@@ -140,10 +183,5 @@ const mapStateToProps = (state) => {
     const packingMaterials = Object.values(state.packingMaterials)
     return { errorMessage: state, suppliers: suppliers, rawMaterials: rawMaterials, packingMaterials: packingMaterials };
 }
-const formWrapped = reduxForm({
-    form: 'newPurchaseOrder',
-    destroyOnUnmount: false, // <------ preserve form data
-    forceUnregisterOnUnmount: true
-})(NewPurchaseOrder);
 
 export default connect(mapStateToProps, { fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw })(formWrapped);

@@ -19,7 +19,6 @@ class FinishGoodInventorySearchResults extends React.Component {
             )
         }
         return this.props.finishGoods.map(finishGood => {
-            console.log(finishGood)
             const date = finishGood.createdAt;
             const date2 = moment(date).format('DD/MM/YYYY, h:mm: a')          
             if (finishGood.productDetails) {
@@ -49,7 +48,7 @@ class FinishGoodInventorySearchResults extends React.Component {
                                 <span >({finishGood.quantity})</span>
                             </td>
                             <td>
-                                <span >{finishGood.finishGoodDescription}</span>
+                                <span >({finishGood.remainingQuantity})</span>
                             </td>
                             <td>
                                 <Link to={`/single-finish-good-inventory/${finishGood.id}`} className="mini ui blue button">View</Link>
@@ -75,14 +74,14 @@ class FinishGoodInventorySearchResults extends React.Component {
                                     })
                                 }
                             </td>
-                            <td>
+                            <td style={{ textAlign: "right" }}>
                                 <span >{finishGood.batchNumber}</span>
                             </td>
-                            <td>
+                            <td style={{ textAlign: "right" }}>
                                 <span >{finishGood.quantity}</span>
                             </td>
-                            <td>
-                                <span >{finishGood.finishGoodDescription}</span>
+                            <td style={{ textAlign: "right" }}>
+                                <span >{finishGood.remainingQuantity}</span>
                             </td>
                             <td>
                                 <Link to={`/single-finish-good-inventory/${finishGood.id}`} className="mini ui blue button">View</Link>
@@ -112,7 +111,7 @@ class FinishGoodInventorySearchResults extends React.Component {
                                 <th>Product Name</th>
                                 <th>Batch Number</th>
                                 <th>Quantity</th>
-                                <th>Remarks</th>
+                                <th>Remaining Quantity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -126,7 +125,6 @@ class FinishGoodInventorySearchResults extends React.Component {
 }
 const mapToSatate = (state) => {
     const finishGoods = Object.values(state.finishGoodInventory)
-    console.log(state)
     return { finishGoods: finishGoods.reverse() };
 }
 export default connect(mapToSatate, { searchFinishGoodsInventory })(FinishGoodInventorySearchResults);

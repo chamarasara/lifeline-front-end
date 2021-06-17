@@ -37,7 +37,7 @@ class NewInvoice extends React.Component {
             )
         })
     }
-    renderInput = ({ input, label, placeholder, type, meta}) => {
+    renderInput = ({ input, label, placeholder, type, meta }) => {
         return (
             <div className="field">
                 <label>{label}</label>
@@ -73,7 +73,7 @@ class NewInvoice extends React.Component {
                 <ul>
                     <li>
                         <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Product</button>
-                        {submitFailed && error && <span style={{color:"red"}}>{error}</span>}
+                        {submitFailed && error && <span style={{ color: "red" }}>{error}</span>}
                     </li>
                     {fields.map((products, index) => <li key={index}>
                         <label htmlFor={products}>Product #{index + 1}</label>
@@ -141,9 +141,6 @@ class NewInvoice extends React.Component {
                                     {this.renderQuotations()}
                                 </Field>
                             </div>
-                            <div className="six wide field">
-
-                            </div>
                         </div>
                         <div className="fields">
                             <div className="six wide field">
@@ -154,6 +151,12 @@ class NewInvoice extends React.Component {
                                 Customer Reference (Optional)
                                 <Field name="reference" type="text" component="input" placeholder="Cusomer Reference" />
                             </div>
+                        </div>
+                        <div className="fields">
+                            <div className="six wide field">
+                                Transport Cost (Optional)
+                                <Field name="transportCost" type="number" component="input" placeholder="Transport Cost" />
+                            </div>                            
                         </div>
                         <div className="fields">
                             <div className="sixteen wide field">
@@ -207,23 +210,23 @@ const validate = (formValues) => {
     }
     return errors;
 }
+const formWrapped = reduxForm({
+    form: 'newInvoice',
+    validate: validate
+})(NewInvoice);
+
+const selector = formValueSelector('newInvoice')
+
 const mapStateToProps = (state) => {
     const customers = Object.values(state.customer)
     const products = Object.values(state.finishGoods)
     const quotations = Object.values(state.quotations)
-    const selector = formValueSelector('newInvoice')
     const value = selector(state, 'quotationNumber')
     const quotation = state.quotations[value]
     console.log(quotation)
     console.log(value)
     return { errorMessage: state, customers: customers, products: products, quotations: quotations, initialValues: quotation, value: value };
 }
-const formWrapped = reduxForm({
-    form: 'newInvoice',
-    enableReinitialize: false,
-    destroyOnUnmount: true,
-    keepDirtyOnReinitialize: true,
-    validate: validate
-})(NewInvoice);
+
 
 export default connect(mapStateToProps, { fetchCustomers, fetchFinishGoods, createInvoice, fetchQuotations, fetchQuotation })(formWrapped);

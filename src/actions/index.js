@@ -1703,7 +1703,7 @@ export const createFinishGoodInventory = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/inventory/finish-good/new-finish-good-inventory', { ...formValues, user }, header);
-
+    console.log(response)
     dispatch({ type: NEW_FINISH_GOOD_INVENTORY, payload: response.data });
     //window.location.reload()
 
@@ -1788,7 +1788,7 @@ export const createSalary = formValues => async dispatch => {
     const response = await api.post('/api/hr/salaries/new-salary/', { ...formValues, user }, header);
     dispatch({ type: NEW_SALARY, payload: response.data });
     console.log(response)
-    //window.location.reload()
+    window.location.reload()
 };
 //List all distributors
 export const fetchSalaries = () => async dispatch => {
