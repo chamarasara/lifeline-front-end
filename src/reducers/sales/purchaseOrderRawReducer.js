@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import {
     CREATE_PURCHASE_ORDER_RAW,
+    CREATE_PURCHASE_ORDER_RAW_ERROR,
     EDIT_PURCHASE_ORDER_RAW,
     FETCH_PURCHASE_ORDER_RAW,
     FETCH_PURCHASE_ORDERS_RAW,
@@ -16,6 +17,8 @@ export default (state = {}, action) => {
             return { ...state, [action.payload.id]: action.payload };
         case CREATE_PURCHASE_ORDER_RAW:
             return { ...state, [action.payload.id]: action.payload };
+        case CREATE_PURCHASE_ORDER_RAW_ERROR:
+            return { ...state, [action.payload.id]: action.payload, success: false };
         case EDIT_PURCHASE_ORDER_RAW:
             return { ...state, [action.payload._id]: action.payload };
         case DELETE_PURCHASE_ORDER_RAW:

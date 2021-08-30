@@ -3,20 +3,24 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createPurchaseOrderRaw, editPurchaseOrderRaw, updatePurchaseOrderRaw } from '../../../../actions';
+import { fetchPurchaseOrderRaw, editPurchaseOrderRaw, updatePurchaseOrderStateRaw, viewSupplierInvoiceRaw } from '../../../../actions';
 
 class ApprovalsSingleOrderRaw extends React.Component {
 
     componentDidMount() {
         this.props.fetchPurchaseOrderRaw(this.props.match.params.id)       
     }
+    formatNumber = (num) => {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
     renderPurchaseOrederDetails() {
         return (
             <tr>
                 <td>
                     {this.props.order.rawMaterialsList.map(material => {
+                        console.log(material)
                         return (
-                            <p key={material.id}>{material.materialCode}</p>
+                            <p key={material.id}>RM{material.materialCodeRm}</p>
                         )
                     })
                     }
@@ -39,16 +43,29 @@ class ApprovalsSingleOrderRaw extends React.Component {
                     )
                 })
                 }</td>
-
-
+                <td style={{ textAlign: "right" }}> {this.props.order.rawMaterials.map(material => {
+                    const price = parseInt(material.unitPrice)
+                    return (
+                        <p key={material.id}>{this.formatNumber(price.toFixed(2))}</p>
+                    )
+                })
+                }
+                </td>
+                <td style={{ textAlign: "right" }}> {this.props.order.rawMaterials.map(material => {
+                    const total = parseInt(material.unitPrice) * parseInt(material.quantity)
+                    return (
+                        <p key={material.id}>{this.formatNumber(total.toFixed(2))}</p>
+                    )
+                })
+                }
+                </td>
             </tr>
         )
 
     }
     renderSupplierDetails() {
-        console.log(this.props.order.supplier)
         return (
-            <div>
+            <div className="ui raised segment" style={{ paddingTop: "20px", paddingLeft: "30px", paddingBottom: "20px" }}>
                 <p><strong>Company Name:</strong>{this.props.order.supplier.map(Supplier => {
                     return (
                         <span key={Supplier.id}>{Supplier.companyName}</span>
@@ -91,18 +108,39 @@ class ApprovalsSingleOrderRaw extends React.Component {
     onClick = () => {
         const formValues = {}   
         const order_state = "Approved"
-        this.props.updatePurchaseOrderRaw(this.props.order._id, {...formValues, order_state})
+        this.props.updatePurchaseOrderStateRaw(this.props.order._id, {...formValues, order_state})
+    }
+    viewSupplierInvoice = () => {
+        this.props.viewSupplierInvoiceRaw(this.props.order.suplierInvoicePdf)
     }
     onSubmit = (formValues) => {
         this.props.editPurchaseOrderRaw(this.props.order._id, formValues)
     }
+    getSubTotal() {
 
+        const orderDetails = this.props.order.rawMaterials
+        let getTotal = orderDetails.map(data => {
+            let totalValue = parseInt(data.unitPrice) * parseInt(data.quantity)
+            let total = totalValue
+            return this.formatNumber(total.toFixed(2))
+        })
+
+        let sum = []
+        for (let i = 0; i < Math.min(getTotal.length); i++) {
+            let total = parseInt(getTotal[i])
+            sum[i] = total
+        }
+        const totalSum = sum.reduce((a, b) => a + b, 0)
+        return this.formatNumber(totalSum.toFixed(2))
+
+    }
     render() {
         if (!this.props.order) {
             return (
                 <div className="pusher">
-                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}></div>
-                    <p>Loading....</p>
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>
                 </div>
             )
         }
@@ -121,11 +159,22 @@ class ApprovalsSingleOrderRaw extends React.Component {
                                 <th>Product Name</th>
                                 <th>UOM</th>
                                 <th style={{ textAlign: "right" }}>Quantity</th>
+                                <th style={{ textAlign: "right" }}>Unit Price</th>
+                                <th style={{ textAlign: "right" }}>Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             {this.renderPurchaseOrederDetails()}
                         </tbody>
+                        <tfoot>
+                            <tr colSpan="16">
+                                <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
+                                <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
+                            </tr>
+                            <div style={{ paddingLeft: "25px", paddingBottom: "25px", paddingTop: "25px" }}>
+                                <Link onClick={this.viewSupplierInvoice} type="button" className="ui primary button">View Supplier Invoice</Link>
+                            </div>
+                        </tfoot>
                     </table>
                     <div>
                         <Link to={"/approvals-raw"} type="button" className="ui button">Back</Link>
@@ -140,49 +189,17 @@ class ApprovalsSingleOrderRaw extends React.Component {
         )
     }
 }
-//Form input validation
-// const validate = (formValues) => {
-//     const errors = {}
-//     if (!formValues.firstName) {
-//         errors.firstName = 'Please enter First Name';
-//     }
-//     if (!formValues.lastName) {
-//         errors.lastName = 'Please enter Last Name';
-//     }
-//     if (!formValues.address) {
-//         errors.address = 'Please enter the Number of the Address';
-//     }
-//     if (!formValues.nic) {
-//         errors.nic = 'Please enter the ID Nummber';
-//     }
-//     if (!formValues.mobileNo) {
-//         errors.mobileNo = 'Please enter Phone Number';
-//     }
-//     if (!formValues.email) {
-//         errors.email = 'Please enter Email';
-//     }
-//     if (!formValues.gender) {
-//         errors.gender = 'Please enter the Gender';
-//     }
-//     return errors;
-// }
 const mapStateToProps = (state, ownPorps) => {
     const suppliers = Object.values(state.supplier)
     const rawMaterials = Object.values(state.rawMaterials)
-    const packingMaterials = Object.values(state.packingMaterials)
     const order = state.purchaseOrdersRaw[ownPorps.match.params.id]
-    //console.log(state.purchaseOrders[ownPorps.match.params.id])
     return {
         errorMessage: state,
         suppliers: suppliers,
         rawMaterials: rawMaterials,
-        packingMaterials: packingMaterials,
         order: order,
         initialValues: order
     };
 }
-const formWrapped = reduxForm({
-    form: 'purchaseOrderRawPayments',
-})(ApprovalsSingleOrderRaw);
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, updatePurchaseOrderRaw, editPurchaseOrderRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderRaw, updatePurchaseOrderStateRaw, editPurchaseOrderRaw, viewSupplierInvoiceRaw })(ApprovalsSingleOrderRaw);

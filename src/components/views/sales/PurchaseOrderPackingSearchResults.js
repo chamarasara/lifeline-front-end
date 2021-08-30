@@ -9,7 +9,9 @@ class PurchaseOrderPackingSearchResults extends React.Component {
         this.props.searchPurchaseOrdersPacking()
 
     }
-
+    formatNumber = (num) => {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
     renderList() {
         if (!this.props.orders) {
             return (
@@ -62,6 +64,17 @@ class PurchaseOrderPackingSearchResults extends React.Component {
                                 )
                             }
                         </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.packingMaterials.map(unitPrice => {
+                                    const price = parseInt(unitPrice.unitPrice)
+                                    return (
+                                        <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
+                                    )
+                                }
+                                )
+                            }
+                        </td>
                         <td>
                             <Link to={`/single-purchase-order-packing/${order.id}`} className="ui red button">View</Link>
                         </td>
@@ -91,6 +104,7 @@ class PurchaseOrderPackingSearchResults extends React.Component {
                                 <th>Order State</th>
                                 <th>Packing Materials</th>
                                 <th>Quantities</th>
+                                <th>Unit Price</th>
                             </tr>
                         </thead>
                         <tbody>

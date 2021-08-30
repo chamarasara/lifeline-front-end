@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { fetchPurchaseOrderPacking, updatePurchaseOrderPacking } from '../../../../actions';
+import { fetchPurchaseOrderPacking, updatePurchaseOrderStatePacking, viewSupplierInvoicePacking } from '../../../../actions';
 
 class ApprovalsSingleOrderPacking extends React.Component {
 
@@ -10,13 +10,17 @@ class ApprovalsSingleOrderPacking extends React.Component {
         console.log(this.props.match.params.id)
         this.props.fetchPurchaseOrderPacking(this.props.match.params.id)
     }
+    formatNumber = (num) => {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
+    
     renderPurchaseOrederDetails() {
         return (
             <tr>
                 <td>
                     {this.props.order.packingMaterialsList.map(material => {
                         return (
-                            <p key={material.id}>{material.materialCode}</p>
+                            <p key={material.id}>PM{material.materialCodePm}</p>
                         )
                     })
                     }
@@ -39,15 +43,47 @@ class ApprovalsSingleOrderPacking extends React.Component {
                     )
                 })
                 }</td>
-
-
+                <td style={{ textAlign: "right" }}> {this.props.order.packingMaterials.map(material => {
+                    const price = parseInt(material.unitPrice)
+                    return (
+                        <p key={material.id}>{this.formatNumber(price.toFixed(2))}</p>
+                    )
+                })
+                }
+                </td>
+                <td style={{ textAlign: "right" }}> {this.props.order.packingMaterials.map(material => {
+                    const total = parseInt(material.unitPrice) * parseInt(material.quantity)
+                    return (
+                        <p key={material.id}>{this.formatNumber(total.toFixed(2))}</p>
+                    )
+                })
+                }
+                </td>
             </tr>
         )
 
     }
+    getSubTotal() {
+
+        const orderDetails = this.props.order.packingMaterials
+        let getTotal = orderDetails.map(data => {
+            let totalValue = parseInt(data.unitPrice) * parseInt(data.quantity)
+            let total = totalValue
+            return this.formatNumber(total.toFixed(2))
+        })
+
+        let sum = []
+        for (let i = 0; i < Math.min(getTotal.length); i++) {
+            let total = parseInt(getTotal[i])
+            sum[i] = total
+        }
+        const totalSum = sum.reduce((a, b) => a + b, 0)
+        return this.formatNumber(totalSum.toFixed(2))
+
+    }
     renderSupplierDetails() {
         return (
-            <div>
+            <div className="ui raised segment" style={{ paddingTop: "20px", paddingLeft: "30px", paddingBottom: "20px" }}>
                 <p><strong>Company Name:</strong>{this.props.order.supplier.map(Supplier => {
                     return (
                         <span key={Supplier.id}>{Supplier.companyName}</span>
@@ -90,14 +126,17 @@ class ApprovalsSingleOrderPacking extends React.Component {
     onClick = () => {
         const formValues = {}
         const order_state = "Approved"
-        this.props.updatePurchaseOrderPacking(this.props.order._id, { ...formValues, order_state })
+        this.props.updatePurchaseOrderStatePacking(this.props.order._id, { ...formValues, order_state })
+    }
+    viewSupplierInvoice = () => {
+        this.props.viewSupplierInvoicePacking(this.props.order.suplierInvoicePdf)
     }
     render() {
         if (!this.props.order) {
             return (
                 <div className="pusher">
                     <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}></div>
-                    <p>Loading....</p>
+                    <div className="ui active centered inline loader"></div>
                 </div>
             )
         }
@@ -116,11 +155,22 @@ class ApprovalsSingleOrderPacking extends React.Component {
                                 <th>Product Name</th>
                                 <th>UOM</th>
                                 <th style={{ textAlign: "right" }}>Quantity</th>
+                                <th style={{ textAlign: "right" }}>Unit Price</th>
+                                <th style={{ textAlign: "right" }}>Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             {this.renderPurchaseOrederDetails()}
                         </tbody>
+                        <tfoot>
+                            <tr colSpan="16">
+                                <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
+                                <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
+                            </tr>
+                            <div style={{ paddingLeft: "25px", paddingBottom: "25px", paddingTop: "25px" }}>
+                                <Link onClick={this.viewSupplierInvoice} type="button" className="ui primary button">View Supplier Invoice</Link>
+                            </div>
+                        </tfoot>
                     </table>
                     <div>
                         <Link to={"/approvals-packing"} type="button" className="ui button">Back</Link>
@@ -135,39 +185,12 @@ class ApprovalsSingleOrderPacking extends React.Component {
         )
     }
 }
-//Form input validation
-// const validate = (formValues) => {
-//     const errors = {}
-//     if (!formValues.firstName) {
-//         errors.firstName = 'Please enter First Name';
-//     }
-//     if (!formValues.lastName) {
-//         errors.lastName = 'Please enter Last Name';
-//     }
-//     if (!formValues.address) {
-//         errors.address = 'Please enter the Number of the Address';
-//     }
-//     if (!formValues.nic) {
-//         errors.nic = 'Please enter the ID Nummber';
-//     }
-//     if (!formValues.mobileNo) {
-//         errors.mobileNo = 'Please enter Phone Number';
-//     }
-//     if (!formValues.email) {
-//         errors.email = 'Please enter Email';
-//     }
-//     if (!formValues.gender) {
-//         errors.gender = 'Please enter the Gender';
-//     }
-//     return errors;
-// }
 const mapStateToProps = (state, ownPorps) => {
     const order = state.purchaseOrdersPacking[ownPorps.match.params.id]
-    //console.log(state.purchaseOrders[ownPorps.match.params.id])
     return {
         order: order
     };
 }
 
 
-export default connect(mapStateToProps, { fetchPurchaseOrderPacking, updatePurchaseOrderPacking })(ApprovalsSingleOrderPacking);
+export default connect(mapStateToProps, { fetchPurchaseOrderPacking, updatePurchaseOrderStatePacking, viewSupplierInvoicePacking })(ApprovalsSingleOrderPacking);

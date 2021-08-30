@@ -74,11 +74,9 @@ import {
     DELETE_INVOICE,
     SEARCH_INVOICES_RESULT,
     CREATE_RETURN_INVOICE,
-    EDIT_RETURN_INVOICE,
     FETCH_RETURN_INVOICE,
     NO_RETURN_INVOICE,
     FETCH_RETURN_INVOICES,
-    DELETE_RETURN_INVOICE,
     SEARCH_RETURN_INVOICES_RESULT,
     CREATE_BOM,
     EDIT_BOM,
@@ -86,6 +84,7 @@ import {
     FETCH_BOM,
     DELETE_BOM,
     CREATE_QUOTATION,
+    CREATE_QUOTATION_ERROR,
     EDIT_QUOTATION,
     FETCH_QUOTATIONS,
     FETCH_QUOTATION,
@@ -107,7 +106,16 @@ import {
     FETCH_SALARY,
     FETCH_SALARIES,
     DELETE_SALARY,
-    SEARCH_SALARIES_RESULT
+    SEARCH_SALARIES_RESULT,
+    NEW_GRN_RM_INVENTORY,
+    NEW_GRN_RM_INVENTORY_ERROR,
+    FETCH_GRN_RM_INVENTORY,
+    FETCH_GRNS_RM_INVENTORY,
+    GRN_BY_PURCHASE_ORDER_RM,
+    NEW_GRN_PM_INVENTORY,
+    FETCH_GRN_PM_INVENTORY,
+    FETCH_GRNS_PM_INVENTORY,
+    GRN_BY_PURCHASE_ORDER_PM
 } from './types';
 
 //create user
@@ -934,13 +942,30 @@ export const createPurchaseOrderRaw = formValues => async dispatch => {
     const user = jwt_decode(token);
     const header = {
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues, user }, header);
-    dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.data });
-    window.location.reload()
+    var formData = new FormData()
+    formData.append('data', JSON.stringify(formValues))
+    formData.append('user', JSON.stringify(user))
+    formData.append('supplierInvoice', formValues.supplierInvoice)
+    console.log(formData.get("supplierInvoice"))
+
+    var uploadProgress = {
+        onUploadProgress: function (progressEvent) {
+            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            console.log(percentCompleted)
+            return percentCompleted
+        }
+    }
+
+    const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', formData, uploadProgress, header);
+    dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.status });
+    console.log(response.data)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+
 
 };
 //List all purchase orders raw
@@ -979,14 +1004,75 @@ export const updatePurchaseOrderRaw = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
+    history.push(`/approvals-raw`);
+    window.location.reload()
+
+};
+//update purchase order raw
+export const updatePurchaseOrderStateRaw = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-state-raw/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
+    history.push(`/approvals-raw`);
+    window.location.reload()
+
+};
+
+export const deletePurchaseOrderRaw = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-state-raw/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
     history.push(`/purchase-order-dashboard-raw`);
     window.location.reload()
 
 };
+
 //Edit purchase order raw
 export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
     console.log(formValues)
-    console.log(id)
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    var formData = new FormData()
+    formData.append('data', JSON.stringify(formValues))
+    formData.append('user', JSON.stringify(user))
+    formData.append('supplierInvoice', formValues.supplierInvoice)
+    console.log(formData.get("supplierInvoice"))
+    var uploadProgress = {
+        onUploadProgress: function (progressEvent) {
+            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            console.log(percentCompleted)
+            return percentCompleted
+        }
+    }
+    const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, formData, uploadProgress, header);
+    dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.status });
+    console.log(response.status)
+    setTimeout(function () {
+        history.push(`/approvals-single-raw/${formValues.id}`);
+        window.location.reload()
+    }, 2000);
+};
+//Purchase Order GRN
+export const grnPurchaseOrderRaw = (id, formValues) => async dispatch => {
+    console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -994,26 +1080,12 @@ export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues }, header);
+    const response = await api.patch(`/api/sales/purchase-orders-raw/grn-purchase-order-raw/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
-    history.push(`/approvals-single-raw/${formValues.id}`);
-    window.location.reload()
+    //window.location.reload()
 
 };
-//Delete purchase order raw
-export const deletePurchaseOrderRaw = (id) => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    await api.delete(`/api/sales/purchase-orders-raw/delete-purchase-order-raw/${id}`, header);
-    dispatch({ type: DELETE_PURCHASE_ORDER_RAW, payload: id });
-    history.push('/purchase-order-dashboard-raw')
-    window.location.reload()
-};
+
 //Search purchase orders raw
 export const searchPurchaseOrdersRaw = (formValues) => async dispatch => {
     const token = sessionStorage.getItem('user');
@@ -1048,6 +1120,29 @@ export const printPurchaseOrderRaw = (id) => async dispatch => {
     //Open the URL on new Window
     window.open(fileURL);
 };
+//View supplier invoice PDF
+export const viewSupplierInvoiceRaw = (suplierInvoicePdf) => async dispatch => {
+    console.log(suplierInvoicePdf)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=invoice.pdf'
+
+        }
+    };
+
+    const response = await api.get(`/${suplierInvoicePdf}`, { responseType: 'arraybuffer' }, header);
+    //Create a Blob from the PDF Stream
+    console.log(response)
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
 //create purchase order packing
 export const createPurchaseOrderPacking = formValues => async dispatch => {
     console.log(formValues)
@@ -1059,9 +1154,26 @@ export const createPurchaseOrderPacking = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/purchase-orders-packing/new-purchase-order-packing', { ...formValues, user }, header);
-    dispatch({ type: CREATE_PURCHASE_ORDER_PACKING, payload: response.data });
-    window.location.reload()
+    var formData = new FormData()
+    formData.append('data', JSON.stringify(formValues))
+    formData.append('user', JSON.stringify(user))
+    formData.append('supplierInvoice', formValues.supplierInvoice)
+    console.log(formData.get("supplierInvoice"))
+
+    var uploadProgress = {
+        onUploadProgress: function (progressEvent) {
+            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            console.log(percentCompleted)
+            return percentCompleted
+        }
+    }
+
+    const response = await api.post('api/sales/purchase-orders-packing/new-purchase-order-packing', formData, uploadProgress, header);
+    dispatch({ type: CREATE_PURCHASE_ORDER_PACKING, payload: response.status });
+    console.log(response.status)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
 
 };
 //List all purchase orders raw
@@ -1093,19 +1205,34 @@ export const fetchPurchaseOrderPacking = (id) => async dispatch => {
 export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues }, header);
-    dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
-    history.push(`/approvals-single-packing/${formValues.id}`);
-    window.location.reload()
+    var formData = new FormData()
+    formData.append('data', JSON.stringify(formValues))
+    formData.append('user', JSON.stringify(user))
+    formData.append('supplierInvoice', formValues.supplierInvoice)
+    console.log(formData.get("supplierInvoice"))
+    var uploadProgress = {
+        onUploadProgress: function (progressEvent) {
+            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            console.log(percentCompleted)
+            return percentCompleted
+        }
+    }
+    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, formData, uploadProgress, header);
+    dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.status });
+    setTimeout(function () {
+        history.push(`/approvals-single-packing/${formValues.id}`);
+        window.location.reload()
+    }, 2000);
 };
 //Edit purchase order raw
-export const updatePurchaseOrderPacking = (id, formValues) => async dispatch => {
+export const updatePurchaseOrderStatePacking = (id, formValues) => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
@@ -1114,13 +1241,13 @@ export const updatePurchaseOrderPacking = (id, formValues) => async dispatch => 
             'Authorization': token
         }
     };
-    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues }, header);
+    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-state-packing/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
-    history.push('/purchase-order-dashboard-packing');
+    history.push('/approvals-packing');
     window.location.reload()
 };
-//Delete purchase order raw
-export const deletePurchaseOrderPacking = (id) => async dispatch => {
+export const deletePurchaseOrderStatePacking = (id, formValues) => async dispatch => {
+    console.log(formValues)
     const token = sessionStorage.getItem('user');
     const header = {
         headers: {
@@ -1128,9 +1255,9 @@ export const deletePurchaseOrderPacking = (id) => async dispatch => {
             'Authorization': token
         }
     };
-    await api.delete(`/api/sales/purchase-orders-packing/delete-purchase-order-packing/${id}`, header);
-    dispatch({ type: DELETE_PURCHASE_ORDER_PACKING, payload: id });
-    history.push('/purchase-order-dashboard')
+    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-state-packing/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
+    history.push('/purchase-order-dashboard-packing');
     window.location.reload()
 };
 //Search purchase orders raw
@@ -1161,6 +1288,28 @@ export const printPurchaseOrderPacking = (id) => async dispatch => {
     };
     const response = await api.get(`/api/sales/purchase-orders-packing/print-purchase-order-packing/${id}`, { responseType: 'arraybuffer' }, header, { id });
     //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
+//View supplier invoice PDF
+export const viewSupplierInvoicePacking = (suplierInvoicePdf) => async dispatch => {
+    console.log(suplierInvoicePdf)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=invoice.pdf'
+
+        }
+    };
+    const response = await api.get(`/${suplierInvoicePdf}`, { responseType: 'arraybuffer' }, header);
+    //Create a Blob from the PDF Stream
+    console.log(response)
     const file = new Blob([response.data], { type: 'application/pdf' });
     //Build a URL from the file
     const fileURL = URL.createObjectURL(file);
@@ -1238,7 +1387,7 @@ export const updateDispatchNote = (id, formValues) => async dispatch => {
     window.location.reload()
 };
 export const updateInvoice = (id, haveReturns) => async dispatch => {
-    
+
     const formValues = {}
     const token = sessionStorage.getItem('user');
     const header = {
@@ -1247,7 +1396,7 @@ export const updateInvoice = (id, haveReturns) => async dispatch => {
             'Authorization': token
         }
     };
-    const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues,haveReturns }, header);
+    const response = await api.patch(`api/sales/invoices/update-invoice/${id}`, { ...formValues, haveReturns }, header);
     dispatch({ type: EDIT_INVOICE, payload: response.data });
     //window.location.reload()
 };
@@ -1477,16 +1626,27 @@ export const createQuotation = formValues => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
     const user = jwt_decode(token);
-    console.log(user)
     const header = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token
         }
     };
-    const response = await api.post('api/sales/quotations/new-quotation', { ...formValues, user }, header);
-    dispatch({ type: CREATE_QUOTATION, payload: response.data });
-    window.location.reload()
+    try {
+        const response = await api.post('api/sales/quotations/new-quotation', { ...formValues, user }, header);
+        dispatch({ type: CREATE_QUOTATION, payload: response.status });
+        console.log(response.status)
+        setTimeout(function () {
+            window.location.reload()
+        }, 2000);
+    } catch (error) {
+        dispatch({
+            type: CREATE_QUOTATION_ERROR,
+            payload: 'Something went wrong. Please contact the administrator support!'
+        });
+    }
+
+
 
 };
 //List all quotations
@@ -1774,6 +1934,168 @@ export const searchFinishGoodsInventory = (formValues) => async dispatch => {
     };
     const response = await api.post('api/inventory/finish-good/search-finish-good-inventory/', { formValues }, header);
     dispatch({ type: SEARCH_FINISH_GOODS_INVENTORY, payload: response.data });
+};
+
+//New GRN RM
+export const createNewGrn = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    console.log(user)
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    try {
+        const response = await api.post('/api/inventory/raw-material/new-raw-material-inventory', { ...formValues, user }, header);
+        console.log(response.status)
+        dispatch({ type: NEW_GRN_RM_INVENTORY, payload: response.status });
+        setTimeout(function () {
+            window.location.reload()
+        }, 2000);
+    } catch (error) {
+        dispatch({
+            type: NEW_GRN_RM_INVENTORY_ERROR,
+            payload: 'Something went wrong. Please contact the administrator support!'
+        });
+    }
+};
+//List all GRN's RM
+export const fetchAllGrns = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('api/inventory/finish-good/all-finish-goods-inventory/', header);
+
+    dispatch({ type: FETCH_GRNS_RM_INVENTORY, payload: response.data });
+};
+//View GRN's by purchase order RM
+export const fetchGrnByPurchaseOrder = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/inventory/raw-material/grn-by-purchase-order-raw/${id}`, header);
+    console.log(response.data)
+    dispatch({ type: GRN_BY_PURCHASE_ORDER_RM, payload: response.data });
+};
+//View  single GRN RM
+export const fetchSingleGrn = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`api/inventory/finish-good/single-finish-good-inventory/${id}`, header);
+    dispatch({ type: FETCH_GRN_RM_INVENTORY, payload: response.data[0] });
+};
+//Print GRN RM
+export const printGrnRaw = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=purchaseorderrm.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/inventory/raw-material/print-grn-raw/${id}`, { responseType: 'arraybuffer' }, header, { id });
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
+//New GRN PM
+export const createNewGrnPm = formValues => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    console.log(user)
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.post('/api/inventory/packing-material/new-pakcing-material-inventory', { ...formValues, user }, header);
+    console.log(response)
+    dispatch({ type: NEW_GRN_PM_INVENTORY, payload: response.data });
+    //window.location.reload()
+
+};
+//List all GRN's PM
+export const fetchAllGrnsPm = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('api/inventory/finish-good/all-finish-goods-inventory/', header);
+
+    dispatch({ type: FETCH_GRNS_PM_INVENTORY, payload: response.data });
+};
+//View GRN's by purchase order PM
+export const fetchGrnByPurchaseOrderPm = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/inventory/packing-material/grn-by-purchase-order-packing/${id}`, header);
+    console.log(response.data)
+    dispatch({ type: GRN_BY_PURCHASE_ORDER_PM, payload: response.data });
+};
+//View single GRN Pm
+export const fetchSingleGrnPm = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`api/inventory/finish-good/single-finish-good-inventory/${id}`, header);
+    dispatch({ type: FETCH_GRN_PM_INVENTORY, payload: response.data[0] });
+};
+//Print GRN PM
+export const printGrnPm = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    console.log(id)
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=purchaseorderpm.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/inventory/packing-material/print-grn-packing/${id}`, { responseType: 'arraybuffer' }, header);
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
 };
 //create employee
 export const createSalary = formValues => async dispatch => {

@@ -500,7 +500,7 @@ class EditInvoice extends React.Component {
     }
     renderCustomerDetails() {
         return (
-            <div style={{ paddingBottom: "30px" }} className="ui onr column doubling stackable grid container">
+            <div style={{ paddingBottom: "30px" }} className="ui one column doubling stackable grid container">
                 <div>
                     <div className="ui list">
                         <div className="item">

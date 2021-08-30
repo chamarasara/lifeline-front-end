@@ -97,10 +97,6 @@ class NewDispatchNote extends React.Component {
         this.props.updateDispatchNote(formValues._id, formValues)
     }
 
-    onClick = () => {
-        this.props.printInvoice(this.props.invoice.id)
-    }
-
     render() {
         if (!this.props.invoice) {
             return (

@@ -22,7 +22,17 @@ class SideBar extends React.Component {
         console.log(user)
         if (!this.props.user) {
             return (
-                <div className="ui active inline loader"></div>
+                <div className="ui placeholder">
+                    <div className="medium line"></div>
+                    <div className="medium line"></div>
+                    <div className="medium line"></div>
+                    <div className="short line"></div>
+                    <div className="short line"></div>
+                    <div className="short line"></div>
+                    <div className="very short line"></div>
+                    <div className="very short line"></div>
+                    <div className="very short line"></div>
+                </div>
             )
         }
         if (user.user.userRole === "Admin") {
@@ -104,7 +114,7 @@ class SideBar extends React.Component {
     }
     render() {
         return (
-            <div className="">
+            <div>
                 {this.navibarLinks()}
             </div>
         );

@@ -169,7 +169,7 @@ class ViewQuotation extends React.Component {
             )
         }
         return (
-            <div>
+            <div className="ui raised segment" style={{ paddingTop: "20px", paddingLeft: "30px", paddingBottom: "20px" }}>
                 <p><strong>Company Name:</strong>{this.props.quotation.customerDetails.map(customer => {
                     return (
                         <span key={customer.id}>{customer.companyName}</span>

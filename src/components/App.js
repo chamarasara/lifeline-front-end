@@ -139,6 +139,8 @@ import DeleteMasterEmployee from './views/masterdata/employeemaster/DeleteMaster
 import NewReturnInvoice from './views/sales/returninvoices/NewReturnInvoice';
 import ReturnInvoiceDashboard from './views/sales/returninvoices/ReturnInvoiceDashboard';
 import SingleReturnInvoice from './views/sales/returninvoices/SingleReturnInvoice ';
+import RawMaterialInventoryDashboard from './views/inventory/rawmaterial/RawMaterialInventoryDashboard';
+import NewGrnRaw from './views/inventory/rawmaterial/NewGrnRaw';
 
 
 
@@ -304,6 +306,11 @@ class App extends React.Component {
                     <PrivateRoute path="/finish-good-inventory-dashboard" component={FinishGoodInventoyDashboard} /> 
                     <PrivateRoute path="/new-finish-good-inventory" component={NewFinishGoodInventory} /> 
                     <PrivateRoute path="/single-finish-good-inventory/:id" component={SingleFinishGood} /> 
+                    <PrivateRoute path="/revise-finish-good-inventory/:id" component={ReviseFinishGood} />
+
+                    <PrivateRoute path="/raw-material-inventory-dashboard" component={RawMaterialInventoryDashboard} />
+                    <PrivateRoute path="/new-grn-raw-inventory" component={NewGrnRaw} />
+                    <PrivateRoute path="/single-finish-good-inventory/:id" component={SingleFinishGood} />
                     <PrivateRoute path="/revise-finish-good-inventory/:id" component={ReviseFinishGood} />
                     
                     <PrivateRoute path="/hr-dashboard/" component={HrDashboard} />

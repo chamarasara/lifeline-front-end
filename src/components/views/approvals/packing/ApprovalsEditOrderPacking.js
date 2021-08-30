@@ -10,9 +10,25 @@ class ApprovalsEditOrderPacking extends React.Component {
         this.props.fetchSuppliers()
         this.props.fetchPackingMaterials()
         this.props.fetchPurchaseOrderPacking(this.props.match.params.id)
-        console.log(this.props.order)
     }
+    adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
+    FileInput = ({
+        input: { value: omitValue, onChange, onBlur, ...inputProps },
+        meta: omitMeta,
+        ...props
+    }) => {
+        return (
+            <input
+                onChange={this.adaptFileEventToValue(onChange)}
+                onBlur={this.adaptFileEventToValue(onBlur)}
+                type="file"
+                {...props.input}
+                {...props}
+            />
+        );
+
+    };
     rendeSuppliers() {
         return this.props.suppliers.map(supplier => {
             return (
@@ -26,8 +42,29 @@ class ApprovalsEditOrderPacking extends React.Component {
             <div className="field">
                 <label>{label}</label>
                 <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
+                {this.renderError(meta)}
             </div>
         );
+    }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+                {this.renderError(meta)}
+            </div>
+        </div>
+    )
+    renderError({ error, touched }) {
+        if (touched && error) {
+            return (
+                <div className="ui error message">
+                    <div className="Header">{error}</div>
+                </div>
+            );
+        }
     }
     renderpackingMaterials() {
         console.log(this.props.packingMaterials)
@@ -38,7 +75,7 @@ class ApprovalsEditOrderPacking extends React.Component {
             )
         })
     }
-    renderMaterialsDropDown = ({ fields }) => {
+    renderMaterialsDropDown = ({ fields, meta: { error, submitFailed } }) => {
         return (
             <div>
                 <ul>
@@ -46,17 +83,13 @@ class ApprovalsEditOrderPacking extends React.Component {
                         <label htmlFor={packingMaterials}>Material #{index + 1}</label>
                         <div className="fields">
                             <div className="eight wide field">
-                                <Field name={`${packingMaterials}.id`} type="text" required component="select" >
+                                <Field name={`${packingMaterials}.id`} type="text"  component={this.renderSelectField} >
                                     <option>-Select Material-</option>
                                     {this.renderpackingMaterials()}
                                 </Field>
                             </div>
                             <div className="four wide field">
-                                <Field name={`${packingMaterials}.quantity`} type="number" required component="input" placeholder="Quantity" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${packingMaterials}.uom`} type="text" required component="select" placeholder="UOM" >
+                                <Field name={`${packingMaterials}.uom`} type="text" component={this.renderSelectField} placeholder="UOM" >
                                     <option>-UOM-</option>
                                     <option value="Each">Each</option>
                                     <option value="kg">kg</option>
@@ -67,6 +100,14 @@ class ApprovalsEditOrderPacking extends React.Component {
                                     <option value="cm">cm</option>
                                 </Field>
                             </div>
+                            <div className="four wide field">
+                                <Field name={`${packingMaterials}.quantity`} type="number" component={this.renderInput} placeholder="Quantity" >
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                <Field name={`${packingMaterials}.unitPrice`} type="number" component={this.renderInput} placeholder="Unit Price" >
+                                </Field>
+                            </div>
                             <div className="eight wide field">
                                 <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
                             </div>
@@ -74,21 +115,29 @@ class ApprovalsEditOrderPacking extends React.Component {
                     </li>)}
                 </ul>
                 <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Packing Material</button>
-
+                {submitFailed && error && <span style={{ color: "red" }}>{error}</span>}
             </div>
         )
     }
 
     onSubmit = (formValues) => {
-        console.log(formValues)
         this.props.editPurchaseOrderPacking(this.props.order._id, formValues)
     }
-
+    renderSuccessMessage() {
+        if (this.props.purchaseOrders[1] === 200) {
+            return (
+                <div className="ui success message">
+                    <div className="header">Successfull !</div>
+                </div>
+            )
+        }
+    }
     render() {
         if (!this.props.order) {
             return (
-                <div>
-                    Loading..............................................
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}></div>
+                    <div className="ui active centered inline loader"></div>
                 </div>
             )
         }
@@ -98,11 +147,16 @@ class ApprovalsEditOrderPacking extends React.Component {
                     <h3>Edit Purchase Order PM</h3>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="six wide field">
-                            <Field name="supplierId" component="select" placeholder="" type="text" >
+                            <Field name="supplierId" component={this.renderSelectField} placeholder="" type="text" >
                                 <option>-Select Supplier-</option>
                                 {this.rendeSuppliers()}
                             </Field>
                         </div>
+                         <div className="six wide field">
+                                Supplier Invoice (<span style={{ color: "red" }}> * </span> Pdf only, Max file size: 4Mb )
+                                <Field name="supplierInvoice" component={this.FileInput} placeholder="Supplier invoice" type="file" >
+                                </Field>
+                            </div>
                         <div className="fields">
                             <div className="sixteen wide field">
                                 <label>Raw Materials- </label>
@@ -114,49 +168,59 @@ class ApprovalsEditOrderPacking extends React.Component {
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>
+                    {this.renderSuccessMessage()}
                 </div>
             </div>
         )
     }
 }
 //Form input validation
-// const validate = (formValues) => {
-//     const errors = {}
-//     if (!formValues.firstName) {
-//         errors.firstName = 'Please enter First Name';
-//     }
-//     if (!formValues.lastName) {
-//         errors.lastName = 'Please enter Last Name';
-//     }
-//     if (!formValues.address) {
-//         errors.address = 'Please enter the Number of the Address';
-//     }
-//     if (!formValues.nic) {
-//         errors.nic = 'Please enter the ID Nummber';
-//     }
-//     if (!formValues.mobileNo) {
-//         errors.mobileNo = 'Please enter Phone Number';
-//     }
-//     if (!formValues.email) {
-//         errors.email = 'Please enter Email';
-//     }
-//     if (!formValues.gender) {
-//         errors.gender = 'Please enter the Gender';
-//     }
-//     return errors;
-// }
+const validate = (formValues) => {
+    const errors = {}
+    if (!formValues.supplierId) {
+        errors.supplierId = 'Required';
+    }
+    if (!formValues.packingMaterials || !formValues.packingMaterials.length) {
+        errors.packingMaterials = { _error: 'At least one material should be add' }
+    } else {
+        const packingMaterialsArrayErrors = []
+        formValues.packingMaterials.forEach((packingMaterials, index) => {
+            const productErrors = {}
+            if (!packingMaterials || !packingMaterials.id) {
+                productErrors.id = 'Required'
+                packingMaterialsArrayErrors[index] = productErrors
+            }
+            if (!packingMaterials || !packingMaterials.quantity) {
+                productErrors.quantity = 'Required'
+                packingMaterialsArrayErrors[index] = productErrors
+            }
+            if (!packingMaterials || !packingMaterials.uom) {
+                productErrors.uom = 'Required'
+                packingMaterialsArrayErrors[index] = productErrors
+            }
+            if (!packingMaterials || !packingMaterials.unitPrice) {
+                productErrors.unitPrice = 'Required'
+                packingMaterialsArrayErrors[index] = productErrors
+            }
+        })
+        if (packingMaterialsArrayErrors.length) {
+            errors.packingMaterials = packingMaterialsArrayErrors
+        }
+    }
+    return errors;
+}
 const mapStateToProps = (state, ownProps) => {
     console.log(ownProps.match.params.id)
     const suppliers = Object.values(state.supplier)
     const packingMaterials = Object.values(state.packingMaterials)
     const order = state.purchaseOrdersPacking[ownProps.match.params.id]
-    console.log(order)
-    return { suppliers: suppliers, order: order, packingMaterials: packingMaterials, initialValues: order };
+    const purchaseOrders = Object.values(state.purchaseOrdersPacking)
+    console.log(purchaseOrders)
+    return { errorMessage: state, suppliers: suppliers, order: order, purchaseOrders: purchaseOrders, packingMaterials: packingMaterials, initialValues: order };
 }
 const formWrapped = reduxForm({
     form: 'approvalsEditOrderPacking',
-    destroyOnUnmount: false, // <------ preserve form data
-    forceUnregisterOnUnmount: true
+  validate:validate
 })(ApprovalsEditOrderPacking);
 
 export default connect(mapStateToProps, { fetchSuppliers, fetchPackingMaterials, fetchPurchaseOrderPacking, editPurchaseOrderPacking })(formWrapped);

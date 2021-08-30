@@ -22,7 +22,6 @@ class NewQuotation extends React.Component {
     }
     errorMessage() {
         if (this.props.errorMessage) {
-            console.log(this.props)
             return (
                 <div className="ui error message">
                     {this.props.errorMessage}
@@ -58,8 +57,16 @@ class NewQuotation extends React.Component {
         </div>
     )
     onSubmit = (formValues) => {
-        console.log(formValues)
         this.props.createQuotation(formValues)
+    }
+    renderSuccessMessage() {
+        if (this.props.quotation[0] === 200) {
+            return (
+                <div className="ui success message">
+                    <div className="header">Successfull !</div>
+                </div>
+            )
+        }
     }
     renderProducts() {
         return this.props.products.map(product => {
@@ -112,27 +119,30 @@ class NewQuotation extends React.Component {
     render() {
         return (
             <div className="pusher">
-                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
-                    <h3>Create Quotation</h3>
-                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                        <div className="six wide field">
-                            Customer Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                            <Field name="customerId" component={this.renderSelectField} placeholder="" type="text" >
-                                <option>-Select Customer-</option>
-                                {this.renderCustomers()}
-                            </Field>
-                        </div>
-                        <div className="fields">
-                            <div className="sixteen wide field">
-                                Products <span style={{ color: "red", fontSize: "18px" }}>*</span>
-                                <FieldArray name="products" component={this.renderProductsDropDown} />
+                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
+                    <div className="ui raised segment" style={{ paddingTop: "20px", paddingLeft: "30px", paddingBottom: "20px" }}>
+                        <h3>Create Quotation</h3>
+                        <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                            <div className="six wide field">
+                                Customer Name <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                <Field name="customerId" component={this.renderSelectField} placeholder="" type="text" >
+                                    <option>-Select Customer-</option>
+                                    {this.renderCustomers()}
+                                </Field>
                             </div>
-                        </div>
-                        <div className="field">
-                            <Link to={"/quotation-dashboard"} type="button" className="ui button">Back</Link>
-                            <button type="submit" className="ui primary button">Submit</button>
-                        </div>
-                    </form>
+                            <div className="fields">
+                                <div className="sixteen wide field">
+                                    Products <span style={{ color: "red", fontSize: "18px" }}>*</span>
+                                    <FieldArray name="products" component={this.renderProductsDropDown} />
+                                </div>
+                            </div>
+                            <div className="field">
+                                <Link to={"/quotation-dashboard"} type="button" className="ui button">Back</Link>
+                                <button type="submit" className="ui primary button">Submit</button>
+                            </div>
+                        </form>
+                        {this.renderSuccessMessage()}
+                    </div>
                 </div>
             </div>
         )
@@ -176,7 +186,8 @@ const validate = (formValues) => {
 const mapStateToProps = (state) => {
     const customers = Object.values(state.customer)
     const products = Object.values(state.finishGoods)
-    return { errorMessage: state, customers: customers, products: products };
+    const quotation = Object.values(state.quotations)
+    return { errorMessage: state, customers: customers, products: products, quotation: quotation };
 }
 const formWrapped = reduxForm({
     form: 'newQuotation',

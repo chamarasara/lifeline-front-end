@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { reducer as formReducer} from 'redux-form';
+import { reducer as formReducer } from 'redux-form';
 import userReducer from "./userReducer";
 import userRoleReducer from "./userRoleReducer";
 import authReducer from "./authReducer";
@@ -15,7 +15,7 @@ import purchaseOrderPackingReducer from './sales/purchaseOrderPackingReducer';
 import invoiceReducer from "./sales/invoiceReducer";
 import searchInvoicesReducer from "./sales/searchInvoicesReducer";
 import searchPurchaseOrdersRawReducer from "./sales/searchPurchaseOrdersRawReducer";
-import searchPurchaseOrdersPacking  from "./sales/searchPurchaseOrdersPackingReducer";
+import searchPurchaseOrdersPacking from "./sales/searchPurchaseOrdersPackingReducer";
 import bomReducer from "./master/bomReducer";
 import quotationReducer from "./sales/quotationReducer";
 import searchQuotationReducer from "./sales/searchQuotationReducer";
@@ -26,6 +26,8 @@ import salaryReducer from "./hr/salaryReducer";
 import searchSalariesReducer from "./hr/searchSalariesReducer";
 import returnInvoiceReducer from "./sales/returnInvoiceReducer";
 import searchReturnInvoicesReducer from "./sales/searchReturnInvoicesReducer";
+import rawMaterialGRNReducer from "./inventory/rawMaterialGRNReducer";
+import packingMaterialGRNReducer from "./inventory/packingMaterialGRNReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -49,10 +51,12 @@ export default combineReducers({
     form: formReducer,
     purchaseOrdersRaw: purchaseOrderRawReducer,
     purchaseOrdersPacking: purchaseOrderPackingReducer,
-    bom:bomReducer,
+    bom: bomReducer,
     searchInvoices: searchInvoicesReducer,
     searchReturnInvoices: searchReturnInvoicesReducer,
     finishGoodInventory: inventoryFinishGoodReducer,
-    salary:salaryReducer,
-    searchSalary:searchSalariesReducer
+    rawMaterialGrn: rawMaterialGRNReducer,
+    packingMaterialGrn: packingMaterialGRNReducer,
+    salary: salaryReducer,
+    searchSalary: searchSalariesReducer
 });

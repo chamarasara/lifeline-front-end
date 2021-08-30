@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from "react-router-dom";
 import Modal from '../../../Modal';
 import history from '../../../history';
-import { fetchPurchaseOrderRaw, updatePurchaseOrderRaw } from "../../../../actions";
+import { fetchPurchaseOrderRaw, updatePurchaseOrderStateRaw } from "../../../../actions";
 
 class DeclineOrderRaw extends React.Component {
 
@@ -41,7 +41,7 @@ class DeclineOrderRaw extends React.Component {
     }
     onSubmit = (formValues) => {
         const order_state = "Declined";
-        this.props.updatePurchaseOrderRaw(this.props.order._id, { ...formValues, order_state })
+        this.props.updatePurchaseOrderStateRaw(this.props.order._id, { ...formValues, order_state })
     }
     renderActions() {
         if (!this.props.order) {
@@ -98,4 +98,4 @@ const formWrapped = reduxForm({
     form: 'disableOrderRaw',
     validate: validate
 })(DeclineOrderRaw);
-export default connect(mapToSatate, { fetchPurchaseOrderRaw, updatePurchaseOrderRaw })(formWrapped);
+export default connect(mapToSatate, { fetchPurchaseOrderRaw, updatePurchaseOrderStateRaw })(formWrapped);

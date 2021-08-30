@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { fetchPurchaseOrdersPacking, updatePurchaseOrderRaw } from "../../../../actions"
+import { fetchPurchaseOrdersPacking, updatePurchaseOrderStateRaw } from "../../../../actions"
 class ApprovalsPacking extends React.Component {
     componentDidMount() {
         this.props.fetchPurchaseOrdersPacking()
@@ -72,4 +72,4 @@ const mapToSatate = (state) => {
     const orders = Object.values(state.purchaseOrdersPacking)
     return { orders: orders };
 }
-export default connect(mapToSatate, { fetchPurchaseOrdersPacking, updatePurchaseOrderRaw })(ApprovalsPacking);
+export default connect(mapToSatate, { fetchPurchaseOrdersPacking, updatePurchaseOrderStateRaw })(ApprovalsPacking);

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { fetchPurchaseOrdersRaw, updatePurchaseOrderRaw } from "../../../../actions"
+import { fetchPurchaseOrdersRaw, updatePurchaseOrderStateRaw } from "../../../../actions"
 class ApprovalsRaw extends React.Component {
     componentDidMount() {
         this.props.fetchPurchaseOrdersRaw()
@@ -12,7 +12,7 @@ class ApprovalsRaw extends React.Component {
         const order_state= "Approved";
 
         console.log(this.props.orders)
-        this.props.updatePurchaseOrderRaw(this.props.orders._id, { ...formValues, order_state})
+        this.props.updatePurchaseOrderStateRaw(this.props.orders._id, { ...formValues, order_state})
     }
     renderList() {
         if (!this.props.orders) {
@@ -79,4 +79,4 @@ const mapToSatate = (state) => {
     const orders = Object.values(state.purchaseOrdersRaw)
     return { orders: orders };
 }
-export default connect(mapToSatate, { fetchPurchaseOrdersRaw, updatePurchaseOrderRaw })(ApprovalsRaw);
+export default connect(mapToSatate, { fetchPurchaseOrdersRaw, updatePurchaseOrderStateRaw })(ApprovalsRaw);
