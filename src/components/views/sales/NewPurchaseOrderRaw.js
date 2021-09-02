@@ -10,23 +10,7 @@ class NewPurchaseOrder extends React.Component {
         this.props.fetchSuppliers()
         this.props.fetchRawMaterials()
     }
-    adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
-    FileInput = ({
-        input: { value: omitValue, onChange, onBlur, ...inputProps },
-        meta: omitMeta,
-        ...props
-    }) => {
-        return (
-            <input
-                onChange={this.adaptFileEventToValue(onChange)}
-                onBlur={this.adaptFileEventToValue(onBlur)}
-                type="file"
-                {...props.input}
-                {...props}
-            />
-        );
-    };
     renderError({ error, touched }) {
         if (touched && error) {
             return (
@@ -74,7 +58,6 @@ class NewPurchaseOrder extends React.Component {
         </div>
     )
     onSubmit = (formValues) => {
-        console.log(formValues)
         this.props.createPurchaseOrderRaw(formValues)
     }
     renderSuccessMessage() {
@@ -152,11 +135,6 @@ class NewPurchaseOrder extends React.Component {
                                 <Field name="supplierId" component={this.renderSelectField} placeholder="" type="text" >
                                     <option>-Select Supplier-</option>
                                     {this.rendeSuppliers()}
-                                </Field>
-                            </div>
-                            <div className="six wide field">
-                                Supplier Invoice (<span style={{ color: "red" }}> * </span> Pdf only, Max file size: 4Mb )
-                                <Field name="supplierInvoice"  component={this.FileInput} placeholder="Supplier invoice" type="file" >
                                 </Field>
                             </div>
                             <div className="fields">

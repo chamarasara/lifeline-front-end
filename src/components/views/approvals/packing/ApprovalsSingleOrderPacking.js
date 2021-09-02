@@ -166,10 +166,7 @@ class ApprovalsSingleOrderPacking extends React.Component {
                             <tr colSpan="16">
                                 <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
                                 <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
-                            </tr>
-                            <div style={{ paddingLeft: "25px", paddingBottom: "25px", paddingTop: "25px" }}>
-                                <Link onClick={this.viewSupplierInvoice} type="button" className="ui primary button">View Supplier Invoice</Link>
-                            </div>
+                            </tr>                            
                         </tfoot>
                     </table>
                     <div>

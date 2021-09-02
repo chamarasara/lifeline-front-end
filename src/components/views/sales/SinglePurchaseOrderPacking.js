@@ -17,25 +17,6 @@ class SinglePurchaseOrderPacking extends React.Component {
     formatNumber = (num) => {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
-    renderError({ error, touched }) {
-        if (touched && error) {
-            return (
-                <div className="ui error message">
-                    <div className="Header">{error}</div>
-                </div>
-            );
-        }
-    }
-    errorMessage() {
-        if (this.props.errorMessage) {
-            console.log(this.props)
-            return (
-                <div className="ui error message">
-                    {this.props.errorMessage}
-                </div>
-            );
-        }
-    }
     rendeSuppliers() {
         return this.props.suppliers.map(supplier => {
             return (
@@ -43,36 +24,7 @@ class SinglePurchaseOrderPacking extends React.Component {
             )
         })
     }
-
-    renderInput = ({ input, label, placeholder, type, meta }) => {
-        return (
-            <div className="field">
-                <label>{label}</label>
-                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
-                {this.renderError(meta)}
-            </div>
-        );
-    }
-    renderSelectField = ({ input, label, type, meta, children }) => (
-        <div>
-            <label>{label}</label>
-            <div>
-                <select {...input}>
-                    {children}
-                </select>
-                {this.renderError(meta)}
-            </div>
-        </div>
-    )
-    renderPackingaterials() {
-        return this.props.packingMaterials.map(rawMaterial => {
-            return (
-                <option key={rawMaterial._id} value={rawMaterial.id}>{rawMaterial.materialName}</option>
-            )
-        })
-    }
     printGrn(id) {
-        console.log(id)
         this.props.printGrnPm(id)
     }
     renderAllGrn() {
@@ -453,10 +405,7 @@ class SinglePurchaseOrderPacking extends React.Component {
                                         <tr colSpan="16">
                                             <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
                                             <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
-                                        </tr>
-                                        <div style={{ paddingLeft: "25px", paddingBottom: "25px", paddingTop: "25px" }}>
-                                            <Link onClick={this.viewSupplierInvoice} type="button" className="ui primary button">View Supplier Invoice</Link>
-                                        </div>
+                                        </tr>                                        
                                     </tfoot>                                    
                                 </table>
                             </Tab.Pane>
@@ -484,33 +433,7 @@ class SinglePurchaseOrderPacking extends React.Component {
         )
     }
 }
-//Form input validation
-const validate = (formValues) => {
-    const errors = {}
-    if (!formValues.invoiceNumber) {
-        errors.invoiceNumber = 'Please Enter Supplier Invoice Number';
-    }
-    if (!formValues.packingMaterials || !formValues.packingMaterials.length) {
-        errors.packingvMaterials = { _error: 'At least one material must be entered' }
-    } else {
-        const packingMaterialsArrayErrors = []
-        formValues.packingMaterials.forEach((packingMaterials, index) => {
-            const productErrors = {}
-            if (!packingMaterials || !packingMaterials.quantity) {
-                productErrors.quantity = 'Required, Minimum Value "0"'
-                packingMaterialsArrayErrors[index] = productErrors
-            }
-            if (!packingMaterials || !packingMaterials.unitPrice) {
-                productErrors.unitPrice = 'Required'
-                packingMaterialsArrayErrors[index] = productErrors
-            }
-        })
-        if (packingMaterialsArrayErrors.length) {
-            errors.packingMaterials = packingMaterialsArrayErrors
-        }
-    }
-    return errors;
-}
+
 const mapStateToProps = (state, ownPorps) => {
     const suppliers = Object.values(state.supplier)
     const rawMaterials = Object.values(state.rawMaterials)
@@ -528,8 +451,7 @@ const mapStateToProps = (state, ownPorps) => {
     };
 }
 const formWrapped = reduxForm({
-    form: 'purchaseOrderPackingGrn',
-    validate: validate
+    form: 'purchaseOrderPackingGrn'
 })(SinglePurchaseOrderPacking);
 
 export default connect(mapStateToProps, { fetchPurchaseOrderPacking, printPurchaseOrderPacking, fetchSuppliers, fetchPackingMaterials, createNewGrnPm, fetchGrnByPurchaseOrderPm, printGrnPm, viewSupplierInvoicePacking })(formWrapped);

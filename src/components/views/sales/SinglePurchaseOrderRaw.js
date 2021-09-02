@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import NewGrnRaw from './NewGrnRaw';
-import { fetchPurchaseOrderRaw, printPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, viewSupplierInvoiceRaw } from '../../../actions';
+import { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw } from '../../../actions';
 
 class SinglePurchaseOrderRaw extends React.Component {
 
@@ -13,16 +13,6 @@ class SinglePurchaseOrderRaw extends React.Component {
         this.props.fetchPurchaseOrderRaw(this.props.match.params.id)
         this.props.fetchGrnByPurchaseOrder(this.props.match.params.id)
     }
-    renderError({ error, touched }) {
-        if (touched && error) {
-            return (
-                <div className="ui error message">
-                    <div className="Header">{error}</div>
-                </div>
-            );
-        }
-    }
-    
 
     renderPurchaseOrederDetails() {
         return (
@@ -74,9 +64,9 @@ class SinglePurchaseOrderRaw extends React.Component {
 
     }
     renderSupplierDetails() {
-       
+
         return (
-            <div className="ui raised segment" style={{paddingTop:"20px", paddingLeft:"30px",paddingBottom:"20px"}}>
+            <div className="ui raised segment" style={{ paddingTop: "20px", paddingLeft: "30px", paddingBottom: "20px" }}>
                 <p><strong>Company Name:</strong>{this.props.order.supplier.map(Supplier => {
                     return (
                         <span key={Supplier.id}>{Supplier.companyName}</span>
@@ -117,12 +107,6 @@ class SinglePurchaseOrderRaw extends React.Component {
 
     }
 
-    onClick = () => {
-        this.props.printPurchaseOrderRaw(this.props.order.id)
-    }
-    viewSupplierInvoice = () => {
-        this.props.viewSupplierInvoiceRaw(this.props.order.suplierInvoicePdf)
-    }
     renderPrintButton() {
         if (this.props.order.order_state === "Pending") {
             return (
@@ -135,7 +119,7 @@ class SinglePurchaseOrderRaw extends React.Component {
             return (
                 <div>
                     <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
-                    <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
+                    <button type="button" onClick={this.printPurchaseOrder} className="ui primary button">Print</button>
                     <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
                 </div>
             )
@@ -147,6 +131,9 @@ class SinglePurchaseOrderRaw extends React.Component {
     printGrn(id) {
         this.props.printGrnRaw(id)
     }
+    printPurchaseOrder = () => {
+        this.props.printPurchaseOrderRaw(this.props.order.id)
+    }
     getSubTotal() {
 
         const orderDetails = this.props.order.rawMaterials
@@ -155,15 +142,15 @@ class SinglePurchaseOrderRaw extends React.Component {
             let total = totalValue
             return this.formatNumber(total.toFixed(2))
         })
-        
+
         let sum = []
         for (let i = 0; i < Math.min(getTotal.length); i++) {
             let total = parseInt(getTotal[i])
-            sum[i] =total
+            sum[i] = total
         }
         const totalSum = sum.reduce((a, b) => a + b, 0)
         return this.formatNumber(totalSum.toFixed(2))
-        
+
     }
     renderAllGrn() {
         if (!this.props.grn) {
@@ -329,9 +316,6 @@ class SinglePurchaseOrderRaw extends React.Component {
                                     <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
                                     <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
                                 </tr>
-                                <div style={{ paddingLeft: "25px", paddingBottom: "25px", paddingTop: "25px" }}>
-                                    <Link onClick={this.viewSupplierInvoice} type="button" className="ui primary button">View Supplier Invoice</Link>
-                                </div>
                             </tfoot>
                         </table>
                     </Tab.Pane>
@@ -358,33 +342,7 @@ class SinglePurchaseOrderRaw extends React.Component {
         )
     }
 }
-//Form input validation
-const validate = (formValues) => {
-    const errors = {}
-    if (!formValues.invoiceNumber) {
-        errors.invoiceNumber = 'Please Enter Supplier Invoice Number';
-    }
-    if (!formValues.rawMaterials || !formValues.rawMaterials.length) {
-        errors.rawMaterials = { _error: 'At least one material must be entered' }
-    } else {
-        const rawMaterialsArrayErrors = []
-        formValues.rawMaterials.forEach((rawMaterials, index) => {
-            const productErrors = {}
-            if (!rawMaterials || !rawMaterials.quantity) {
-                productErrors.quantity = 'Required, Minimum Value "0"'
-                rawMaterialsArrayErrors[index] = productErrors
-            }
-            if (!rawMaterials || !rawMaterials.unitPrice) {
-                productErrors.unitPrice = 'Required'
-                rawMaterialsArrayErrors[index] = productErrors
-            }
-        })
-        if (rawMaterialsArrayErrors.length) {
-            errors.rawMaterials = rawMaterialsArrayErrors
-        }
-    }
-    return errors;
-}
+
 const mapStateToProps = (state, ownPorps) => {
     const suppliers = Object.values(state.supplier)
     const rawMaterials = Object.values(state.rawMaterials)
@@ -403,8 +361,7 @@ const mapStateToProps = (state, ownPorps) => {
     };
 }
 const formWrapped = reduxForm({
-    form: 'purchaseOrderRawGrn',
-    validate: validate
+    form: 'purchaseOrderRawGrn'
 })(SinglePurchaseOrderRaw);
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, printPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, viewSupplierInvoiceRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw })(formWrapped);

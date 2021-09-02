@@ -10,24 +10,7 @@ class NewPurchaseOrderRaw extends React.Component {
         this.props.fetchSuppliers()
         this.props.fetchPackingMaterials()
     }
-    adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
-
-    FileInput = ({
-        input: { value: omitValue, onChange, onBlur, ...inputProps },
-        meta: omitMeta,
-        ...props
-    }) => {
-        return (
-            <input
-                onChange={this.adaptFileEventToValue(onChange)}
-                onBlur={this.adaptFileEventToValue(onBlur)}
-                type="file"
-                {...props.input}
-                {...props}
-            />
-        );
-        
-    };
+   
     rendeSuppliers() {
         return this.props.suppliers.map(supplier => {
             return (
@@ -152,12 +135,7 @@ class NewPurchaseOrderRaw extends React.Component {
                                     <option>-Select Supplier-</option>
                                     {this.rendeSuppliers()}
                                 </Field>
-                            </div>
-                            <div className="six wide field">
-                                Supplier Invoice (<span style={{ color: "red" }}> * </span> Pdf only, Max file size: 4Mb )
-                                <Field name="supplierInvoice" component={this.FileInput} placeholder="Supplier invoice" type="file" >
-                                </Field>
-                            </div>
+                            </div>                           
                             <div className="fields">
                                 <div className="sixteen wide field">
                                     <label>Packing Material- </label>
@@ -215,11 +193,9 @@ const validate = (formValues) => {
     return errors;
 }
 const mapStateToProps = (state) => {
-    console.log(state)
     const suppliers = Object.values(state.supplier)
     const packingMaterials = Object.values(state.packingMaterials)
     const purchaseOrders = Object.values(state.purchaseOrdersPacking)
-    console.log(purchaseOrders)
     return { errorMessage: state, suppliers: suppliers, packingMaterials: packingMaterials, purchaseOrders: purchaseOrders };
 }
 const formWrapped = reduxForm({

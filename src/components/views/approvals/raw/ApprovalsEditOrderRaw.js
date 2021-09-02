@@ -153,12 +153,7 @@ class ApprovalsEdirOrderRaw extends React.Component {
                                     <option>-Select Supplier-</option>
                                     {this.rendeSuppliers()}
                                 </Field>
-                            </div>
-                            <div className="six wide field">
-                                Supplier Invoice (<span style={{ color: "red" }}> * </span> Pdf only, Max file size: 4Mb )
-                                <Field name="supplierInvoice" component={this.FileInput} placeholder="Supplier invoice" type="file" >
-                                </Field>
-                            </div>
+                            </div>                         
                             <div className="fields">
                                 <div className="sixteen wide field">
                                     <label>Raw Materials- </label>

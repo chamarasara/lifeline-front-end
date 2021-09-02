@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { fetchPurchaseOrderRaw, editPurchaseOrderRaw, updatePurchaseOrderStateRaw, viewSupplierInvoiceRaw } from '../../../../actions';
+import { fetchPurchaseOrderRaw, editPurchaseOrderRaw, updatePurchaseOrderStateRaw } from '../../../../actions';
 
 class ApprovalsSingleOrderRaw extends React.Component {
 
@@ -109,10 +109,7 @@ class ApprovalsSingleOrderRaw extends React.Component {
         const formValues = {}   
         const order_state = "Approved"
         this.props.updatePurchaseOrderStateRaw(this.props.order._id, {...formValues, order_state})
-    }
-    viewSupplierInvoice = () => {
-        this.props.viewSupplierInvoiceRaw(this.props.order.suplierInvoicePdf)
-    }
+    }  
     onSubmit = (formValues) => {
         this.props.editPurchaseOrderRaw(this.props.order._id, formValues)
     }
@@ -170,10 +167,7 @@ class ApprovalsSingleOrderRaw extends React.Component {
                             <tr colSpan="16">
                                 <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
                                 <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
-                            </tr>
-                            <div style={{ paddingLeft: "25px", paddingBottom: "25px", paddingTop: "25px" }}>
-                                <Link onClick={this.viewSupplierInvoice} type="button" className="ui primary button">View Supplier Invoice</Link>
-                            </div>
+                            </tr>                            
                         </tfoot>
                     </table>
                     <div>
@@ -202,4 +196,4 @@ const mapStateToProps = (state, ownPorps) => {
     };
 }
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, updatePurchaseOrderStateRaw, editPurchaseOrderRaw, viewSupplierInvoiceRaw })(ApprovalsSingleOrderRaw);
+export default connect(mapStateToProps, { fetchPurchaseOrderRaw, updatePurchaseOrderStateRaw, editPurchaseOrderRaw })(ApprovalsSingleOrderRaw);

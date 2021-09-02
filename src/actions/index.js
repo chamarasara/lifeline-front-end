@@ -945,21 +945,8 @@ export const createPurchaseOrderRaw = formValues => async dispatch => {
             'Authorization': token
         }
     };
-    var formData = new FormData()
-    formData.append('data', JSON.stringify(formValues))
-    formData.append('user', JSON.stringify(user))
-    formData.append('supplierInvoice', formValues.supplierInvoice)
-    console.log(formData.get("supplierInvoice"))
 
-    var uploadProgress = {
-        onUploadProgress: function (progressEvent) {
-            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            console.log(percentCompleted)
-            return percentCompleted
-        }
-    }
-
-    const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', formData, uploadProgress, header);
+    const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues, user }, header);
     dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.status });
     console.log(response.data)
     setTimeout(function () {
@@ -1050,19 +1037,8 @@ export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    var formData = new FormData()
-    formData.append('data', JSON.stringify(formValues))
-    formData.append('user', JSON.stringify(user))
-    formData.append('supplierInvoice', formValues.supplierInvoice)
-    console.log(formData.get("supplierInvoice"))
-    var uploadProgress = {
-        onUploadProgress: function (progressEvent) {
-            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            console.log(percentCompleted)
-            return percentCompleted
-        }
-    }
-    const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, formData, uploadProgress, header);
+
+    const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues, user }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.status });
     console.log(response.status)
     setTimeout(function () {
@@ -1160,15 +1136,7 @@ export const createPurchaseOrderPacking = formValues => async dispatch => {
     formData.append('supplierInvoice', formValues.supplierInvoice)
     console.log(formData.get("supplierInvoice"))
 
-    var uploadProgress = {
-        onUploadProgress: function (progressEvent) {
-            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            console.log(percentCompleted)
-            return percentCompleted
-        }
-    }
-
-    const response = await api.post('api/sales/purchase-orders-packing/new-purchase-order-packing', formData, uploadProgress, header);
+    const response = await api.post('api/sales/purchase-orders-packing/new-purchase-order-packing', { ...formValues, user }, header);
     dispatch({ type: CREATE_PURCHASE_ORDER_PACKING, payload: response.status });
     console.log(response.status)
     setTimeout(function () {
@@ -1212,19 +1180,8 @@ export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-    var formData = new FormData()
-    formData.append('data', JSON.stringify(formValues))
-    formData.append('user', JSON.stringify(user))
-    formData.append('supplierInvoice', formValues.supplierInvoice)
-    console.log(formData.get("supplierInvoice"))
-    var uploadProgress = {
-        onUploadProgress: function (progressEvent) {
-            var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            console.log(percentCompleted)
-            return percentCompleted
-        }
-    }
-    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, formData, uploadProgress, header);
+   
+    const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues, user }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.status });
     setTimeout(function () {
         history.push(`/approvals-single-packing/${formValues.id}`);
