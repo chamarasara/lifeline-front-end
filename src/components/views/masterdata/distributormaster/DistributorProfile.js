@@ -10,7 +10,12 @@ class DistributorProfile extends React.Component {
     }
     render() {
         if (!this.props.distributor) {
-            return <div><div className="ui active inline loader"></div></div>
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}></div>
+                    <div className="ui active centered inline loader"></div>
+                </div>
+            )
         }
         return (
             <div className="pusher">
