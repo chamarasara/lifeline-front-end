@@ -212,6 +212,7 @@ const mapStateToProps = (state, ownProps) => {
     const rawMaterials = Object.values(state.rawMaterials)
     const order = state.purchaseOrdersRaw[ownProps.match.params.id]
     const purchaseOrders = Object.values(state.purchaseOrdersRaw)
+    console.log(purchaseOrders)
     return { errorMessage: state, suppliers: suppliers, rawMaterials: rawMaterials, order: order, purchaseOrders: purchaseOrders, initialValues: order };
 }
 const formWrapped = reduxForm({

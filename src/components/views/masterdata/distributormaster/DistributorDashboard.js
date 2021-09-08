@@ -7,7 +7,7 @@ class DistributorDashboard extends React.Component {
         return (
             <div className="pusher">
                 <div className="ui basic segment" id="basic-segment">
-                    <div className="column" style={{ paddingTop: "70px" }}>
+                    <div className="column" style={{ paddingTop: "70px", paddingLeft:"30px" }}>
                         <Link to={"/settings"} className="ui button">Back</Link>
                         <Link to={"/new-distributor"} className="ui blue button">New Distributor</Link>
                     </div>

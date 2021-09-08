@@ -392,6 +392,7 @@ export const deleteSupplier = (id) => async dispatch => {
 };
 //create distributor
 export const createDistributor = formValues => async dispatch => {
+    console.log(formValues)
     const token = sessionStorage.getItem('user');
     const user = jwt_decode(token);
     const header = {
@@ -401,9 +402,12 @@ export const createDistributor = formValues => async dispatch => {
         }
     };
     const response = await api.post('/api/master-data/distributor-master/new-distributor', { ...formValues, user }, header);
-    dispatch({ type: NEW_DISTRIBUTOR, payload: response.data });
-    history.push('/distributor-dashboard');
-    window.location.reload()
+    dispatch({ type: NEW_DISTRIBUTOR, payload: response.status });
+    console.log(response)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+
 };
 //List all distributors
 export const fetchDistributors = () => async dispatch => {
@@ -440,9 +444,14 @@ export const editDistributor = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/master-data/distributor-master/update-distributor/${id}`, { ...formValues }, header);
-    dispatch({ type: EDIT_DISTRIBUTOR, payload: response.data });
-    history.push(`/distributor-profile/${formValues.id}`)
-    window.location.reload()
+    dispatch({ type: EDIT_DISTRIBUTOR, payload: response.status });
+    //console.log(response.status)
+
+    setTimeout(function () {
+        // history.push(`/distributor-profile/${formValues.id}`)
+        // window.location.reload()
+    }, 2000);
+
 };
 //Delete distributor
 export const deleteDistributor = (id) => async dispatch => {
@@ -948,7 +957,6 @@ export const createPurchaseOrderRaw = formValues => async dispatch => {
 
     const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues, user }, header);
     dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.status });
-    console.log(response.data)
     setTimeout(function () {
         window.location.reload()
     }, 2000);
@@ -1040,7 +1048,7 @@ export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
 
     const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues, user }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.status });
-    console.log(response.status)
+    console.log("res",response)
     setTimeout(function () {
         history.push(`/approvals-single-raw/${formValues.id}`);
         window.location.reload()
@@ -1180,7 +1188,7 @@ export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
             'Authorization': token
         }
     };
-   
+
     const response = await api.patch(`/api/sales/purchase-orders-packing/update-purchase-order-packing/${id}`, { ...formValues, user }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.status });
     setTimeout(function () {
