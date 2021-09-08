@@ -448,8 +448,8 @@ export const editDistributor = (id, formValues) => async dispatch => {
     //console.log(response.status)
 
     setTimeout(function () {
-        // history.push(`/distributor-profile/${formValues.id}`)
-        // window.location.reload()
+        history.push(`/distributor-profile/${formValues.id}`)
+        window.location.reload()
     }, 2000);
 
 };
