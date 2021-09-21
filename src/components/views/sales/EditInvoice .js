@@ -819,7 +819,7 @@ class EditInvoice extends React.Component {
     renderTransportCost() {
         if (!this.props.invoice.transportCost) {
             return 0
-        }else{
+        } else {
             return this.props.invoice.transportCost
         }
     }
@@ -882,9 +882,6 @@ class EditInvoice extends React.Component {
                             </tr>
                         </tfoot>
                     </table>
-                    <div>
-                        {this.renderButtons()}
-                    </div>
 
                 </Tab.Pane>
             },
@@ -894,7 +891,7 @@ class EditInvoice extends React.Component {
                     <Tab.Pane attached={false}>
                         <div>
                             <NewDispatchNote data={this.props.invoice} />
-                            <div>
+                            <div style={{ paddingTop: "50px" }}>
                                 {this.renderDispatchTables()}
                             </div>
                         </div>
@@ -907,9 +904,10 @@ class EditInvoice extends React.Component {
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "80px" }}>
                     <h3>Invoice #{this.props.invoice.invoiceNumber}</h3>
                     {this.renderCustomerDetails()}
-                    <Tab menu={{ pointing: true }} panes={panes} />
-                </div>
-                <div>
+                    <Tab style={{ paddingBottom: "20px" }} menu={{ pointing: true }} panes={panes} />
+                    <div>
+                        {this.renderButtons()}
+                    </div>
                 </div>
             </div>
         )

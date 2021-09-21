@@ -239,7 +239,7 @@ class SinglePurchaseOrderPacking extends React.Component {
         let getTotal = orderDetails.map(data => {
             let totalValue = parseInt(data.unitPrice) * parseInt(data.quantity)
             let total = totalValue
-            return this.formatNumber(total.toFixed(2))
+            return total
         })
 
         let sum = []

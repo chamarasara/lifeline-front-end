@@ -7,7 +7,7 @@ class SalesDashboard extends React.Component {
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
                     <div className="column" style={{ paddingTop: "30px" }}>
-                        <Link to={"/purchase-order-dashboard"} className="ui blue button">Purchase Orders</Link>
+                     
                         <Link to={"/quotation-dashboard"} className="ui blue button">Quotations</Link>
                         <Link to={"/invoice-dashboard"} className="ui blue button">Invoices</Link>
                         <Link to={"/return-invoice-dashboard"} className="ui blue button">Returns</Link>

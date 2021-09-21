@@ -3,7 +3,6 @@ import { Field, reduxForm, FieldArray } from 'redux-form';
 import moment from 'moment'
 import { connect } from 'react-redux';
 import { fetchPurchaseOrderRaw, fetchPurchaseOrdersRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, grnPurchaseOrderRaw, fetchGrnByPurchaseOrder, printGrnRaw } from '../../../actions';
-import { Link } from 'react-router-dom'
 
 class NewGrnRaw extends React.Component {
     componentDidMount() {
@@ -137,7 +136,7 @@ class NewGrnRaw extends React.Component {
                     <h4>Create new GRN</h4>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
-                            <div className="five wide field">
+                            <div className="six wide field">
                                 Supplier Invoice Number
                                 <Field name="invoiceNumber" type="text" required component={this.renderInput} placeholder="Supplier Invoice Number">
                                 </Field>
@@ -145,6 +144,11 @@ class NewGrnRaw extends React.Component {
                             <div className="four wide field">
                                 Invoice Date
                                 <Field name="invoiceDate" type="date" required component={this.renderInput} placeholder="Supplier Invoice Number">
+                                </Field>
+                            </div>
+                            <div className="six wide field">
+                                Remarks (Optional)
+                                <Field name="remarks" type="text" required component={this.renderInput} placeholder="Remarks">
                                 </Field>
                             </div>
                         </div>
@@ -155,7 +159,6 @@ class NewGrnRaw extends React.Component {
                         </div>
 
                         <div className="field">
-                            <Link to={"/raw-material-inventory-dashboard"} className="ui button">Back</Link>
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
                     </form>
@@ -171,27 +174,28 @@ class NewGrnRaw extends React.Component {
 
         for (let i = 0; i < formValues.rawMaterials.length; i++) {
             formValues.rawMaterials[i].date = moment().format('DD/MM/YYYY, h:mm:ss a');
+            formValues.rawMaterials[i].materialName = formValues.rawMaterialsList[i].materialName
+            formValues.rawMaterials[i].materialCode = formValues.rawMaterialsList[i].materialCodeRm
+            formValues.rawMaterials[i].materialGroup = formValues.rawMaterialsList[i].materialGroup
             formValues.rawMaterials[i].remainingQuantity = formValues.rawMaterials[i].quantity
             formValues.rawMaterials[i].supplierId = formValues.supplierId
+            formValues.rawMaterials[i].companyName = formValues.supplier[0].companyName
             formValues.rawMaterials[i].purchaseOrderId = formValues.id
             formValues.rawMaterials[i].purchaseOrderNumber = formValues.orderNumber
             formValues.rawMaterials[i].invoiceNumber = formValues.invoiceNumber
             formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
-            formValues.rawMaterials[i].supplierId = formValues.supplierId
             formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
             formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
             formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
         }
-        console.log(formValues)
+        console.log("Form", formValues)
         this.props.grnPurchaseOrderRaw(formValues._id, formValues)
     }
     render() {
         return (
-
             <div style={{ paddingLeft: "30px", paddingRight: "30px", paddingTop: "20px" }}>
                 {this.rederGrn()}
             </div>
-
         )
     }
 }

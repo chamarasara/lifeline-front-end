@@ -19,7 +19,6 @@ class SideBar extends React.Component {
     navibarLinks() {
         const token = sessionStorage.getItem('user');
         const user = jwt_decode(token);
-        console.log(user)
         if (!this.props.user) {
             return (
                 <div className="ui placeholder">
@@ -121,7 +120,6 @@ class SideBar extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log(state)
     const token = sessionStorage.getItem('user');
     const userToken = jwt_decode(token);
     const user = state.users[userToken.user.userId]

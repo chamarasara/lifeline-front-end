@@ -67,7 +67,7 @@ class NewDispatchNote extends React.Component {
     renderProductsDropDown = ({ fields, meta: { error, submitFailed } }) => {
         return (
             <div>
-                <ul>                   
+                <ul>
                     {fields.map((products, index) => <li key={index}>
                         <label htmlFor={products}>Product #{index + 1}</label>
                         <div className="fields">
@@ -80,7 +80,7 @@ class NewDispatchNote extends React.Component {
                             <div className="six wide field">
                                 <Field name={`${products}.quantity`} type="number" required component={this.renderInput} placeholder="Quantity" >
                                 </Field>
-                            </div>                                                       
+                            </div>
                         </div>
                     </li>)}
                 </ul>
@@ -108,7 +108,7 @@ class NewDispatchNote extends React.Component {
         }
         return (
             <div className="pusher">
-                <div>                
+                <div style={{ paddingTop: "30px" }}>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="sixteen wide field">
@@ -117,12 +117,11 @@ class NewDispatchNote extends React.Component {
                             </div>
                         </div>
                         <div className="fields">
-                            <div className="fourteen wide field">                               
+                            <div className="fourteen wide field">
                                 <Field name="remarks" type="text" component="input" placeholder="Remarks" />
                             </div>
                         </div>
                         <div className="field">
-                            <Link to={''} type="button" className="ui button">Back</Link>
                             <button type="submit" disabled={this.props.submitting} className="ui primary button">Submit</button>
                         </div>
                     </form>

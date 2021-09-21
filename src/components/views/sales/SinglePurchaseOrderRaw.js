@@ -1,5 +1,6 @@
 import React from 'react';
-import { Field, reduxForm, FieldArray } from 'redux-form';
+import _ from 'lodash';
+import { reduxForm } from 'redux-form';
 import { Tab } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -108,19 +109,10 @@ class SinglePurchaseOrderRaw extends React.Component {
     }
 
     renderPrintButton() {
-        if (this.props.order.order_state === "Pending") {
+        if (this.props.order.order_state === "Approved") {
             return (
                 <div>
-                    <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
-                    <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
-                </div>
-            )
-        } else if (this.props.order.order_state === "Approved") {
-            return (
-                <div>
-                    <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
                     <button type="button" onClick={this.printPurchaseOrder} className="ui primary button">Print</button>
-                    <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
                 </div>
             )
         }
@@ -140,7 +132,8 @@ class SinglePurchaseOrderRaw extends React.Component {
         let getTotal = orderDetails.map(data => {
             let totalValue = parseInt(data.unitPrice) * parseInt(data.quantity)
             let total = totalValue
-            return this.formatNumber(total.toFixed(2))
+            console.log(total)
+            return total
         })
 
         let sum = []
@@ -148,45 +141,116 @@ class SinglePurchaseOrderRaw extends React.Component {
             let total = parseInt(getTotal[i])
             sum[i] = total
         }
+        console.log(sum)
         const totalSum = sum.reduce((a, b) => a + b, 0)
         return this.formatNumber(totalSum.toFixed(2))
 
     }
+    getSubTotalGrn() {
+        let grn = this.props.order.grnDetails
+
+        let total = grn.map(data => {
+            return data.data.map(data => {
+                console.log(data.unitPrice * data.quantity)
+                return data.unitPrice * data.quantity
+            })
+        })
+        let unitPrices = this.props.order.grnDetails.map(singleGrn => {
+            return singleGrn.data.map(unitPrice => {
+                console.log(unitPrice.unitPrice)
+                return unitPrice.unitPrice
+            })
+        })
+        let quantities = this.props.order.grnDetails.map(singleGrn => {
+            return singleGrn.data.map(quantity => {
+                console.log(quantity.quantity)
+                return quantity.quantity
+            })
+        })
+        let totalSum = []
+        console.log(unitPrices.length, quantities.length)
+
+
+        for (let i = 0; i < unitPrices.length; i++) {
+            for (let j = 0; j < quantities[i].length; j++) {
+                let quantity = quantities[i][j]
+                let unitPrice = unitPrices[i][j]
+                totalSum[j] = quantity * unitPrice
+                console.log(totalSum[j])
+                
+            }
+            
+        }
+
+        console.log(totalSum)
+        // return totalSum
+        return totalSum.map(value => {
+            return (
+                <p key={Math.random()}>{this.formatNumber(value.toFixed(2))}</p>
+            )
+        })
+
+
+
+        // return this.formatNumber(totalSum.toFixed(2))
+
+    }
     renderAllGrn() {
-        if (!this.props.grn) {
+        if (!this.props.order) {
             return (
                 <div>
-                    <h4>NO any GRN found</h4>
+                    <h4>No any GRN found</h4>
                 </div>
             )
         }
-        return this.props.grn.map(data => {
-            if (!data.rawMaterials || !data.materialDetails) {
-                return []
-            }
-            const grnData = data.rawMaterials.map(material => {
-                // console.log(material)
-                return material
+        return this.props.order.grnDetails.map(data => {
+
+            let grn = this.props.order.grnDetails
+
+            let total = grn.map(data => {
+                return data.data.map(data => {
+                    console.log(data.unitPrice * data.quantity)
+                    return data.unitPrice * data.quantity
+                })
             })
-            const materialData = data.materialDetails.map(material => {
-                // console.log(material)
-                return material
+            let unitPrices = this.props.order.grnDetails.map(singleGrn => {
+                return singleGrn.data.map(unitPrice => {
+                    console.log(unitPrice.unitPrice)
+                    return unitPrice.unitPrice
+                })
             })
-            console.log(grnData)
-            let totalValue = []
-            for (let i = 0; i < Math.min(grnData.length); i++) {
-                let total = grnData[i]
-                console.log(total)
-                totalValue[i] = Number(total.quantity) * Number(total.unitPrice)
-            }
-            const grnId = data.id
-            const total = totalValue.reduce((a, b) => (a + b))
+            let quantities = this.props.order.grnDetails.map(singleGrn => {
+                return singleGrn.data.map(quantity => {
+                    console.log(quantity.quantity)
+                    return quantity.quantity
+                })
+            })
+            let totalSum = []
+            console.log(total)
+            total.map(data => {
+                console.log(data)
+                for (let i = 0; i < total.length; i++) {
+                    totalSum[i] = data.reduce((a, b) => a + b, 0)
+                    console.log(totalSum)
+                }
+               
+                return totalSum
+
+            })
+            // return totalSum
 
             return (
-                <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+
+                <table key={Math.random()} className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
                     <thead className="full-width">
                         <tr>
-                            <th>Date</th>
+                            <th colSpan="8">
+                                <tr><h4 style={{ color: "red" }}>GRN</h4></tr>
+                                <tr><p>Date-{moment(data.date).format('DD MM YYYY, h:mm A')}</p></tr>
+                                <tr><p>Remarks-{data.remarks}</p></tr>
+                            </th>
+                        </tr>
+                        <tr>
                             <th>Material Code</th>
                             <th>Material Name</th>
                             <th>Unit of Measure</th>
@@ -198,62 +262,58 @@ class SinglePurchaseOrderRaw extends React.Component {
                     <tbody>
                         <tr>
                             <td>
-                                {grnData.map(data => {
+                                {this.props.order.rawMaterialsList.map(data => {
                                     return (
-                                        <p>{data.date}</p>
+                                        <p key={data.id}>RM{data.materialCodeRm}</p>
                                     )
                                 })}
                             </td>
                             <td>
-                                {materialData.map(data => {
+                                {this.props.order.rawMaterialsList.map(data => {
                                     return (
-                                        <p>RM{data.materialCodeRm}</p>
+                                        <p key={data.id}>{data.materialName}</p>
                                     )
                                 })}
                             </td>
                             <td>
-                                {materialData.map(data => {
+                                {data.data.map(data => {
                                     return (
-                                        <p>{data.materialName}</p>
-                                    )
-                                })}
-                            </td>
-                            <td>
-                                {grnData.map(data => {
-                                    return (
-                                        <p>{data.uom}</p>
+                                        <p key={Math.random()}>{data.uom}</p>
                                     )
                                 })}
                             </td>
                             <td style={{ textAlign: "right" }}>
-                                {grnData.map(data => {
-                                    let price = Number(data.unitPrice)
+                                {data.data.map(data => {
+                                    const price = parseInt(data.unitPrice)
                                     return (
-                                        <p>{this.formatNumber(price.toFixed(2))}</p>
+                                        <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
                                     )
                                 })}
                             </td>
                             <td style={{ textAlign: "right" }}>
-                                {grnData.map(data => {
+                                {data.data.map(data => {
                                     return (
-                                        <p>{data.quantity}</p>
+                                        <p key={Math.random()}>{data.quantity}</p>
                                     )
                                 })}
                             </td>
                             <td style={{ textAlign: "right" }}>
-                                {grnData.map(data => {
-                                    let total = Number(data.quantity) * Number(data.unitPrice)
+                                {data.data.map(data => {
+                                    const price = parseInt(data.unitPrice)
+                                    const quantity = parseInt(data.quantity)
+                                    const total = price * quantity
                                     return (
-                                        <p>{this.formatNumber(total.toFixed(2))}</p>
+                                        <p key={Math.random()}>{this.formatNumber(total.toFixed(2))}</p>
                                     )
                                 })}
                             </td>
                         </tr>
+
                     </tbody>
                     <tfoot>
-                        <tr colSpan="12">
-                            <th colSpan="4" style={{ textAlign: "left" }}><button type="button" onClick={() => this.printGrn(grnId)} className="ui primary button">Print</button></th>
-                            <th colSpan="8" style={{ textAlign: "right" }}>Subtotal: {this.formatNumber(total.toFixed(2))} </th>
+                        <tr colSpan="16">
+                            <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
+                            <th colSpan="8" style={{ textAlign: "right" }}></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -273,6 +333,7 @@ class SinglePurchaseOrderRaw extends React.Component {
             return (
                 <div>
                     <div>
+                        <NewGrnRaw data={this.props.order} />
                         {this.renderAllGrn()}
                     </div>
                 </div>
@@ -294,36 +355,42 @@ class SinglePurchaseOrderRaw extends React.Component {
             {
                 menuItem: 'Purchase Order Details', render: () =>
                     <Tab.Pane attached={false}>
-                        <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
-                            <thead className="full-width">
-                                <tr>
-                                    <th colSpan="12" style={{ color: "red" }}><h4>Order Details</h4></th>
-                                </tr>
-                                <tr>
-                                    <th>Product Code</th>
-                                    <th>Product Name</th>
-                                    <th>UOM</th>
-                                    <th style={{ textAlign: "right" }}>Quantity</th>
-                                    <th style={{ textAlign: "right" }}>Unit Price</th>
-                                    <th style={{ textAlign: "right" }}>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.renderPurchaseOrederDetails()}
-                            </tbody>
-                            <tfoot>
-                                <tr colSpan="16">
-                                    <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
-                                    <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                        <div>
+                            <div>
+                                <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                                    <thead className="full-width">
+                                        <tr>
+                                            <th colSpan="12" style={{ color: "red" }}><h4>Order Details</h4></th>
+                                        </tr>
+                                        <tr>
+                                            <th>Product Code</th>
+                                            <th>Product Name</th>
+                                            <th>UOM</th>
+                                            <th style={{ textAlign: "right" }}>Quantity</th>
+                                            <th style={{ textAlign: "right" }}>Unit Price</th>
+                                            <th style={{ textAlign: "right" }}>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.renderPurchaseOrederDetails()}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr colSpan="16">
+                                            <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
+                                            <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div>
+                                {this.renderPrintButton()}
+                            </div>
+                        </div>
                     </Tab.Pane>
             },
             {
                 menuItem: 'GRN Details', render: () =>
                     <Tab.Pane attached={false}>
-                        <NewGrnRaw data={this.props.order} />
                         {this.rederGrn()}
                     </Tab.Pane>
             }
@@ -334,7 +401,10 @@ class SinglePurchaseOrderRaw extends React.Component {
                     <h3>Order No #{this.props.order.orderNumber}</h3>
                     {this.renderSupplierDetails()}
                     <Tab menu={{ pointing: true }} panes={panes} />
-                    {this.renderPrintButton()}
+                    <div style={{ paddingTop: "30px" }}>
+                        <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
+                        <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                    </div>
                 </div>
                 <div>
                 </div>
@@ -346,15 +416,12 @@ class SinglePurchaseOrderRaw extends React.Component {
 const mapStateToProps = (state, ownPorps) => {
     const suppliers = Object.values(state.supplier)
     const rawMaterials = Object.values(state.rawMaterials)
-    const packingMaterials = Object.values(state.packingMaterials)
     const order = state.purchaseOrdersRaw[ownPorps.match.params.id]
     const grn = Object.values(state.rawMaterialGrn)
-    console.log(order)
     return {
         errorMessage: state,
         suppliers: suppliers,
         rawMaterials: rawMaterials,
-        packingMaterials: packingMaterials,
         order: order,
         initialValues: order,
         grn: grn

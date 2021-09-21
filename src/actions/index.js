@@ -608,7 +608,6 @@ export const fetchRawMaterials = () => async dispatch => {
         }
     };
     const response = await api.get('api/master-data/raw-material/all-raw-materials', header);
-    console.log(response.data)
     dispatch({ type: FETCH_RAW_MATERIALS, payload: response.data });
 };
 //View single raw material
@@ -1048,7 +1047,7 @@ export const editPurchaseOrderRaw = (id, formValues) => async dispatch => {
 
     const response = await api.patch(`/api/sales/purchase-orders-raw/update-purchase-order-raw/${id}`, { ...formValues, user }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.status });
-    console.log("res",response)
+    console.log("res", response)
     setTimeout(function () {
         history.push(`/approvals-single-raw/${formValues.id}`);
         window.location.reload()
@@ -1066,7 +1065,10 @@ export const grnPurchaseOrderRaw = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`/api/sales/purchase-orders-raw/grn-purchase-order-raw/${id}`, { ...formValues }, header);
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
-    //window.location.reload()
+    console.log(response.data)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
 
 };
 
