@@ -52,17 +52,14 @@ class SinglePurchaseOrderPacking extends React.Component {
             for (let i = 0; i < Math.min(grnData.length); i++) {
                 let total = grnData[i]
                 console.log(total)
-                totalValue[i] = Number(total.quantity) * Number(total.unitPrice)
-                console.log(total.quantity)
-                console.log(total.unitPrice)
-                console.log(totalValue[i])
+                totalValue[i] = Number(total.quantity) * Number(total.unitPrice)             
 
             }
             const grnId = data.id
             const total = totalValue.reduce((a, b) => (a + b))
             console.log(total)
             return (
-                <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                     <thead className="full-width">
                         <tr>
                             <th>Date</th>
@@ -214,7 +211,7 @@ class SinglePurchaseOrderPacking extends React.Component {
                 })
                 }</td>
                 <td style={{ textAlign: "right" }}> {this.props.order.packingMaterials.map(material => {
-                    const price = parseInt(material.unitPrice)
+                    const price = Number(material.unitPrice)
                     return (
                         <p key={material.id}>{this.formatNumber(price.toFixed(2))}</p>
                     )
@@ -222,7 +219,7 @@ class SinglePurchaseOrderPacking extends React.Component {
                 }
                 </td>
                 <td style={{ textAlign: "right" }}> {this.props.order.packingMaterials.map(material => {
-                    const total = parseInt(material.unitPrice) * parseInt(material.quantity)
+                    const total = Number(material.unitPrice) * Number(material.quantity)
                     return (
                         <p key={material.id}>{this.formatNumber(total.toFixed(2))}</p>
                     )
@@ -237,14 +234,14 @@ class SinglePurchaseOrderPacking extends React.Component {
 
         const orderDetails = this.props.order.packingMaterials
         let getTotal = orderDetails.map(data => {
-            let totalValue = parseInt(data.unitPrice) * parseInt(data.quantity)
+            let totalValue = Number(data.unitPrice) * Number(data.quantity)
             let total = totalValue
             return total
         })
 
         let sum = []
         for (let i = 0; i < Math.min(getTotal.length); i++) {
-            let total = parseInt(getTotal[i])
+            let total = Number(getTotal[i])
             sum[i] = total
         }
         const totalSum = sum.reduce((a, b) => a + b, 0)
@@ -384,7 +381,7 @@ class SinglePurchaseOrderPacking extends React.Component {
                     <div>
                         <div>
                             <Tab.Pane attached={false}>
-                                <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                                     <thead className="full-width">
                                         <tr>
                                             <th colSpan="12" style={{ color: "red" }}><h4>Order Details</h4></th>

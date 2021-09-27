@@ -135,7 +135,7 @@ class InvoiceList extends React.Component {
             <div >
                 <div >
                     <h4>All Invoices</h4>
-                    <table className="ui very basic collapsing celled table">
+                    <table className="ui small blue striped celled table">
                         <thead>
                             <tr><th>Invoice No</th>
                                 <th>Quotation</th>
@@ -144,6 +144,7 @@ class InvoiceList extends React.Component {
                                 <th>Quantities</th>
                                 <th>Rate</th>
                                 <th>Discount</th>
+                                <th></th>
                             </tr></thead>
                         <tbody>
                             {this.renderList()}

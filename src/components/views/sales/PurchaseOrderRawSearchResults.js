@@ -12,6 +12,7 @@ class PurchaseOrderRawSearchResults extends React.Component {
     formatNumber = (num) => {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
+   
     renderList() {
         if (!this.props.orders) {
             return (
@@ -22,11 +23,10 @@ class PurchaseOrderRawSearchResults extends React.Component {
         }
         return this.props.orders.map(order => {
             const date = order.date;
-            const date2 = moment(date).format('DD/MM/YYYY, h:mm: a')
-            console.log(order.order_state)
-            if (order.order_state === "Pending" || order.order_state === "Approved") {
+            const date2 = moment(date).format('DD/MM/YYYY, h:mm: A')
+            if (order.order_state === "Pending") {
                 return (
-                    <tr key={order.id}>
+                    <tr key={order.id} className="negative">
                         <td>
                             {date2}
                         </td>
@@ -41,9 +41,6 @@ class PurchaseOrderRawSearchResults extends React.Component {
                                     )
                                 })
                             }
-                        </td>
-                        <td>
-                            {order.order_state}
                         </td>
                         <td>
                             {
@@ -68,7 +65,84 @@ class PurchaseOrderRawSearchResults extends React.Component {
                         <td style={{ "textAlign": "right" }}>
                             {
                                 order.rawMaterials.map(unitPrice => {
-                                    const price = parseInt(unitPrice.unitPrice)
+                                    const price = Number(unitPrice.unitPrice)
+                                    return (
+                                        <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
+                                    )
+                                }
+                                )
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.rawMaterials.map(unitPrice => {
+                                    const price = Number(unitPrice.unitPrice) * Number(unitPrice.quantity)
+                                    return (
+                                        <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
+                                    )
+                                }
+                                )
+                            }
+                        </td>
+                        <td>
+                            <Link to={`/single-purchase-order-raw/${order.id}`} className="ui red button">View</Link>
+                        </td>
+                    </tr>
+                )
+            }
+            if (order.order_state === "Approved") {
+                return (
+                    <tr key={order.id} className="">
+                        <td>
+                            {date2}<br />
+                        </td>
+                        <td>
+                            {order.orderNumber}
+                        </td>
+                        <td>
+                            {
+                                order.searchSupplier.map(supplier1 => {
+                                    return (
+                                        <span key={supplier1.id}>{supplier1.companyName}</span>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td>
+                            {
+                                order.searchRawMaterial.map(material => {
+                                    console.log(material)
+                                    return (
+                                        <p key={material.id}>{material.materialName}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.rawMaterials.map(quantity => {
+                                    return (
+                                        <p key={Math.random()}>{quantity.quantity}</p>
+                                    )
+                                }
+                                )
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.rawMaterials.map(unitPrice => {
+                                    const price = Number(unitPrice.unitPrice)
+                                    return (
+                                        <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
+                                    )
+                                }
+                                )
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.rawMaterials.map(unitPrice => {
+                                    const price = Number(unitPrice.unitPrice) * Number(unitPrice.quantity)
                                     return (
                                         <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
                                     )
@@ -98,16 +172,17 @@ class PurchaseOrderRawSearchResults extends React.Component {
             <div >
                 <div >
                     <h4>All Purchase Orders</h4>
-                    <table className="ui very basic collapsing celled table">
+                    <table className="ui small blue striped celled table">
                         <thead>
                             <tr>
                                 <th>Date</th>
                                 <th>Order No</th>
-                                <th>Company Name</th>
-                                <th>Order State</th>
+                                <th>Company Name</th>                            
                                 <th>Raw Materials</th>
                                 <th>Quantities</th>
                                 <th>Unit Price</th>
+                                <th>Total</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>

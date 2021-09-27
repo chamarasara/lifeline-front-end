@@ -299,7 +299,7 @@ class EditInvoice extends React.Component {
         }
         return this.props.invoice.dispatchNotes.map(dispatchNote => {
             return (
-                <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                     <thead className="full-width">
                         <tr>
                             <th colSpan="4">
@@ -396,7 +396,7 @@ class EditInvoice extends React.Component {
         return (
             <div>
                 <div>
-                    <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                    <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                         <thead className="full-width">
                             <tr>
                                 <th colSpan="12" style={{ color: "red" }}><h4>Return Invoice Details</h4></th>
@@ -779,7 +779,7 @@ class EditInvoice extends React.Component {
                 <p><b>Total value:</b> {this.getSubTotal()}</p>
                 <p><b>Total returns:</b> {this.getReturnsSubTotal()}</p>
                 <div>
-                    <table className="ui   structured celled table">
+                    <table className="ui small blue striped celled table">
                         <thead>
                             <tr>
                                 <th colSpan="4">Cheque Payments</th>
@@ -847,7 +847,7 @@ class EditInvoice extends React.Component {
         const panes = [
             {
                 menuItem: 'Invoice Details', render: () => <Tab.Pane attached={false}>
-                    <table className="ui padded compact structured table" style={{ marginTop: "20px" }}>
+                    <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                         <thead className="full-width">
                             <tr>
                                 <th colSpan="12" style={{ color: "red" }}><h4>Invoice Details</h4></th>

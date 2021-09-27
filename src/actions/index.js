@@ -957,7 +957,7 @@ export const createPurchaseOrderRaw = formValues => async dispatch => {
     const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues, user }, header);
     dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.status });
     setTimeout(function () {
-        window.location.reload()
+       window.location.reload()
     }, 2000);
 
 
@@ -1067,7 +1067,7 @@ export const grnPurchaseOrderRaw = (id, formValues) => async dispatch => {
     dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
     console.log(response.data)
     setTimeout(function () {
-        window.location.reload()
+       // window.location.reload()
     }, 2000);
 
 };
@@ -1131,7 +1131,6 @@ export const viewSupplierInvoiceRaw = (suplierInvoicePdf) => async dispatch => {
 };
 //create purchase order packing
 export const createPurchaseOrderPacking = formValues => async dispatch => {
-    console.log(formValues)
     const token = sessionStorage.getItem('user');
     const user = jwt_decode(token);
     const header = {
@@ -1144,11 +1143,9 @@ export const createPurchaseOrderPacking = formValues => async dispatch => {
     formData.append('data', JSON.stringify(formValues))
     formData.append('user', JSON.stringify(user))
     formData.append('supplierInvoice', formValues.supplierInvoice)
-    console.log(formData.get("supplierInvoice"))
 
     const response = await api.post('api/sales/purchase-orders-packing/new-purchase-order-packing', { ...formValues, user }, header);
     dispatch({ type: CREATE_PURCHASE_ORDER_PACKING, payload: response.status });
-    console.log(response.status)
     setTimeout(function () {
         window.location.reload()
     }, 2000);

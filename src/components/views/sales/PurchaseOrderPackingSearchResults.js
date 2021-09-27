@@ -23,7 +23,7 @@ class PurchaseOrderPackingSearchResults extends React.Component {
         return this.props.orders.map(order => {
             const date = order.date;
             const date2 = moment(date).format('DD/MM/YYYY, h:mm: a')
-            if (order.order_state === "Pending" || order.order_state === "Approved") {
+            if (order.order_state === "Approved") {
                 return (
                     <tr key={order.id}>
                         <td>
@@ -40,9 +40,6 @@ class PurchaseOrderPackingSearchResults extends React.Component {
                                     )
                                 })
                             }
-                        </td>
-                        <td>
-                            {order.order_state}
                         </td>
                         <td>
                             {
@@ -67,7 +64,7 @@ class PurchaseOrderPackingSearchResults extends React.Component {
                         <td style={{ "textAlign": "right" }}>
                             {
                                 order.packingMaterials.map(unitPrice => {
-                                    const price = parseInt(unitPrice.unitPrice)
+                                    const price = Number(unitPrice.unitPrice)
                                     return (
                                         <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
                                     )
@@ -80,7 +77,62 @@ class PurchaseOrderPackingSearchResults extends React.Component {
                         </td>
                     </tr>
                 )   
-            }         
+            }   
+            if (order.order_state === "Pending") {
+                return (
+                    <tr key={order.id} className="negative">
+                        <td>
+                            {date2}
+                        </td>
+                        <td>
+                            {order.orderNumber}
+                        </td>
+                        <td>
+                            {
+                                order.searchSupplier.map(supplier1 => {
+                                    return (
+                                        <span key={supplier1.id}>{supplier1.companyName}</span>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td>
+                            {
+                                order.searchPackingMaterial.map(material => {
+                                    console.log(material)
+                                    return (
+                                        <p key={material.id}>{material.materialName}</p>
+                                    )
+                                })
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.packingMaterials.map(quantity => {
+                                    return (
+                                        <p key={Math.random()}>{quantity.quantity}</p>
+                                    )
+                                }
+                                )
+                            }
+                        </td>
+                        <td style={{ "textAlign": "right" }}>
+                            {
+                                order.packingMaterials.map(unitPrice => {
+                                    const price = Number(unitPrice.unitPrice)
+                                    return (
+                                        <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
+                                    )
+                                }
+                                )
+                            }
+                        </td>
+                        <td>
+                            <Link to={`/single-purchase-order-packing/${order.id}`} className="ui red button">View</Link>
+                        </td>
+                    </tr>
+                )
+            }
         })
     }
     render() {
@@ -95,16 +147,17 @@ class PurchaseOrderPackingSearchResults extends React.Component {
             <div >
                 <div >
                     <h4>All Purchase Orders</h4>
-                    <table className="ui very basic collapsing celled table">
+                    <table className="ui small blue striped celled table">
                         <thead>
                             <tr>
                                 <th>Date</th>
                                 <th>Order No</th>
                                 <th>Company Name</th>
-                                <th>Order State</th>
                                 <th>Packing Materials</th>
                                 <th>Quantities</th>
                                 <th>Unit Price</th>
+                                <th>Total</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>

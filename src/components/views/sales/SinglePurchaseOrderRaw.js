@@ -45,7 +45,8 @@ class SinglePurchaseOrderRaw extends React.Component {
                 })
                 }</td>
                 <td style={{ textAlign: "right" }}> {this.props.order.rawMaterials.map(material => {
-                    const price = parseInt(material.unitPrice)
+                    const price = Number(material.unitPrice)
+                    console.log(price)
                     return (
                         <p key={material.id}>{this.formatNumber(price.toFixed(2))}</p>
                     )
@@ -53,7 +54,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                 }
                 </td>
                 <td style={{ textAlign: "right" }}> {this.props.order.rawMaterials.map(material => {
-                    const total = parseInt(material.unitPrice) * parseInt(material.quantity)
+                    const total = Number(material.unitPrice) * Number(material.quantity)
                     return (
                         <p key={material.id}>{this.formatNumber(total.toFixed(2))}</p>
                     )
@@ -130,7 +131,7 @@ class SinglePurchaseOrderRaw extends React.Component {
 
         const orderDetails = this.props.order.rawMaterials
         let getTotal = orderDetails.map(data => {
-            let totalValue = parseInt(data.unitPrice) * parseInt(data.quantity)
+            let totalValue = Number(data.unitPrice) * Number(data.quantity)
             let total = totalValue
             console.log(total)
             return total
@@ -138,7 +139,7 @@ class SinglePurchaseOrderRaw extends React.Component {
 
         let sum = []
         for (let i = 0; i < Math.min(getTotal.length); i++) {
-            let total = parseInt(getTotal[i])
+            let total = Number(getTotal[i])
             sum[i] = total
         }
         console.log(sum)
@@ -147,46 +148,32 @@ class SinglePurchaseOrderRaw extends React.Component {
 
     }
     getSubTotalGrn() {
+
         let grn = this.props.order.grnDetails
 
-        let total = grn.map(data => {
+        const total = this.props.order.grnDetails.map(data => {
+            console.log(data)
             return data.data.map(data => {
-                console.log(data.unitPrice * data.quantity)
-                return data.unitPrice * data.quantity
+                // console.log(data.unitPrice * data.quantity)
+                let total = data.unitPrice * data.quantity
+                console.log(total)
+                return total
             })
         })
-        let unitPrices = this.props.order.grnDetails.map(singleGrn => {
-            return singleGrn.data.map(unitPrice => {
-                console.log(unitPrice.unitPrice)
-                return unitPrice.unitPrice
-            })
+
+        console.log(total)
+        let totalSum = total.map(arr => arr.reduce((sum, item) => sum += item, 0))
+        const subtotal = totalSum.map(sum=>{
+            console.log(sum)
+            return sum
         })
-        let quantities = this.props.order.grnDetails.map(singleGrn => {
-            return singleGrn.data.map(quantity => {
-                console.log(quantity.quantity)
-                return quantity.quantity
-            })
-        })
-        let totalSum = []
-        console.log(unitPrices.length, quantities.length)
-
-
-        for (let i = 0; i < unitPrices.length; i++) {
-            for (let j = 0; j < quantities[i].length; j++) {
-                let quantity = quantities[i][j]
-                let unitPrice = unitPrices[i][j]
-                totalSum[j] = quantity * unitPrice
-                console.log(totalSum[j])
-                
-            }
-            
-        }
-
         console.log(totalSum)
-        // return totalSum
-        return totalSum.map(value => {
+        return subtotal.map(subtotal => {
             return (
-                <p key={Math.random()}>{this.formatNumber(value.toFixed(2))}</p>
+                <tr colSpan="16">
+                    <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
+                    <th colSpan="8" style={{ textAlign: "right" }}>{subtotal}</th>
+                </tr>
             )
         })
 
@@ -206,42 +193,51 @@ class SinglePurchaseOrderRaw extends React.Component {
         return this.props.order.grnDetails.map(data => {
 
             let grn = this.props.order.grnDetails
-
-            let total = grn.map(data => {
-                return data.data.map(data => {
-                    console.log(data.unitPrice * data.quantity)
-                    return data.unitPrice * data.quantity
-                })
-            })
-            let unitPrices = this.props.order.grnDetails.map(singleGrn => {
-                return singleGrn.data.map(unitPrice => {
-                    console.log(unitPrice.unitPrice)
-                    return unitPrice.unitPrice
-                })
-            })
-            let quantities = this.props.order.grnDetails.map(singleGrn => {
-                return singleGrn.data.map(quantity => {
-                    console.log(quantity.quantity)
-                    return quantity.quantity
-                })
-            })
-            let totalSum = []
-            console.log(total)
-            total.map(data => {
+            const array = []
+            const totalArray = data.data.map(data => {
                 console.log(data)
-                for (let i = 0; i < total.length; i++) {
-                    totalSum[i] = data.reduce((a, b) => a + b, 0)
-                    console.log(totalSum)
-                }
-               
-                return totalSum
+                let total = data.unitPrice * data.quantity
+                console.log(total)
 
+                for (let i = 0; i < array.length; i++) {
+                    array[i] = data.unitPrice * data.quantity
+
+
+                }
+                return total
             })
-            // return totalSum
+
+            console.log(array)
+            const total = grn.map(data => {
+                console.log(data)
+                return data.data.map(data => {
+                    // console.log(data.unitPrice * data.quantity)
+                    let total = data.unitPrice * data.quantity
+                    console.log(data.unitPrice)
+                    return total
+                })
+            })
+
+            console.log(totalArray)
+            console.log(total)
+            let totalSum = total.map(arr => arr.reduce((sum, item) => sum += item, 0))
+            const subtotal1 = totalSum.map(sum => {
+                console.log(sum)
+                return sum
+            })
+            console.log(totalSum)
+            const subtotal = subtotal1.map(subtotal => {
+                return (
+                    <tr colSpan="16">
+                        <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
+                        <th colSpan="8" style={{ textAlign: "right" }}>{subtotal}</th>
+                    </tr>
+                )
+            })
 
             return (
 
-                <table key={Math.random()} className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                <table key={Math.random()} className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                     <thead className="full-width">
                         <tr>
                             <th colSpan="8">
@@ -284,9 +280,10 @@ class SinglePurchaseOrderRaw extends React.Component {
                             </td>
                             <td style={{ textAlign: "right" }}>
                                 {data.data.map(data => {
-                                    const price = parseInt(data.unitPrice)
+                                    const price = data.unitPrice
+                                    console.log(data)
                                     return (
-                                        <p key={Math.random()}>{this.formatNumber(price.toFixed(2))}</p>
+                                        <p key={Math.random()}>{price}</p>
                                     )
                                 })}
                             </td>
@@ -299,11 +296,11 @@ class SinglePurchaseOrderRaw extends React.Component {
                             </td>
                             <td style={{ textAlign: "right" }}>
                                 {data.data.map(data => {
-                                    const price = parseInt(data.unitPrice)
-                                    const quantity = parseInt(data.quantity)
+                                    const price =Number(data.unitPrice)
+                                    const quantity = data.quantity
                                     const total = price * quantity
                                     return (
-                                        <p key={Math.random()}>{this.formatNumber(total.toFixed(2))}</p>
+                                        <p key={Math.random()}>{total}</p>
                                     )
                                 })}
                             </td>
@@ -311,10 +308,7 @@ class SinglePurchaseOrderRaw extends React.Component {
 
                     </tbody>
                     <tfoot>
-                        <tr colSpan="16">
-                            <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
-                            <th colSpan="8" style={{ textAlign: "right" }}></th>
-                        </tr>
+                        {subtotal}
                     </tfoot>
                 </table>
             )
@@ -357,7 +351,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                     <Tab.Pane attached={false}>
                         <div>
                             <div>
-                                <table className="ui celled small padded compact structured table" style={{ marginTop: "20px" }}>
+                                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                                     <thead className="full-width">
                                         <tr>
                                             <th colSpan="12" style={{ color: "red" }}><h4>Order Details</h4></th>
