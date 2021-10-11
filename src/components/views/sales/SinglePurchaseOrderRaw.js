@@ -1,12 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
-import { reduxForm } from 'redux-form';
+import { reduxForm, Field, FieldArray } from 'redux-form';
 import { Tab } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import NewGrnRaw from './NewGrnRaw';
-import { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw } from '../../../actions';
+import NewReturnFormRaw from './NewReturnFormRaw';
+import { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw } from '../../../actions';
 
 class SinglePurchaseOrderRaw extends React.Component {
 
@@ -14,7 +14,172 @@ class SinglePurchaseOrderRaw extends React.Component {
         this.props.fetchPurchaseOrderRaw(this.props.match.params.id)
         this.props.fetchGrnByPurchaseOrder(this.props.match.params.id)
     }
+    renderError({ error, touched }) {
+        if (touched && error) {
+            return (
+                <div className="ui error message">
+                    <div className="Header">{error}</div>
+                </div>
+            );
+        }
+    }
+    errorMessage() {
+        if (this.props.errorMessage) {
+            console.log(this.props)
+            return (
+                <div className="ui error message">
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
+    }
+    renderInput = ({ input, label, placeholder, type, meta, required }) => {
+        return (
+            <div className="field">
+                <label>{label}</label>
+                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
+                {this.renderError(meta)}
+            </div>
+        );
+    }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+                {this.renderError(meta)}
+            </div>
+        </div>
+    )
+    renderSuccessMessage() {
+        if (this.props.sucessMessege === 200) {
+            return (
+                <div className="ui success message">
+                    <div className="header">Successfull !</div>
+                </div>
+            )
+        }
+    }
+    rendeSuppliers() {
+        return this.props.suppliers.map(supplier => {
+            return (
+                <option key={supplier._id} value={supplier.id}>{supplier.companyName}</option>
+            )
+        })
+    }
+    renderRawMaterials() {
+        return this.props.rawMaterials.map(rawMaterial => {
+            return (
+                <option key={rawMaterial._id} value={rawMaterial.id}>{rawMaterial.materialName}</option>
+            )
+        })
+    }
+    renderRawMaterialsDropDown = ({ fields, meta: { error, submitFailed } }) => {
+        return (
+            <div>
+                <ul>
+                    {fields.map((rawMaterials, index) => <li key={index}>
+                        <label htmlFor={rawMaterials}>Material #{index + 1}</label>
+                        <div className="fields">
+                            <div className="eight wide field disabled">
+                                Material Name
+                                <Field name={`${rawMaterials}.id`} type="text" required component={this.renderSelectField} >
+                                    <option>-Select Material-</option>
+                                    {this.renderRawMaterials()}
+                                </Field>
+                            </div>
+                            <div className="four wide field disabled">
+                                Unit Of Measure
+                                <Field name={`${rawMaterials}.uom`} type="text" required component={this.renderSelectField} placeholder="UOM" >
+                                    <option>-UOM-</option>
+                                    <option value="Each">Each</option>
+                                    <option value="kg">kg</option>
+                                    <option value="l">l</option>
+                                    <option value="m">m</option>
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="cm">cm</option>
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                Quantity
+                                <Field name={`${rawMaterials}.quantity`} type="number" required component={this.renderInput} placeholder="Quantity" >
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                Unit Price
+                                <Field name={`${rawMaterials}.unitPrice`} type="number" required component={this.renderInput} placeholder="Unit Price" >
+                                </Field>
+                            </div>
+                        </div>
+                    </li>)}
+                </ul>
+            </div>
+        )
+    }
+    rederGrnForm() {
 
+        return (
+            <div>
+                <div>
+                    <h4>Create new GRN</h4>
+                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                        <div className="fields">
+                            <div className="six wide field">
+                                Supplier Invoice Number
+                                <Field name="invoiceNumber" type="text" required component={this.renderInput} placeholder="Supplier Invoice Number">
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                Invoice Date
+                                <Field name="invoiceDate" type="date" required component={this.renderInput} placeholder="Supplier Invoice Number">
+                                </Field>
+                            </div>
+                            <div className="six wide field">
+                                Remarks (Optional)
+                                <Field name="remarks" type="text" required component={this.renderInput} placeholder="Remarks">
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="fields">
+                            <div className="sixteen wide field">
+                                <FieldArray name="rawMaterials" component={this.renderRawMaterialsDropDown} />
+                            </div>
+                        </div>
+
+                        <div className="field">
+                            <button type="submit" className="ui primary button">Submit</button>
+                        </div>
+                    </form>
+                    {this.renderSuccessMessage()}
+                </div>
+            </div>
+        )
+
+    }
+    onSubmit = (formValues) => {
+
+        for (let i = 0; i < formValues.rawMaterials.length; i++) {
+            formValues.rawMaterials[i].date = moment().format('DD/MM/YYYY, h:mm:ss a');
+            formValues.rawMaterials[i].materialName = formValues.rawMaterialsList[i].materialName
+            formValues.rawMaterials[i].materialCode = formValues.rawMaterialsList[i].materialCodeRm
+            formValues.rawMaterials[i].materialGroup = formValues.rawMaterialsList[i].materialGroup
+            formValues.rawMaterials[i].remainingQuantity = formValues.rawMaterials[i].quantity
+            formValues.rawMaterials[i].supplierId = formValues.supplierId
+            formValues.rawMaterials[i].companyName = formValues.supplier[0].companyName
+            formValues.rawMaterials[i].purchaseOrderId = formValues.id
+            formValues.rawMaterials[i].purchaseOrderNumber = formValues.orderNumber
+            formValues.rawMaterials[i].invoiceNumber = formValues.invoiceNumber
+            formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
+            formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
+            formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
+            formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
+        }
+        console.log("Form", formValues)
+        this.props.grnPurchaseOrderRaw(formValues._id, formValues)
+    }
     renderPurchaseOrederDetails() {
         return (
             <tr>
@@ -68,7 +233,7 @@ class SinglePurchaseOrderRaw extends React.Component {
     renderSupplierDetails() {
 
         return (
-            <div className="ui raised segment" style={{ paddingTop: "20px", paddingLeft: "30px", paddingBottom: "20px" }}>
+            <div>
                 <p><strong>Company Name:</strong>{this.props.order.supplier.map(Supplier => {
                     return (
                         <span key={Supplier.id}>{Supplier.companyName}</span>
@@ -121,8 +286,8 @@ class SinglePurchaseOrderRaw extends React.Component {
     formatNumber = (num) => {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
-    printGrn(id) {
-        this.props.printGrnRaw(id)
+    printGrn = (grnId) => {
+        this.props.printGrnRaw(this.props.order.id, grnId)
     }
     printPurchaseOrder = () => {
         this.props.printPurchaseOrderRaw(this.props.order.id)
@@ -163,7 +328,7 @@ class SinglePurchaseOrderRaw extends React.Component {
 
         console.log(total)
         let totalSum = total.map(arr => arr.reduce((sum, item) => sum += item, 0))
-        const subtotal = totalSum.map(sum=>{
+        const subtotal = totalSum.map(sum => {
             console.log(sum)
             return sum
         })
@@ -183,9 +348,9 @@ class SinglePurchaseOrderRaw extends React.Component {
 
     }
     renderAllGrn() {
-        if (!this.props.order) {
+        if (!this.props.order.grnDetails) {
             return (
-                <div>
+                <div style={{ paddingBottom: "15px", paddingTop: "15px", paddingLeft: "0px" }}>
                     <h4>No any GRN found</h4>
                 </div>
             )
@@ -195,9 +360,10 @@ class SinglePurchaseOrderRaw extends React.Component {
             let grn = this.props.order.grnDetails
             const array = []
             const totalArray = data.data.map(data => {
-                console.log(data)
+                // console.log(data)
                 let total = data.unitPrice * data.quantity
-                console.log(total)
+                // console.log(total)
+
 
                 for (let i = 0; i < array.length; i++) {
                     array[i] = data.unitPrice * data.quantity
@@ -207,30 +373,31 @@ class SinglePurchaseOrderRaw extends React.Component {
                 return total
             })
 
-            console.log(array)
+            // console.log(array)
             const total = grn.map(data => {
-                console.log(data)
+                // console.log(data)
                 return data.data.map(data => {
                     // console.log(data.unitPrice * data.quantity)
                     let total = data.unitPrice * data.quantity
-                    console.log(data.unitPrice)
+                    // console.log(data.unitPrice)
                     return total
                 })
             })
 
-            console.log(totalArray)
-            console.log(total)
+            // console.log(totalArray)
+            // console.log(total)
             let totalSum = total.map(arr => arr.reduce((sum, item) => sum += item, 0))
             const subtotal1 = totalSum.map(sum => {
-                console.log(sum)
+                // console.log(sum)
                 return sum
             })
-            console.log(totalSum)
+            // console.log(totalSum)
             const subtotal = subtotal1.map(subtotal => {
+                const sub = Number(subtotal)
                 return (
                     <tr colSpan="16">
                         <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
-                        <th colSpan="8" style={{ textAlign: "right" }}>{subtotal}</th>
+                        <th colSpan="8" style={{ textAlign: "right" }}>{this.formatNumber(sub.toFixed(2))}</th>
                     </tr>
                 )
             })
@@ -241,8 +408,16 @@ class SinglePurchaseOrderRaw extends React.Component {
                     <thead className="full-width">
                         <tr>
                             <th colSpan="8">
-                                <tr><h4 style={{ color: "red" }}>GRN</h4></tr>
-                                <tr><p>Date-{moment(data.date).format('DD MM YYYY, h:mm A')}</p></tr>
+                                <tr><h4 style={{ color: "red" }}>{data.grnNumber}</h4></tr>
+                                <tr><p>Date-{moment(data.date).format('MM/DD/YYYY, h:mm A')}</p></tr>
+                                <tr><p>Invoice Number-{data.data.map(data => {
+                                    return data.invoiceNumber
+                                }
+                                )}</p></tr>
+                                <tr><p>Invoice Date-{data.data.map(data => {
+                                    return moment(data.invoiceDate).format('MM/DD/YYYY')
+                                }
+                                )}</p></tr>
                                 <tr><p>Remarks-{data.remarks}</p></tr>
                             </th>
                         </tr>
@@ -281,7 +456,6 @@ class SinglePurchaseOrderRaw extends React.Component {
                             <td style={{ textAlign: "right" }}>
                                 {data.data.map(data => {
                                     const price = data.unitPrice
-                                    console.log(data)
                                     return (
                                         <p key={Math.random()}>{price}</p>
                                     )
@@ -296,11 +470,11 @@ class SinglePurchaseOrderRaw extends React.Component {
                             </td>
                             <td style={{ textAlign: "right" }}>
                                 {data.data.map(data => {
-                                    const price =Number(data.unitPrice)
+                                    const price = Number(data.unitPrice)
                                     const quantity = data.quantity
-                                    const total = price * quantity
+                                    const total = Number(price) * Number(quantity)
                                     return (
-                                        <p key={Math.random()}>{total}</p>
+                                        <p key={Math.random()}>{this.formatNumber(total.toFixed(2))}</p>
                                     )
                                 })}
                             </td>
@@ -327,8 +501,25 @@ class SinglePurchaseOrderRaw extends React.Component {
             return (
                 <div>
                     <div>
-                        <NewGrnRaw data={this.props.order} />
+                        {this.rederGrnForm()}
                         {this.renderAllGrn()}
+                    </div>
+                </div>
+            )
+        }
+    }
+    rederReturns() {
+        if (this.props.order.order_state === "Pending") {
+            return (
+                <div>
+                    <h4>Pending Purchase Order</h4>
+                </div>
+            )
+        } else if (this.props.order.order_state === "Approved") {
+            return (
+                <div>
+                    <div>
+                        <NewReturnFormRaw data={this.props.order} />
                     </div>
                 </div>
             )
@@ -376,7 +567,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                                     </tfoot>
                                 </table>
                             </div>
-                            <div>
+                            <div style={{ paddingTop: "20px" }}>
                                 {this.renderPrintButton()}
                             </div>
                         </div>
@@ -387,15 +578,23 @@ class SinglePurchaseOrderRaw extends React.Component {
                     <Tab.Pane attached={false}>
                         {this.rederGrn()}
                     </Tab.Pane>
+            },
+            {
+                menuItem: 'Returns Details', render: () =>
+                    <Tab.Pane attached={false}>
+                        {this.rederReturns()}
+                    </Tab.Pane>
             }
         ]
         return (
             <div className="pusher">
                 <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
-                    <h3>Order No #{this.props.order.orderNumber}</h3>
-                    {this.renderSupplierDetails()}
+                    <div className="ui raised segment" style={{ paddingTop: "20px", paddingLeft: "30px", paddingBottom: "20px" }}>
+                        <h4><span style={{ color: "#2185d0" }}>Order No #{this.props.order.orderNumber}</span></h4>
+                        {this.renderSupplierDetails()}
+                    </div>
                     <Tab menu={{ pointing: true }} panes={panes} />
-                    <div style={{ paddingTop: "30px" }}>
+                    <div style={{ paddingTop: "20px" }}>
                         <Link to={"/purchase-order-dashboard-raw"} type="button" className="ui button">Back</Link>
                         <Link to={`/delete-purchase-order-raw/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
                     </div>
@@ -406,23 +605,59 @@ class SinglePurchaseOrderRaw extends React.Component {
         )
     }
 }
-
+//Form input validation
+const validate = (formValues) => {
+    const errors = {}
+    if (!formValues.invoiceNumber) {
+        errors.invoiceNumber = 'Please Enter Supplier Invoice Number';
+    }
+    if (!formValues.selectPurchaseOrderNumber) {
+        errors.selectPurchaseOrderNumber = 'Please Enter Purchase Order';
+    }
+    if (!formValues.invoiceDate) {
+        errors.invoiceDate = 'Please Enter Invoice Date';
+    }
+    if (!formValues.rawMaterials || !formValues.rawMaterials.length) {
+        errors.rawMaterials = { _error: 'At least one material must be entered' }
+    } else {
+        const rawMaterialsArrayErrors = []
+        formValues.rawMaterials.forEach((rawMaterials, index) => {
+            const productErrors = {}
+            if (!rawMaterials || !rawMaterials.quantity) {
+                productErrors.quantity = 'Required, Minimum Value "0"'
+                rawMaterialsArrayErrors[index] = productErrors
+            }
+            if (!rawMaterials || !rawMaterials.unitPrice) {
+                productErrors.unitPrice = 'Required'
+                rawMaterialsArrayErrors[index] = productErrors
+            }
+        })
+        if (rawMaterialsArrayErrors.length) {
+            errors.rawMaterials = rawMaterialsArrayErrors
+        }
+    }
+    return errors;
+}
 const mapStateToProps = (state, ownPorps) => {
     const suppliers = Object.values(state.supplier)
     const rawMaterials = Object.values(state.rawMaterials)
     const order = state.purchaseOrdersRaw[ownPorps.match.params.id]
-    const grn = Object.values(state.rawMaterialGrn)
+    const sucessMessege = state.purchaseOrdersRaw.undefined
+    console.log(state.purchaseOrdersRaw.undefined)
+
     return {
         errorMessage: state,
         suppliers: suppliers,
         rawMaterials: rawMaterials,
         order: order,
+        sucessMessege: sucessMessege,
         initialValues: order,
-        grn: grn
+
     };
 }
 const formWrapped = reduxForm({
-    form: 'purchaseOrderRawGrn'
+    form: 'purchaseOrderRawGrn',
+    validate: validate
 })(SinglePurchaseOrderRaw);
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw })(formWrapped);

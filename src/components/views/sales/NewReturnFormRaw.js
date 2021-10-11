@@ -2,12 +2,10 @@ import React from 'react';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 import moment from 'moment'
 import { connect } from 'react-redux';
-import { fetchPurchaseOrderRaw, fetchPurchaseOrdersRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, grnPurchaseOrderRaw, fetchGrnByPurchaseOrder, printGrnRaw } from '../../../actions';
+import { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, returnsPurchaseOrderRaw, printGrnRaw } from '../../../actions';
 
-class NewGrnRaw extends React.Component {
+class NewReturnFormRaw extends React.Component {
     componentDidMount() {
-        //this.props.fetchGrnByPurchaseOrder(this.props.match.params.id)
-        this.props.fetchPurchaseOrdersRaw()
         this.props.fetchSuppliers()
         this.props.fetchRawMaterials()
     }
@@ -52,16 +50,6 @@ class NewGrnRaw extends React.Component {
             </div>
         </div>
     )
-    renderPurchaseOrders() {
-        return this.props.purchaseOrders.map(order => {
-            if (order.order_state === "Approved") {
-                return (
-                    <option key={order._id} value={order.id}>{order.orderNumber}</option>
-                )
-            }
-
-        })
-    }
     // renderSuccessMessage() {
     //     if (this.props.grn[0] === 200) {
     //         return (
@@ -71,13 +59,7 @@ class NewGrnRaw extends React.Component {
     //         )
     //     }
     // }
-    rendeSuppliers() {
-        return this.props.suppliers.map(supplier => {
-            return (
-                <option key={supplier._id} value={supplier.id}>{supplier.companyName}</option>
-            )
-        })
-    }
+    
     renderRawMaterials() {
         return this.props.rawMaterials.map(rawMaterial => {
             return (
@@ -133,7 +115,7 @@ class NewGrnRaw extends React.Component {
         return (
             <div>
                 <div>
-                    <h4>Create new GRN</h4>
+                    <h4>Create new Return</h4>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="six wide field">
@@ -189,7 +171,7 @@ class NewGrnRaw extends React.Component {
             formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
         }
         console.log("Form", formValues)
-        this.props.grnPurchaseOrderRaw(formValues._id, formValues)
+        this.props.returnsPurchaseOrderRaw(formValues._id, formValues)
     }
     render() {
         return (
@@ -234,9 +216,9 @@ const validate = (formValues) => {
 }
 
 const formWrapped = reduxForm({
-    form: 'purchaseOrderRawGrn',
+    form: 'purchaseOrderReturnsRaw',
     validate: validate
-})(NewGrnRaw);
+})(NewReturnFormRaw);
 
 
 const mapStateToProps = (state, ownPorps) => {
@@ -251,4 +233,4 @@ const mapStateToProps = (state, ownPorps) => {
     };
 }
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, fetchPurchaseOrdersRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, grnPurchaseOrderRaw, fetchGrnByPurchaseOrder, printGrnRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, returnsPurchaseOrderRaw, printGrnRaw })(formWrapped);

@@ -59,6 +59,7 @@ import {
     EDIT_PURCHASE_ORDER_RAW,
     FETCH_PURCHASE_ORDER_RAW,
     FETCH_PURCHASE_ORDERS_RAW,
+    NEW_GRN_PURCHASE_ORDER_RAW,
     DELETE_PURCHASE_ORDER_RAW,
     SEARCH_PURCHASE_ORDERS_RESULT_RAW,
     CREATE_PURCHASE_ORDER_PACKING,
@@ -1064,14 +1065,51 @@ export const grnPurchaseOrderRaw = (id, formValues) => async dispatch => {
         }
     };
     const response = await api.patch(`/api/sales/purchase-orders-raw/grn-purchase-order-raw/${id}`, { ...formValues }, header);
-    dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.data });
-    console.log(response.data)
+    dispatch({ type: NEW_GRN_PURCHASE_ORDER_RAW, payload: response.status });
+    console.log(response.status)
     setTimeout(function () {
-       // window.location.reload()
+       window.location.reload()
     }, 2000);
 
 };
+//Returns 
+export const returnsPurchaseOrderRaw = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-raw/returns-purchase-order-raw/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_PURCHASE_ORDER_RAW, payload: response.status });
+    console.log(response.status)
+    setTimeout(function () {
+        // window.location.reload()
+    }, 2000);
 
+};
+//Print GRN RM
+export const printGrnRaw = (id, grnId) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Authorization': token,
+            'Content-Type': 'application/pdf',
+            'Accept': 'application/pdf',
+            'Content-Disposition': 'attachment;filename=purchaseorderrm.pdf'
+
+        }
+    };
+    const response = await api.get(`/api/sales/purchase-orders-raw/print-grn-raw/${id}/${grnId}`, { responseType: 'arraybuffer' }, header, { id });
+    //Create a Blob from the PDF Stream
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    //Build a URL from the file
+    const fileURL = URL.createObjectURL(file);
+    //Open the URL on new Window
+    window.open(fileURL);
+};
 //Search purchase orders raw
 export const searchPurchaseOrdersRaw = (formValues) => async dispatch => {
     const token = sessionStorage.getItem('user');
@@ -1964,26 +2002,8 @@ export const fetchSingleGrn = (id) => async dispatch => {
     const response = await api.get(`api/inventory/finish-good/single-finish-good-inventory/${id}`, header);
     dispatch({ type: FETCH_GRN_RM_INVENTORY, payload: response.data[0] });
 };
-//Print GRN RM
-export const printGrnRaw = (id) => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    const header = {
-        headers: {
-            'Authorization': token,
-            'Content-Type': 'application/pdf',
-            'Accept': 'application/pdf',
-            'Content-Disposition': 'attachment;filename=purchaseorderrm.pdf'
 
-        }
-    };
-    const response = await api.get(`/api/inventory/raw-material/print-grn-raw/${id}`, { responseType: 'arraybuffer' }, header, { id });
-    //Create a Blob from the PDF Stream
-    const file = new Blob([response.data], { type: 'application/pdf' });
-    //Build a URL from the file
-    const fileURL = URL.createObjectURL(file);
-    //Open the URL on new Window
-    window.open(fileURL);
-};
+
 //New GRN PM
 export const createNewGrnPm = formValues => async dispatch => {
     console.log(formValues)

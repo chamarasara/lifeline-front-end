@@ -52,7 +52,7 @@ class SinglePurchaseOrderPacking extends React.Component {
             for (let i = 0; i < Math.min(grnData.length); i++) {
                 let total = grnData[i]
                 console.log(total)
-                totalValue[i] = Number(total.quantity) * Number(total.unitPrice)             
+                totalValue[i] = Number(total.quantity) * Number(total.unitPrice)
 
             }
             const grnId = data.id
@@ -330,19 +330,10 @@ class SinglePurchaseOrderPacking extends React.Component {
         }
     }
     renderPrintButton() {
-        if (this.props.order.order_state === "Pending") {
+        if (this.props.order.order_state === "Approved") {
             return (
                 <div>
-                    <Link to={"/purchase-order-dashboard-packing"} type="button" className="ui button">Back</Link>
-                    <Link to={`/delete-purchase-order-packing/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
-                </div>
-            )
-        } else if (this.props.order.order_state === "Approved") {
-            return (
-                <div>
-                    <Link to={"/purchase-order-dashboard-packing"} type="button" className="ui button">Back</Link>
                     <button type="button" onClick={this.onClick} className="ui primary button">Print</button>
-                    <Link to={`/delete-purchase-order-packing/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
                 </div>
             )
         }
@@ -378,9 +369,9 @@ class SinglePurchaseOrderPacking extends React.Component {
         const panes = [
             {
                 menuItem: 'Purchase Order Details', render: () =>
-                    <div>
+                    <Tab.Pane attached={false}>
                         <div>
-                            <Tab.Pane attached={false}>
+                            <div>
                                 <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                                     <thead className="full-width">
                                         <tr>
@@ -402,12 +393,15 @@ class SinglePurchaseOrderPacking extends React.Component {
                                         <tr colSpan="16">
                                             <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
                                             <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
-                                        </tr>                                        
-                                    </tfoot>                                    
+                                        </tr>
+                                    </tfoot>
                                 </table>
-                            </Tab.Pane>
-                        </div>                       
-                    </div>
+                            </div>
+                            <div style={{ paddingTop: "20px" }}>
+                                {this.renderPrintButton()}
+                            </div>
+                        </div>
+                    </Tab.Pane>
             },
             {
                 menuItem: 'GRN Details', render: () =>
@@ -422,7 +416,10 @@ class SinglePurchaseOrderPacking extends React.Component {
                     <h3>Order No #{this.props.order.orderNumber}</h3>
                     {this.renderSupplierDetails()}
                     <Tab menu={{ pointing: true }} panes={panes} />
-                    {this.renderPrintButton()}
+                    <div style={{ paddingTop: "20px" }}>
+                        <Link to={"/purchase-order-dashboard-packing"} type="button" className="ui button">Back</Link>
+                        <Link to={`/delete-purchase-order-packing/${this.props.match.params.id}`} type="button" className="ui red button">Disable</Link>
+                    </div>
                 </div>
                 <div>
                 </div>
