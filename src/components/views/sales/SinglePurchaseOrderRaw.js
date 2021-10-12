@@ -508,19 +508,26 @@ class SinglePurchaseOrderRaw extends React.Component {
             )
         }
     }
-    rederReturns() {
+    rederPaymentsTab() {
         if (this.props.order.order_state === "Pending") {
             return (
-                <div>
+                <div style={{ paddingBottom: "15px", paddingTop: "15px", paddingLeft: "0px" }}>
                     <h4>Pending Purchase Order</h4>
                 </div>
             )
         } else if (this.props.order.order_state === "Approved") {
             return (
                 <div>
-                    <div>
-                        <NewReturnFormRaw data={this.props.order} />
-                    </div>
+                    <div className="ui two column grid">
+                        <div className="row">
+                            <div className="column">
+                                <NewReturnFormRaw data={this.props.order} />
+                            </div>
+                            <div className="column">
+                                <NewReturnFormRaw data={this.props.order} />
+                            </div>
+                        </div>                   
+                    </div>                   
                 </div>
             )
         }
@@ -530,7 +537,7 @@ class SinglePurchaseOrderRaw extends React.Component {
         if (!this.props.order) {
             return (
                 <div className="pusher">
-                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "60px" }}>
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
                         <div className="ui active centered inline loader"></div>
                     </div>
                 </div>
@@ -580,9 +587,9 @@ class SinglePurchaseOrderRaw extends React.Component {
                     </Tab.Pane>
             },
             {
-                menuItem: 'Returns Details', render: () =>
+                menuItem: 'Payments', render: () =>
                     <Tab.Pane attached={false}>
-                        {this.rederReturns()}
+                        {this.rederPaymentsTab()}
                     </Tab.Pane>
             }
         ]
