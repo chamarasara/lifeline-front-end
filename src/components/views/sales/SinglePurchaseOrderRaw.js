@@ -119,6 +119,42 @@ class SinglePurchaseOrderRaw extends React.Component {
             </div>
         )
     }
+    renderAdditionalChargesDropDown = ({ fields, meta: { error, submitFailed } }) => {
+        return (
+            <div>
+                <ul>
+                    {fields.map((additionalCharges, index) => <li key={index}>
+                        <label htmlFor={additionalCharges}>Expense #{index + 1}</label>
+                        <div className="fields">
+                            <div className="four wide field">
+                                <Field name={`${additionalCharges}.reason`} type="text" required component={this.renderSelectField} placeholder="Expense Name" >
+                                    <option>-Select Expnese-</option>
+                                    <option value="Transport">Transport</option>
+                                    <option value="Sea Freight">Sea Freight</option>
+                                    <option value="Air Freight">Air Freight</option>
+                                    <option value="Custom Duty">Custom Duty</option>
+                                    <option value="Documents Charges">Documents Charges</option>
+                                    <option value="Service Fee">Service Fee</option>
+                                    <option value="Other">Other</option>
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                <Field name={`${additionalCharges}.amount`} type="number" required component={this.renderInput} placeholder="Amount" >
+                                </Field>
+                            </div>
+                            <div className="eight wide field">
+                                <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
+                            </div>
+                        </div>
+                    </li>)}
+                    <li>
+                        <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Expense</button>
+                        {submitFailed && error && <span style={{ color: "red" }}>{error}</span>}
+                    </li>
+                </ul>
+            </div>
+        )
+    }
     rederGrnForm() {
 
         return (
@@ -145,10 +181,16 @@ class SinglePurchaseOrderRaw extends React.Component {
                         </div>
                         <div className="fields">
                             <div className="sixteen wide field">
+                                Material Details
                                 <FieldArray name="rawMaterials" component={this.renderRawMaterialsDropDown} />
                             </div>
                         </div>
-
+                        <div className="fields">
+                            <div className="sixteen wide field">
+                                Additional Charges
+                                <FieldArray name="additionalCharges" component={this.renderAdditionalChargesDropDown} />
+                            </div>
+                        </div>
                         <div className="field">
                             <button type="submit" className="ui primary button">Submit</button>
                         </div>
@@ -173,9 +215,7 @@ class SinglePurchaseOrderRaw extends React.Component {
             formValues.rawMaterials[i].purchaseOrderNumber = formValues.orderNumber
             formValues.rawMaterials[i].invoiceNumber = formValues.invoiceNumber
             formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
-            formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
-            formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
-            formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
+
         }
         console.log("Form", formValues)
         this.props.grnPurchaseOrderRaw(formValues._id, formValues)
@@ -347,6 +387,28 @@ class SinglePurchaseOrderRaw extends React.Component {
         // return this.formatNumber(totalSum.toFixed(2))
 
     }
+    renderAdditionalCharges() {
+        return this.props.order.grnDetails.map(data => {
+            if (!data.additionalCharges) {
+                return (
+                    <tr colSpan="16">
+                        <th colSpan="5" style={{ textAlign: "left" }}><span style={{ color: "#2185d0" }}>(+)</span> Additional Charges</th>
+                        <th colSpan="8" style={{ textAlign: "right" }}>0.00</th>
+                    </tr>
+                )
+            }
+            return data.additionalCharges.map(expenses => {
+
+                const amount = Number(expenses.amount)
+                return (
+                    <tr colSpan="16">
+                        <th colSpan="5" style={{ textAlign: "right" }}><span style={{ color: "#2185d0" }}>(+)</span> {expenses.reason}</th>
+                        <th colSpan="8" style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</th>
+                    </tr>
+                )
+            })
+        })
+    }
     renderAllGrn() {
         if (!this.props.order.grnDetails) {
             return (
@@ -356,51 +418,56 @@ class SinglePurchaseOrderRaw extends React.Component {
             )
         }
         return this.props.order.grnDetails.map(data => {
+            console.log(data.additionalCharges)
+            let additionalCharges = <tr colSpan="16">
+                                        <th colSpan="5" style={{ textAlign: "right" }}><span style={{ color: "#2185d0" }}>(+)</span> Additional Charges</th>
+                                        <th colSpan="8" style={{ textAlign: "right" }}>0.00</th>
+                                     </tr>
+            if (data.additionalCharges) {
+                additionalCharges = data.additionalCharges.map(expenses => {
 
-            let grn = this.props.order.grnDetails
+                    const amount = Number(expenses.amount)
+                    return (
+                        <tr colSpan="16">
+                            <th colSpan="5" style={{ textAlign: "right" }}><span style={{ color: "#2185d0" }}>(+)</span> {expenses.reason}</th>
+                            <th colSpan="8" style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</th>
+                        </tr>
+                    )
+                })
+            }
+            else {
+
+            }
+
+            const additionalChargeArray = []
+            let totalAdditionalCharges = [0.00]
+            if (data.additionalCharges) {
+                totalAdditionalCharges = data.additionalCharges.map(data => {
+                    let total = Number(data.amount)
+                    for (let i = 0; i < additionalChargeArray.length; i++) {
+                        additionalChargeArray[i] = total
+                    }
+                    return total
+                })
+            }
+
+
+
+
+            const sumOfAdditionalCharges = totalAdditionalCharges.reduce((partial_sum, a) => partial_sum + a, 0)
+
             const array = []
             const totalArray = data.data.map(data => {
-                // console.log(data)
-                let total = data.unitPrice * data.quantity
-                // console.log(total)
-
-
+                console.log(data)
+                let total = Number(data.unitPrice) * Number(data.quantity)
                 for (let i = 0; i < array.length; i++) {
-                    array[i] = data.unitPrice * data.quantity
-
-
+                    array[i] = total
                 }
                 return total
             })
-
-            // console.log(array)
-            const total = grn.map(data => {
-                // console.log(data)
-                return data.data.map(data => {
-                    // console.log(data.unitPrice * data.quantity)
-                    let total = data.unitPrice * data.quantity
-                    // console.log(data.unitPrice)
-                    return total
-                })
-            })
-
-            // console.log(totalArray)
-            // console.log(total)
-            let totalSum = total.map(arr => arr.reduce((sum, item) => sum += item, 0))
-            const subtotal1 = totalSum.map(sum => {
-                // console.log(sum)
-                return sum
-            })
-            // console.log(totalSum)
-            const subtotal = subtotal1.map(subtotal => {
-                const sub = Number(subtotal)
-                return (
-                    <tr colSpan="16">
-                        <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
-                        <th colSpan="8" style={{ textAlign: "right" }}>{this.formatNumber(sub.toFixed(2))}</th>
-                    </tr>
-                )
-            })
+            const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)
+            const grandTotal = Number(sumOfArray) + Number(sumOfAdditionalCharges)
+            const formattedSumOfArray = this.formatNumber(sumOfArray.toFixed(2))
 
             return (
 
@@ -410,10 +477,11 @@ class SinglePurchaseOrderRaw extends React.Component {
                             <th colSpan="8">
                                 <tr><h4 style={{ color: "red" }}>{data.grnNumber}</h4></tr>
                                 <tr><p>Date-{moment(data.date).format('MM/DD/YYYY, h:mm A')}</p></tr>
-                                <tr><p>Invoice Number-{data.data.map(data => {
+                                <tr>Invoice Number-{data.data.map(data => {
+                                    console.log(data.invoiceNumber)
                                     return data.invoiceNumber
                                 }
-                                )}</p></tr>
+                                )}</tr>
                                 <tr><p>Invoice Date-{data.data.map(data => {
                                     return moment(data.invoiceDate).format('MM/DD/YYYY')
                                 }
@@ -479,16 +547,21 @@ class SinglePurchaseOrderRaw extends React.Component {
                                 })}
                             </td>
                         </tr>
-
                     </tbody>
                     <tfoot>
-                        {subtotal}
+                        <tr colSpan="16">
+                            <th colSpan="5" style={{ textAlign: "right", color: "#000" }}><strong>Subtotal</strong></th>
+                            <th colSpan="8" style={{ textAlign: "right", color: "#000" }}><strong>{formattedSumOfArray}</strong></th>
+                        </tr>
+                        {additionalCharges}
+                        <tr colSpan="16">
+                            <th colSpan="5" style={{ textAlign: "right", color: "red" }}><strong>Grand Total</strong></th>
+                            <th colSpan="8" style={{ textAlign: "right", color: "red" }}><strong>{this.formatNumber(grandTotal.toFixed(2))}</strong></th>
+                        </tr>
                     </tfoot>
                 </table>
             )
-
         })
-
     }
     rederGrn() {
         if (this.props.order.order_state === "Pending") {
@@ -526,8 +599,8 @@ class SinglePurchaseOrderRaw extends React.Component {
                             <div className="column">
                                 <NewReturnFormRaw data={this.props.order} />
                             </div>
-                        </div>                   
-                    </div>                   
+                        </div>
+                    </div>
                 </div>
             )
         }
