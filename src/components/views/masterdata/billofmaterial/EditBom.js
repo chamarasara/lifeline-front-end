@@ -188,8 +188,6 @@ const mapStateToProps = (state, ownPorps) => {
 }
 
 const formWrapped = reduxForm({
-    form: 'editBom',
-    destroyOnUnmount: false, // <------ preserve form data
-    forceUnregisterOnUnmount: true
+    form: 'editBom'
 })(EditBom);
 export default connect(mapStateToProps, { fetchBom, editBom, fetchRawMaterials, fetchPackingMaterials, fetchFinishGoods })(formWrapped);

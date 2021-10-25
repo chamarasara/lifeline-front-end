@@ -141,29 +141,33 @@ import ReturnInvoiceDashboard from './views/sales/returninvoices/ReturnInvoiceDa
 import SingleReturnInvoice from './views/sales/returninvoices/SingleReturnInvoice ';
 import RawMaterialInventoryDashboard from './views/inventory/rawmaterial/RawMaterialInventoryDashboard';
 import NewGrnRaw from './views/inventory/rawmaterial/NewGrnRaw';
-
+import ProductionDashboard from './views/Production/ProductionDashboard';
+import BankAccountsDashboard from './views/masterdata/bankaccounts/BankAccountsDashboard';
+import NewBankAccount from './views/masterdata/bankaccounts/NewBankAccount';
+import EditBankAccount from './views/masterdata/bankaccounts/EditBankAccount';
+import DeleteBankAccount from './views/masterdata/bankaccounts/DeleteBankAccount';
 
 
 
 class App extends React.Component {
 
-    renderNavBar(){
+    renderNavBar() {
         const user = sessionStorage.getItem('user')
         console.log(user)
         if (user === null) {
             return null
-        }else if(user){
-            return <SideBar/>
+        } else if (user) {
+            return <SideBar />
         }
     }
     render() {
-        return(
+        return (
             <div className="ui container">
                 <Router history={history}>
-                {this.renderNavBar()}                   
-                    <Route path="/login" component={Login} />                    
-                    <PrivateRoute path="/" exact component={Dashboard}/>                    
-                    <PrivateRoute path="/users"  component={UserDashboard} />
+                    {this.renderNavBar()}
+                    <Route path="/login" component={Login} />
+                    <PrivateRoute path="/" exact component={Dashboard} />
+                    <PrivateRoute path="/users" component={UserDashboard} />
                     <PrivateRoute path="/createuser" component={NewUser} />
                     <PrivateRoute path="/userprofile/:_id/:id" component={UserProfile} />
                     <PrivateRoute path="/edituser/:_id/:id" component={EditUser} />
@@ -202,40 +206,40 @@ class App extends React.Component {
                     <PrivateRoute path="/new-supplier" component={NewSupplier} />
                     <PrivateRoute path="/supplier-profile/:id" component={SupplierProfile} />
                     <PrivateRoute path="/edit-supplier/:id" component={EditSupplier} />
-                    <PrivateRoute path="/delete-supplier/:id" component={DeleteSupplier} />                    
-                    <PrivateRoute path="/settings" component={Settings} />    
-                    <PrivateRoute path="/raw-material" component={RawMaterialDashboard} />        
-                    <PrivateRoute path="/new-raw-material" component={NewRawMaterial} />  
-                    <PrivateRoute path="/single-raw-material/:id" component={SingleRawMaterial} /> 
-                    <PrivateRoute path="/raw-material-edit-details/:id" component={EditRawMaterial} />   
-                    <PrivateRoute path="/edit-raw-material-mrp-one/:id" component={EditRawMaterialMrpOne} />      
-                    <PrivateRoute path="/edit-raw-material-mrp-two/:id" component={EditRawMaterialMrpTwo} />    
-                    <PrivateRoute path="/edit-raw-material-mrp-three/:id" component={EditRawMaterialMrpThree} />  
-                    <PrivateRoute path="/edit-raw-material-mrp-four/:id" component={EditRawMaterialMrpFour} />  
-                    <PrivateRoute path="/edit-raw-material-plant-one/:id" component={EditRawMaterialPlantOne} /> 
-                    <PrivateRoute path="/edit-raw-material-plant-two/:id" component={EditRawMaterialPlantTwo} />  
-                    <PrivateRoute path="/delete-raw-material/:id" component={DeleteRawMaterial} />                   
-                    <PrivateRoute path="/packing-material" component={PackingMaterialDashboard} /> 
+                    <PrivateRoute path="/delete-supplier/:id" component={DeleteSupplier} />
+                    <PrivateRoute path="/settings" component={Settings} />
+                    <PrivateRoute path="/raw-material" component={RawMaterialDashboard} />
+                    <PrivateRoute path="/new-raw-material" component={NewRawMaterial} />
+                    <PrivateRoute path="/single-raw-material/:id" component={SingleRawMaterial} />
+                    <PrivateRoute path="/raw-material-edit-details/:id" component={EditRawMaterial} />
+                    <PrivateRoute path="/edit-raw-material-mrp-one/:id" component={EditRawMaterialMrpOne} />
+                    <PrivateRoute path="/edit-raw-material-mrp-two/:id" component={EditRawMaterialMrpTwo} />
+                    <PrivateRoute path="/edit-raw-material-mrp-three/:id" component={EditRawMaterialMrpThree} />
+                    <PrivateRoute path="/edit-raw-material-mrp-four/:id" component={EditRawMaterialMrpFour} />
+                    <PrivateRoute path="/edit-raw-material-plant-one/:id" component={EditRawMaterialPlantOne} />
+                    <PrivateRoute path="/edit-raw-material-plant-two/:id" component={EditRawMaterialPlantTwo} />
+                    <PrivateRoute path="/delete-raw-material/:id" component={DeleteRawMaterial} />
+                    <PrivateRoute path="/packing-material" component={PackingMaterialDashboard} />
                     <PrivateRoute path="/single-packing-material/:id" component={SinglePackingMaterial} />
                     <PrivateRoute path="/new-packing-material" component={NewPackingMaterial} />
-                    <PrivateRoute path="/packing-material-edit-details/:id" component={EditPackingMaterial} /> 
+                    <PrivateRoute path="/packing-material-edit-details/:id" component={EditPackingMaterial} />
                     <PrivateRoute path="/edit-packing-material-mrp-one/:id" component={EditPackingMaterialMrpOne} />
-                    <PrivateRoute path="/edit-packing-material-mrp-two/:id" component={EditPackingMaterialMrpTwo} />                  
-                    <PrivateRoute path="/edit-packing-material-mrp-three/:id" component={EditPackingMaterialMrpThree} /> 
-                    <PrivateRoute path="/edit-packing-material-mrp-four/:id" component={EditPackingMaterialMrpFour} /> 
-                    <PrivateRoute path="/edit-packing-material-plant-one/:id" component={EditPackingMaterialPlantOne} />                    
-                    <PrivateRoute path="/edit-packing-material-plant-two/:id" component={EditPackingMaterialPlantTwo} />  
-                    <PrivateRoute path="/delete-packing-material/:id" component={DeletePackingMaterial} />  
+                    <PrivateRoute path="/edit-packing-material-mrp-two/:id" component={EditPackingMaterialMrpTwo} />
+                    <PrivateRoute path="/edit-packing-material-mrp-three/:id" component={EditPackingMaterialMrpThree} />
+                    <PrivateRoute path="/edit-packing-material-mrp-four/:id" component={EditPackingMaterialMrpFour} />
+                    <PrivateRoute path="/edit-packing-material-plant-one/:id" component={EditPackingMaterialPlantOne} />
+                    <PrivateRoute path="/edit-packing-material-plant-two/:id" component={EditPackingMaterialPlantTwo} />
+                    <PrivateRoute path="/delete-packing-material/:id" component={DeletePackingMaterial} />
 
-                    <PrivateRoute path="/finish-goods" component={FinishGoodDashboard} /> 
-                    <PrivateRoute path="/new-finish-good" component={NewFinishGood} />  
+                    <PrivateRoute path="/finish-goods" component={FinishGoodDashboard} />
+                    <PrivateRoute path="/new-finish-good" component={NewFinishGood} />
                     <PrivateRoute path="/single-finish-good-material/:id" component={SingleFinishGoodMaterial} />
                     <PrivateRoute path="/finish-good-edit-details/:id" component={EditFinishGoodMaterial} />
                     <PrivateRoute path="/finish-good-edit-management-details/:id" component={EditManagementData} />
                     <PrivateRoute path="/finish-good-edit-financial-details/:id" component={EditFinancialData} />
                     <PrivateRoute path="/finish-good-edit-distributor-details/:id" component={EditDistributorData} />
                     <PrivateRoute path="/finish-good-edit-quality-details/:id" component={EditQualityData} />
-                    <PrivateRoute path="/delete-finish-good-material/:id" component={DeleteFinishGoodMaterial} />  
+                    <PrivateRoute path="/delete-finish-good-material/:id" component={DeleteFinishGoodMaterial} />
 
                     <PrivateRoute path="/semi-finish-goods" component={SemiFinishGoodDashboard} />
                     <PrivateRoute path="/new-semi-finish-good" component={NewSemiFinishGood} />
@@ -247,7 +251,7 @@ class App extends React.Component {
                     <PrivateRoute path="/edit-semi-finish-good-mrp-four/:id" component={EditSemiFinishGoodMaterialMrpFour} />
                     <PrivateRoute path="/edit-semi-finish-good-plant-one/:id" component={EditSemiFinishGoodMaterialPlantOne} />
                     <PrivateRoute path="/edit-semi-finish-good-plant-two/:id" component={EditSemiFinishGoodMaterialPlantTwo} />
-                    <PrivateRoute path="/delete-semi-finish-good-material/:id" component={DeleteSemiFinishGoodMaterial} />  
+                    <PrivateRoute path="/delete-semi-finish-good-material/:id" component={DeleteSemiFinishGoodMaterial} />
 
                     <PrivateRoute path="/sales-dashboard" component={SalesDashboard} />
                     <PrivateRoute path="/purchase-order-dashboard" component={PurchaseOrderDashboard} />
@@ -256,7 +260,7 @@ class App extends React.Component {
                     <PrivateRoute path="/new-purchase-order-raw" component={NewPurchaseOrderRaw} />
                     <PrivateRoute path="/new-purchase-order-packing" component={NewPurchaseOrderPacking} />
 
-                    <PrivateRoute path="/invoice-dashboard" component={InvoiceDashboard} />                    
+                    <PrivateRoute path="/invoice-dashboard" component={InvoiceDashboard} />
                     <PrivateRoute path="/single-purchase-order-raw/:id" component={SinglePurchaseOrderRaw} />
                     <PrivateRoute path="/delete-purchase-order-raw/:id" component={DeletePurchaseOrderRaw} />
                     <PrivateRoute path="/single-purchase-order-packing/:id" component={SinglePurchaseOrderPacking} />
@@ -264,7 +268,7 @@ class App extends React.Component {
                     <PrivateRoute path="/new-invoice" component={NewInvoice} />
                     <PrivateRoute path="/edit-invoice/:id" component={EditInvoice} />
                     <PrivateRoute path="/delete-invoice/:id" component={DeleteInvoice} />
-                    
+
                     <PrivateRoute path="/return-invoice-dashboard" component={ReturnInvoiceDashboard} />
                     <PrivateRoute path="/new-return-invoice/:id" component={NewReturnInvoice} />
                     <PrivateRoute path="/single-return-invoice/:id" component={SingleReturnInvoice} />
@@ -273,7 +277,7 @@ class App extends React.Component {
                     <PrivateRoute path="/new-quotation" component={NewQuotation} />
                     <PrivateRoute path="/view-quotation/:id" component={ViewQuotation} />
                     <PrivateRoute path="/delete-quotation/:id" component={DeleteQuotation} />
-                    
+
                     <PrivateRoute path="/products-dashboard" component={ProductDashboard} />
                     <PrivateRoute path="/new-product" component={NewProductMaster} />
                     <PrivateRoute path="/single-product-master/:id" component={SingleProductMaster} />
@@ -300,28 +304,36 @@ class App extends React.Component {
                     <PrivateRoute path="/new-bom" component={NewBom} />
                     <PrivateRoute path="/single-bom/:id" component={SingleBom} />
                     <PrivateRoute path="/edit-bom/:id" component={EditBom} />
-                    <PrivateRoute path="/delete-bom/:id" component={DeleteBom} />   
-                    
-                    <PrivateRoute path="/inventory-dashboard" component={InventoryDashboard} /> 
-                    <PrivateRoute path="/finish-good-inventory-dashboard" component={FinishGoodInventoyDashboard} /> 
-                    <PrivateRoute path="/new-finish-good-inventory" component={NewFinishGoodInventory} /> 
-                    <PrivateRoute path="/single-finish-good-inventory/:id" component={SingleFinishGood} /> 
+                    <PrivateRoute path="/delete-bom/:id" component={DeleteBom} />
+
+                    <PrivateRoute path="/inventory-dashboard" component={InventoryDashboard} />
+                    <PrivateRoute path="/finish-good-inventory-dashboard" component={FinishGoodInventoyDashboard} />
+                    <PrivateRoute path="/new-finish-good-inventory" component={NewFinishGoodInventory} />
+                    <PrivateRoute path="/single-finish-good-inventory/:id" component={SingleFinishGood} />
                     <PrivateRoute path="/revise-finish-good-inventory/:id" component={ReviseFinishGood} />
 
                     <PrivateRoute path="/raw-material-inventory-dashboard" component={RawMaterialInventoryDashboard} />
                     <PrivateRoute path="/new-grn-raw-inventory" component={NewGrnRaw} />
                     <PrivateRoute path="/single-finish-good-inventory/:id" component={SingleFinishGood} />
                     <PrivateRoute path="/revise-finish-good-inventory/:id" component={ReviseFinishGood} />
-                    
+
                     <PrivateRoute path="/hr-dashboard/" component={HrDashboard} />
                     <PrivateRoute path="/salaries-dashboard/" component={SalariesDashboard} />
                     <PrivateRoute path="/new-salary/" component={NewSalary} />
                     <PrivateRoute path="/single-salary/:id" component={SingleSalary} />
                     <PrivateRoute path="/edit-salary/:id" component={EditSalary} />
                     <PrivateRoute path="/delete-salary/:id" component={DeleteSalary} />
+
+
+                    <PrivateRoute path="/production-dashboard" component={ProductionDashboard} />
+
+                    <PrivateRoute path="/bank-accounts-dashboard" component={BankAccountsDashboard} />
+                    <PrivateRoute path="/create-bank-account" component={NewBankAccount} />
+                    <PrivateRoute path="/edit-bank-account/:id" component={EditBankAccount} />
+                    <PrivateRoute path="/delete-bank-account/:id" component={DeleteBankAccount} />
                 </Router>
             </div>
-        ) 
+        )
     }
 }
 export default App;

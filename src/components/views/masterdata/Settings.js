@@ -5,7 +5,7 @@ class Settings extends React.Component {
     render() {
         return (
             <div className="pusher">
-                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>                    
+                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
                     <div className="ui four column grid">
                         <div className="column">
                             <Link to={"/raw-material"} className="massive ui blue button">
@@ -13,7 +13,7 @@ class Settings extends React.Component {
                             </Link>
                         </div>
                         <div className="column">
-                            <Link to={"/packing-material"}className="massive ui blue button">
+                            <Link to={"/packing-material"} className="massive ui blue button">
                                 Packing Material
                             </Link>
                         </div>
@@ -61,7 +61,12 @@ class Settings extends React.Component {
                             <button className="massive ui blue button">
                                 Consumable Master
                             </button>
-                        </div>                       
+                        </div>
+                        <div className="column">
+                            <Link to={"/bank-accounts-dashboard"} className="massive ui blue button">
+                                Bank Accounts
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

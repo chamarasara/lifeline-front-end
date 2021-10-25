@@ -5,7 +5,7 @@ import { Tab } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import NewReturnFormRaw from './NewReturnFormRaw';
+import NewReturnFormRaw from '../purchaseorders/NewBankPaymentFormRaw';
 import { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw } from '../../../actions';
 
 class SinglePurchaseOrderRaw extends React.Component {

@@ -40,32 +40,44 @@ class SideBar extends React.Component {
                     <div className="ui sidebar visible thin inverted vertical menu">
                         <Link to={"/"} className="item">
                             <i className="home icon"></i>
-                        Dashboard
-                    </Link>
+                            Dashboard
+                        </Link>
                         <Link to={"/employee"} className="item">
                             <i className="user circle icon"></i>
-                        Users
-                    </Link>
+                            Users
+                        </Link>
                         <Link to={"/sales-dashboard"} className="item">
                             <i className="bullhorn icon"></i>
-                        Sales
-                    </Link>
+                            Sales
+                        </Link>
                         <Link to={"/inventory-dashboard"} className="item">
                             <i className="cubes icon"></i>
-                        Inventory
-                    </Link>
+                            Inventory
+                        </Link>
+                        <Link to={"/production-dashboard"} className="item">
+                            <i className="pallet icon"></i>
+                            Production
+                        </Link>
                         <Link to={"/approvals-dashboard"} className="item">
-                            <i className="list icon"></i>
-                        Approvals
-                    </Link>
+                            <i className="tasks icon"></i>
+                            Approvals
+                        </Link>
                         <Link to={"/hr-dashboard"} className="item">
                             <i className="address card icon"></i>
-                        HR
-                    </Link>
+                            HR
+                        </Link>                       
+                        <Link to={"/statistics"} className="item">
+                            <i className="chart bar icon"></i>
+                           Statistics 
+                        </Link>
                         <Link to={"/settings"} className="item">
+                            <i className="th list icon"></i>
+                            Master Data
+                        </Link>
+                        <Link to={"/system-settings"} className="item">
                             <i className="cogs icon"></i>
-                        Settings
-                    </Link>
+                            Settings
+                        </Link>
                     </div>
                     <div className="ui top fixed menu">
                         <div className="right menu">

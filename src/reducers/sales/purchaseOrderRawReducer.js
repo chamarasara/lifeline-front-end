@@ -11,7 +11,6 @@ import {
 } from '../../actions/types';
 
 export default (state = {}, action) => {
-    console.log(action.payload)
     switch (action.type) {
         case FETCH_PURCHASE_ORDERS_RAW:
             return { ...state, ..._.mapKeys(action.payload, 'id') };

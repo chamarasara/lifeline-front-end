@@ -116,7 +116,12 @@ import {
     NEW_GRN_PM_INVENTORY,
     FETCH_GRN_PM_INVENTORY,
     FETCH_GRNS_PM_INVENTORY,
-    GRN_BY_PURCHASE_ORDER_PM
+    GRN_BY_PURCHASE_ORDER_PM,
+    NEW_BANK_ACCOUNT_MASTER,
+    FETCH_ALL_BANK_ACCOUNTS,
+    FETCH_SINGLE_BANK_ACCOUNT,
+    EDIT_BANK_ACCOUNT,
+    DELETE_BANK_ACCOUNT
 } from './types';
 
 //create user
@@ -958,7 +963,7 @@ export const createPurchaseOrderRaw = formValues => async dispatch => {
     const response = await api.post('api/sales/purchase-orders-raw/new-purchase-order-raw', { ...formValues, user }, header);
     dispatch({ type: CREATE_PURCHASE_ORDER_RAW, payload: response.status });
     setTimeout(function () {
-       window.location.reload()
+        window.location.reload()
     }, 2000);
 
 
@@ -1068,7 +1073,7 @@ export const grnPurchaseOrderRaw = (id, formValues) => async dispatch => {
     dispatch({ type: NEW_GRN_PURCHASE_ORDER_RAW, payload: response.status });
     console.log(response.status)
     setTimeout(function () {
-       window.location.reload()
+        window.location.reload()
     }, 2000);
 
 };
@@ -2184,6 +2189,83 @@ export const searchSalaries = (formValues) => async dispatch => {
     const response = await api.post('/api/hr/salaries/search-salary/', { formValues }, header);
     console.log(response.data);
     dispatch({ type: SEARCH_SALARIES_RESULT, payload: response.data });
+};
+export const createBankAccount = formValues => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const user = jwt_decode(token);
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    console.log(formValues)
+    const response = await api.post('/api/master-data/bank-accounts-master/new-bank-account', { ...formValues, user }, header);
+    dispatch({ type: NEW_BANK_ACCOUNT_MASTER, payload: response.status });
+    setTimeout(function () {
+        window.location.reload()
+    }, 3000);
+};
+//List all distributors
+export const fetchBankAccounts = () => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get('/api/master-data/bank-accounts-master/all-bank-accounts', header);
+    dispatch({ type: FETCH_ALL_BANK_ACCOUNTS, payload: response.data });
+};
+//View single distributor
+export const fetchBankAccount = (id) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    console.log(id)
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.get(`/api/master-data/bank-accounts-master/single-bank-account/${id}`, header);
+    console.log(response.data)
+    dispatch({ type: FETCH_SINGLE_BANK_ACCOUNT, payload: response.data });
+};
+//Edit distributor
+export const editBankAccount = (id, formValues) => async dispatch => {
+
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/master-data/bank-accounts-master/update-bank-account/${id}`, { ...formValues }, header);
+    dispatch({ type: EDIT_BANK_ACCOUNT, payload: response.status });
+    setTimeout(function () {
+        history.push('/bank-accounts-dashboard');
+        window.location.reload()
+    }, 3000);
+};
+//Delete distributor
+export const deleteBankAccount = (id, deleted) => async dispatch => {
+    console.log(id)
+    console.log(deleted)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+  
+    const response = await api.patch(`/api/master-data/bank-accounts-master/delete-bank-account/${id}`, { deleted }, header);
+    dispatch({ type: DELETE_BANK_ACCOUNT, payload: response.data });
+    console.log(response.data)
+    history.push('/bank-accounts-dashboard');
+    window.location.reload()
 };
 //Autheticate User
 export function signInAction({ userName, password }, history) {

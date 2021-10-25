@@ -4,7 +4,7 @@ import moment from 'moment'
 import { connect } from 'react-redux';
 import { fetchPurchaseOrderRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, returnsPurchaseOrderRaw, printGrnRaw } from '../../../actions';
 
-class NewReturnFormRaw extends React.Component {
+class NewCashPaymentFormRaw extends React.Component {
     componentDidMount() {
         this.props.fetchSuppliers()
         this.props.fetchRawMaterials()
@@ -115,7 +115,7 @@ class NewReturnFormRaw extends React.Component {
         return (
             <div>
                 <div>
-                    <h4>Create new Return</h4>
+                    <h4>New bank payment</h4>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="six wide field">
@@ -216,9 +216,9 @@ const validate = (formValues) => {
 }
 
 const formWrapped = reduxForm({
-    form: 'purchaseOrderReturnsRaw',
+    form: 'purchaseOrderCashPaymentsRaw',
     validate: validate
-})(NewReturnFormRaw);
+})(NewCashPaymentFormRaw);
 
 
 const mapStateToProps = (state, ownPorps) => {

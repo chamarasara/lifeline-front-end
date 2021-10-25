@@ -28,6 +28,7 @@ import returnInvoiceReducer from "./sales/returnInvoiceReducer";
 import searchReturnInvoicesReducer from "./sales/searchReturnInvoicesReducer";
 import rawMaterialGRNReducer from "./inventory/rawMaterialGRNReducer";
 import packingMaterialGRNReducer from "./inventory/packingMaterialGRNReducer";
+import bankAccountReducer from "./master/bankAccountReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -42,6 +43,7 @@ export default combineReducers({
     semiFinishGoods: semiFinishGoodsReducer,
     finishGoods: finishGoodReducer,
     productMaster: productMasterReducer,
+    bankAccountMaster: bankAccountReducer,
     searchPurchaseOrdersRaw: searchPurchaseOrdersRawReducer,
     searchPurchaseOrdersPacking: searchPurchaseOrdersPacking,
     invoices: invoiceReducer,
