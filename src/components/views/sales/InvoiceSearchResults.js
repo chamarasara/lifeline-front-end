@@ -55,16 +55,11 @@ class InvoiceList extends React.Component {
                 return (
                     <tr key={invoice.id}>
                         <td>
-                            {invoice.invoiceNumber}<br/>
-                            {date2}
+                            {invoice.invoiceNumber}
                         </td>
                         <td>
-                            {invoice.quotation.map(quotation=>{
-                                return(
-                                    <span key={quotation.quotationNumber}>{quotation.quotationNumber}</span>
-                                )
-                            })}
-                        </td>
+                            {date2}
+                        </td>                       
                         <td>
                             {
                                 invoice.searchCustomer.map(customer1 => {
@@ -137,8 +132,9 @@ class InvoiceList extends React.Component {
                     <h4>All Invoices</h4>
                     <table className="ui small blue striped celled table">
                         <thead>
-                            <tr><th>Invoice No</th>
-                                <th>Quotation</th>
+                            <tr>
+                                <th>Invoice No</th>
+                                <th>Date</th>
                                 <th>Company Name</th>
                                 <th>Products</th>
                                 <th>Quantities</th>

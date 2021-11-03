@@ -5,7 +5,8 @@ import { Tab } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import NewReturnFormRaw from '../purchaseorders/NewBankPaymentFormRaw';
+import NewBankPaymentFormRaw from '../purchaseorders/NewBankPaymentFormRaw';
+import NewCashPaymentFormRaw from "../purchaseorders/NewCashPaymentFormRaw";
 import { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw } from '../../../actions';
 
 class SinglePurchaseOrderRaw extends React.Component {
@@ -420,9 +421,9 @@ class SinglePurchaseOrderRaw extends React.Component {
         return this.props.order.grnDetails.map(data => {
             console.log(data.additionalCharges)
             let additionalCharges = <tr colSpan="16">
-                                        <th colSpan="5" style={{ textAlign: "right" }}><span style={{ color: "#2185d0" }}>(+)</span> Additional Charges</th>
-                                        <th colSpan="8" style={{ textAlign: "right" }}>0.00</th>
-                                     </tr>
+                <th colSpan="5" style={{ textAlign: "right" }}><span style={{ color: "#2185d0" }}>(+)</span> Additional Charges</th>
+                <th colSpan="8" style={{ textAlign: "right" }}>0.00</th>
+            </tr>
             if (data.additionalCharges) {
                 additionalCharges = data.additionalCharges.map(expenses => {
 
@@ -434,9 +435,6 @@ class SinglePurchaseOrderRaw extends React.Component {
                         </tr>
                     )
                 })
-            }
-            else {
-
             }
 
             const additionalChargeArray = []
@@ -450,10 +448,6 @@ class SinglePurchaseOrderRaw extends React.Component {
                     return total
                 })
             }
-
-
-
-
             const sumOfAdditionalCharges = totalAdditionalCharges.reduce((partial_sum, a) => partial_sum + a, 0)
 
             const array = []
@@ -470,7 +464,6 @@ class SinglePurchaseOrderRaw extends React.Component {
             const formattedSumOfArray = this.formatNumber(sumOfArray.toFixed(2))
 
             return (
-
                 <table key={Math.random()} className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                     <thead className="full-width">
                         <tr>
@@ -581,7 +574,19 @@ class SinglePurchaseOrderRaw extends React.Component {
             )
         }
     }
-    rederPaymentsTab() {
+    getBankPaymentsTotal() {
+        const array = []
+        const totalArray = this.props.order.bankPaymentsDetails.map(data => {            
+            let amount = Number(data.amount)
+            for (let i = 0; i < array.length; i++) {
+                array[i] = amount
+            }
+            return amount
+        })
+        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)   
+        return this.formatNumber(sumOfArray.toFixed(2))
+    }
+    rederPaymentsFormTab() {
         if (this.props.order.order_state === "Pending") {
             return (
                 <div style={{ paddingBottom: "15px", paddingTop: "15px", paddingLeft: "0px" }}>
@@ -591,17 +596,226 @@ class SinglePurchaseOrderRaw extends React.Component {
         } else if (this.props.order.order_state === "Approved") {
             return (
                 <div>
-                    <div className="ui two column grid">
-                        <div className="row">
-                            <div className="column">
-                                <NewReturnFormRaw data={this.props.order} />
-                            </div>
-                            <div className="column">
-                                <NewReturnFormRaw data={this.props.order} />
+                    <div className="ui placeholder segment">
+                        <div className="ui two column stackable center aligned grid">
+                            <div className="ui vertical divider">Or</div>
+                            <div className="row">
+                                <div className="column">
+                                    <NewBankPaymentFormRaw data={this.props.order} msgBank={this.props.sucessMessege} />
+                                </div>
+                                <div className="column">
+                                    <NewCashPaymentFormRaw data={this.props.order} msgCash={this.props.sucessMessege} />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            )
+        }
+    }
+    renderBankPaymentsDetails() {
+        if (!this.props.order.bankPaymentsDetails) {
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>
+                </div>
+            )
+        }
+        return (
+            <tbody>
+                <tr>
+                    <td>
+                        {this.props.order.bankPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.date).format('DD/MM/YYYY, h:mm a')}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.bankAccounts.map(bank => {
+                            return (
+                                <p key={bank.id}>{bank.bankName}-{bank.branch}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.bankPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.chequeNumber}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.bankPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.chequeDate).format('DD/MM/YYYY')}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.bankPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.remarks}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.bankPaymentsDetails.map(payment => {
+                            let amount = Number(payment.amount)
+                            return (
+                                <p key={payment.id} style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</p>
+                            )
+                        })
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        )
+
+    }
+
+    renderBankPaymentsTable() {
+        if (!this.props.order.bankPaymentsDetails) {
+            return (
+                <div style={{ paddingTop: "20px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Sorry
+                            </div>
+                            <p>No any bank payments found!.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
+                    <thead className="full-width">
+                        <tr>
+                            <th colSpan="12" style={{ color: "red" }}><h4>Bank Payments Details</h4></th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Bank Name</th>
+                            <th>Cheque Number</th>
+                            <th>Cheque Date</th>
+                            <th>Remarks</th>
+                            <th style={{ textAlign: "right" }}>Amount</th>
+                        </tr>
+                    </thead>
+                    {this.renderBankPaymentsDetails()}
+                    <tfoot>
+                        <tr colSpan="16">
+                            <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
+                            <th colSpan="8" style={{ textAlign: "right" }}>{this.getBankPaymentsTotal()}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            )
+        }
+    }
+    getCashPaymentsTotal() {
+        const array = []
+        const totalArray = this.props.order.cashPaymentsDetails.map(data => {            
+            let amount = Number(data.amount)
+            for (let i = 0; i < array.length; i++) {
+                array[i] = amount
+            }
+            return amount
+        })
+        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)
+        return this.formatNumber(sumOfArray.toFixed(2))
+    }
+    renderCashPaymentsDetails() {
+        if (!this.props.order.cashPaymentsDetails) {
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>
+                </div>
+            )
+        }
+        return (
+            <tbody>
+                <tr>
+                    <td>
+                        {this.props.order.cashPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.date).format('DD/MM/YYYY, h:mm a')}</p>
+                            )
+                        })
+                        }
+                    </td>                    
+                    <td>
+                        {this.props.order.cashPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.remarks}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.cashPaymentsDetails.map(payment => {
+                            let amount = Number(payment.amount)
+                            return (
+                                <p key={payment.id} style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</p>
+                            )
+                        })
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        )
+
+    }
+
+    renderCashPaymentsTable() {
+        if (!this.props.order.cashPaymentsDetails) {
+            return (
+                <div style={{ paddingTop: "20px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Sorry
+                            </div>
+                            <p>No any cash payments found!.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
+                    <thead className="full-width">
+                        <tr>
+                            <th colSpan="12" style={{ color: "red" }}><h4>Cash Payments Details</h4></th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Remarks</th>
+                            <th style={{ textAlign: "right" }}>Amount</th>
+                        </tr>
+                    </thead>
+                    {this.renderCashPaymentsDetails()}
+                    <tfoot>
+                        <tr colSpan="12">
+                            <th colSpan="" style={{ textAlign: "right" }}></th>
+                            <th colSpan="" style={{ textAlign: "right" }}>Subtotal</th>
+                            <th colSpan="" style={{ textAlign: "right" }}>{this.getCashPaymentsTotal()}</th>
+                        </tr>
+                    </tfoot>
+                </table>
             )
         }
     }
@@ -662,7 +876,17 @@ class SinglePurchaseOrderRaw extends React.Component {
             {
                 menuItem: 'Payments', render: () =>
                     <Tab.Pane attached={false}>
-                        {this.rederPaymentsTab()}
+                        <div>
+                            <div>
+                                {this.rederPaymentsFormTab()}
+                            </div>
+                            <div>
+                                {this.renderBankPaymentsTable()}
+                            </div>
+                            <div>
+                                {this.renderCashPaymentsTable()}
+                            </div>
+                        </div>
                     </Tab.Pane>
             }
         ]
@@ -723,8 +947,7 @@ const mapStateToProps = (state, ownPorps) => {
     const rawMaterials = Object.values(state.rawMaterials)
     const order = state.purchaseOrdersRaw[ownPorps.match.params.id]
     const sucessMessege = state.purchaseOrdersRaw.undefined
-    console.log(state.purchaseOrdersRaw.undefined)
-
+    console.log(state.purchaseOrdersRaw)
     return {
         errorMessage: state,
         suppliers: suppliers,

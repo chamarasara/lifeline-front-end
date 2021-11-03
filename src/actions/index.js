@@ -60,13 +60,14 @@ import {
     FETCH_PURCHASE_ORDER_RAW,
     FETCH_PURCHASE_ORDERS_RAW,
     NEW_GRN_PURCHASE_ORDER_RAW,
-    DELETE_PURCHASE_ORDER_RAW,
+    NEW_BANK_PAYMENT_PURCHASE_ORDER_RAW,
     SEARCH_PURCHASE_ORDERS_RESULT_RAW,
     CREATE_PURCHASE_ORDER_PACKING,
     EDIT_PURCHASE_ORDER_PACKING,
     FETCH_PURCHASE_ORDER_PACKING,
     FETCH_PURCHASE_ORDERS_PACKING,
     DELETE_PURCHASE_ORDER_PACKING,
+    NEW_CASH_PAYMENT_PURCHASE_ORDER_RAW,
     SEARCH_PURCHASE_ORDERS_RESULT_PACKING,
     CREATE_INVOICE,
     EDIT_INVOICE,
@@ -1023,7 +1024,36 @@ export const updatePurchaseOrderStateRaw = (id, formValues) => async dispatch =>
     window.location.reload()
 
 };
-
+export const bankPaymentsPurchaseOrderRaw = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-raw/bank-payments-purchase-order-raw/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_BANK_PAYMENT_PURCHASE_ORDER_RAW, payload: response.status });
+    console.log(response.status)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
+export const cashPaymentsPurchaseOrderRaw = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-raw/cash-payments-purchase-order-raw/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_CASH_PAYMENT_PURCHASE_ORDER_RAW, payload: response.status });
+    console.log(response.status)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
 export const deletePurchaseOrderRaw = (id, formValues) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
