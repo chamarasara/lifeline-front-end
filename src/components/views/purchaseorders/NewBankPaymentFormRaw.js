@@ -70,14 +70,13 @@ class NewBankPaymentFormRaw extends React.Component {
         })
     }
     onSubmit = (formValues) => {
-        console.log("Form", formValues)
         this.props.bankPaymentsPurchaseOrderRaw(this.props.purchaseOrder._id,{...formValues, })
     }
     render() {
         return (
             <div style={{ paddingLeft: "30px", paddingRight: "30px", paddingTop: "20px" }}>
                 <div>
-                    <h4>Bank Payment</h4>
+                    <h4>Cheque Payment</h4>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
                             <div className="sixteen wide field">

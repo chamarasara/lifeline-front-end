@@ -7,13 +7,14 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import NewBankPaymentFormRaw from '../purchaseorders/NewBankPaymentFormRaw';
 import NewCashPaymentFormRaw from "../purchaseorders/NewCashPaymentFormRaw";
-import { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw } from '../../../actions';
+import { fetchRawMaterials,fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw } from '../../../actions';
 
 class SinglePurchaseOrderRaw extends React.Component {
 
     componentDidMount() {
         this.props.fetchPurchaseOrderRaw(this.props.match.params.id)
         this.props.fetchGrnByPurchaseOrder(this.props.match.params.id)
+        this.props.fetchRawMaterials()
     }
     renderError({ error, touched }) {
         if (touched && error) {
@@ -691,7 +692,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                             <div className="header">
                                 Sorry
                             </div>
-                            <p>No any bank payments found!.</p>
+                            <p>No any cheque payments found!.</p>
                         </div>
                     </div>
                 </div>
@@ -701,7 +702,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                 <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
                     <thead className="full-width">
                         <tr>
-                            <th colSpan="12" style={{ color: "red" }}><h4>Bank Payments Details</h4></th>
+                            <th colSpan="12" style={{ color: "red" }}><h4>Cheque Payments Details</h4></th>
                         </tr>
                         <tr>
                             <th>Date</th>
@@ -963,4 +964,4 @@ const formWrapped = reduxForm({
     validate: validate
 })(SinglePurchaseOrderRaw);
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchRawMaterials, fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw })(formWrapped);
