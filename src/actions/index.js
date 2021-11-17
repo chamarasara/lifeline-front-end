@@ -61,13 +61,15 @@ import {
     FETCH_PURCHASE_ORDERS_RAW,
     NEW_GRN_PURCHASE_ORDER_RAW,
     NEW_BANK_PAYMENT_PURCHASE_ORDER_RAW,
+    NEW_ADDITIONAL_BANK_PAYMENT_PURCHASE_ORDER_RAW,
+    NEW_ADDITIONAL_CASH_PAYMENT_PURCHASE_ORDER_RAW,
     SEARCH_PURCHASE_ORDERS_RESULT_RAW,
     CREATE_PURCHASE_ORDER_PACKING,
     EDIT_PURCHASE_ORDER_PACKING,
     FETCH_PURCHASE_ORDER_PACKING,
     FETCH_PURCHASE_ORDERS_PACKING,
-    DELETE_PURCHASE_ORDER_PACKING,
-    NEW_CASH_PAYMENT_PURCHASE_ORDER_RAW,
+    NEW_GRN_PURCHASE_ORDER_PACKING,
+    NEW_CASH_PAYMENT_PURCHASE_ORDER_RAW,    
     SEARCH_PURCHASE_ORDERS_RESULT_PACKING,
     CREATE_INVOICE,
     EDIT_INVOICE,
@@ -1054,6 +1056,36 @@ export const cashPaymentsPurchaseOrderRaw = (id, formValues) => async dispatch =
         window.location.reload()
     }, 2000);
 };
+export const additionalChargesBankPaymentsPurchaseOrderRaw = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-raw/additional-charges-bank-payments-purchase-order-raw/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_ADDITIONAL_BANK_PAYMENT_PURCHASE_ORDER_RAW, payload: response.status });
+    console.log(response.data)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
+export const additionalChargesCashPaymentsPurchaseOrderRaw = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-raw/additional-charges-cash-payments-purchase-order-raw/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_ADDITIONAL_CASH_PAYMENT_PURCHASE_ORDER_RAW, payload: response.status });
+    console.log(response.data)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
 export const deletePurchaseOrderRaw = (id, formValues) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
@@ -1224,7 +1256,7 @@ export const createPurchaseOrderPacking = formValues => async dispatch => {
     }, 2000);
 
 };
-//List all purchase orders raw
+//List all purchase orders packing
 export const fetchPurchaseOrdersPacking = () => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
@@ -1236,7 +1268,7 @@ export const fetchPurchaseOrdersPacking = () => async dispatch => {
     const response = await api.get('/api/sales/purchase-orders-packing/all-purchase-orders-packing', header);
     dispatch({ type: FETCH_PURCHASE_ORDERS_PACKING, payload: response.data });
 };
-//View purchase order raw
+//View purchase order packing
 export const fetchPurchaseOrderPacking = (id) => async dispatch => {
     const token = sessionStorage.getItem('user');
     const header = {
@@ -1249,7 +1281,7 @@ export const fetchPurchaseOrderPacking = (id) => async dispatch => {
 
     dispatch({ type: FETCH_PURCHASE_ORDER_PACKING, payload: response.data[0] });
 };
-//Edit purchase order raw
+//Edit purchase order packing
 export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
@@ -1268,7 +1300,7 @@ export const editPurchaseOrderPacking = (id, formValues) => async dispatch => {
         window.location.reload()
     }, 2000);
 };
-//Edit purchase order raw
+//Edit purchase order packing
 export const updatePurchaseOrderStatePacking = (id, formValues) => async dispatch => {
     console.log(formValues)
     const token = sessionStorage.getItem('user');
@@ -1282,6 +1314,24 @@ export const updatePurchaseOrderStatePacking = (id, formValues) => async dispatc
     dispatch({ type: EDIT_PURCHASE_ORDER_PACKING, payload: response.data });
     history.push('/approvals-packing');
     window.location.reload()
+};
+//Purchase Order GRN
+export const grnPurchaseOrderPacking = (id, formValues) => async dispatch => {
+    console.log(formValues)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-packing/grn-purchase-order-packing/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_GRN_PURCHASE_ORDER_PACKING, payload: response.status });
+    console.log(response.response)
+    setTimeout(function () {
+        //window.location.reload()
+    }, 2000);
+
 };
 export const deletePurchaseOrderStatePacking = (id, formValues) => async dispatch => {
     console.log(formValues)
@@ -1973,149 +2023,7 @@ export const searchFinishGoodsInventory = (formValues) => async dispatch => {
     dispatch({ type: SEARCH_FINISH_GOODS_INVENTORY, payload: response.data });
 };
 
-//New GRN RM
-export const createNewGrn = formValues => async dispatch => {
-    console.log(formValues)
-    const token = sessionStorage.getItem('user');
-    const user = jwt_decode(token);
-    console.log(user)
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    try {
-        const response = await api.post('/api/inventory/raw-material/new-raw-material-inventory', { ...formValues, user }, header);
-        console.log(response.status)
-        dispatch({ type: NEW_GRN_RM_INVENTORY, payload: response.status });
-        setTimeout(function () {
-            window.location.reload()
-        }, 2000);
-    } catch (error) {
-        dispatch({
-            type: NEW_GRN_RM_INVENTORY_ERROR,
-            payload: 'Something went wrong. Please contact the administrator support!'
-        });
-    }
-};
-//List all GRN's RM
-export const fetchAllGrns = () => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    const response = await api.get('api/inventory/finish-good/all-finish-goods-inventory/', header);
 
-    dispatch({ type: FETCH_GRNS_RM_INVENTORY, payload: response.data });
-};
-//View GRN's by purchase order RM
-export const fetchGrnByPurchaseOrder = (id) => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    const response = await api.get(`/api/inventory/raw-material/grn-by-purchase-order-raw/${id}`, header);
-    console.log(response.data)
-    dispatch({ type: GRN_BY_PURCHASE_ORDER_RM, payload: response.data });
-};
-//View  single GRN RM
-export const fetchSingleGrn = (id) => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    const response = await api.get(`api/inventory/finish-good/single-finish-good-inventory/${id}`, header);
-    dispatch({ type: FETCH_GRN_RM_INVENTORY, payload: response.data[0] });
-};
-
-
-//New GRN PM
-export const createNewGrnPm = formValues => async dispatch => {
-    console.log(formValues)
-    const token = sessionStorage.getItem('user');
-    const user = jwt_decode(token);
-    console.log(user)
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    const response = await api.post('/api/inventory/packing-material/new-pakcing-material-inventory', { ...formValues, user }, header);
-    console.log(response)
-    dispatch({ type: NEW_GRN_PM_INVENTORY, payload: response.data });
-    //window.location.reload()
-
-};
-//List all GRN's PM
-export const fetchAllGrnsPm = () => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    const response = await api.get('api/inventory/finish-good/all-finish-goods-inventory/', header);
-
-    dispatch({ type: FETCH_GRNS_PM_INVENTORY, payload: response.data });
-};
-//View GRN's by purchase order PM
-export const fetchGrnByPurchaseOrderPm = (id) => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    const response = await api.get(`/api/inventory/packing-material/grn-by-purchase-order-packing/${id}`, header);
-    console.log(response.data)
-    dispatch({ type: GRN_BY_PURCHASE_ORDER_PM, payload: response.data });
-};
-//View single GRN Pm
-export const fetchSingleGrnPm = (id) => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    const header = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    };
-    const response = await api.get(`api/inventory/finish-good/single-finish-good-inventory/${id}`, header);
-    dispatch({ type: FETCH_GRN_PM_INVENTORY, payload: response.data[0] });
-};
-//Print GRN PM
-export const printGrnPm = (id) => async dispatch => {
-    const token = sessionStorage.getItem('user');
-    console.log(id)
-    const header = {
-        headers: {
-            'Authorization': token,
-            'Content-Type': 'application/pdf',
-            'Accept': 'application/pdf',
-            'Content-Disposition': 'attachment;filename=purchaseorderpm.pdf'
-
-        }
-    };
-    const response = await api.get(`/api/inventory/packing-material/print-grn-packing/${id}`, { responseType: 'arraybuffer' }, header);
-    //Create a Blob from the PDF Stream
-    const file = new Blob([response.data], { type: 'application/pdf' });
-    //Build a URL from the file
-    const fileURL = URL.createObjectURL(file);
-    //Open the URL on new Window
-    window.open(fileURL);
-};
 //create employee
 export const createSalary = formValues => async dispatch => {
     const token = sessionStorage.getItem('user');

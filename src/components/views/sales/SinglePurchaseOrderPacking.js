@@ -4,13 +4,12 @@ import { Tab } from 'semantic-ui-react'
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchPurchaseOrderPacking, printPurchaseOrderPacking, fetchSuppliers, fetchPackingMaterials, createNewGrnPm, fetchGrnByPurchaseOrderPm, printGrnPm, viewSupplierInvoicePacking } from '../../../actions';
+import { fetchPurchaseOrderPacking, printPurchaseOrderPacking, fetchSuppliers, fetchPackingMaterials, grnPurchaseOrderPacking } from '../../../actions';
 
 class SinglePurchaseOrderPacking extends React.Component {
 
     componentDidMount() {
         this.props.fetchPurchaseOrderPacking(this.props.match.params.id)
-        this.props.fetchGrnByPurchaseOrderPm(this.props.match.params.id)
         this.props.fetchSuppliers()
         this.props.fetchPackingMaterials()
     }
@@ -25,7 +24,7 @@ class SinglePurchaseOrderPacking extends React.Component {
         })
     }
     printGrn(id) {
-        this.props.printGrnPm(id)
+        this.prop(id)
     }
     renderAllGrn() {
         if (!this.props.grn) {
@@ -136,7 +135,61 @@ class SinglePurchaseOrderPacking extends React.Component {
             )
 
         })
-
+    }
+    renderInput = ({ input, label, placeholder, type, meta, required }) => {
+        return (
+            <div className="field">
+                <label>{label}</label>
+                <input {...input} placeholder={placeholder} type={type} autoComplete="off" />
+                {this.renderError(meta)}
+            </div>
+        );
+    }
+    renderError({ error, touched }) {
+        if (touched && error) {
+            return (
+                <div className="ui error message">
+                    <div className="Header">{error}</div>
+                </div>
+            );
+        }
+    }
+    errorMessage() {
+        if (this.props.errorMessage) {
+            console.log(this.props)
+            return (
+                <div className="ui error message">
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
+    }
+    renderSelectField = ({ input, label, type, meta, children }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+                <select {...input}>
+                    {children}
+                </select>
+                {this.renderError(meta)}
+            </div>
+        </div>
+    )
+    // renderSuccessMessage() {
+    //     if (this.props.sucessMessege === 200) {
+    //         return (
+    //             <div className="ui success message">
+    //                 <div className="header">Successfull !</div>
+    //             </div>
+    //         )
+    //     }
+    // }
+    renderPackingaterials() {
+        return this.props.packingMaterials.map(packingMaterial => {
+            return (
+                <option key={packingMaterial._id} value={packingMaterial.id}>{packingMaterial.materialName}</option>
+            )
+        })
     }
     renderPackingMaterialsDropDown = ({ fields, meta: { error, submitFailed } }) => {
         return (
@@ -292,6 +345,85 @@ class SinglePurchaseOrderPacking extends React.Component {
         )
 
     }
+    renderAdditionalChargesDropDown = ({ fields, meta: { error, submitFailed } }) => {
+        return (
+            <div>
+                <ul>
+                    {fields.map((additionalCharges, index) => <li key={index}>
+                        <label htmlFor={additionalCharges}>Expense #{index + 1}</label>
+                        <div className="fields">
+                            <div className="four wide field">
+                                <Field name={`${additionalCharges}.reason`} type="text" required component={this.renderSelectField} placeholder="Expense Name" >
+                                    <option>-Select Expnese-</option>
+                                    <option value="Transport">Transport</option>
+                                    <option value="Sea Freight">Sea Freight</option>
+                                    <option value="Air Freight">Air Freight</option>
+                                    <option value="Custom Duty">Custom Duty</option>
+                                    <option value="Documents Charges">Documents Charges</option>
+                                    <option value="Service Fee">Service Fee</option>
+                                    <option value="Other">Other</option>
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                <Field name={`${additionalCharges}.amount`} type="number" required component={this.renderInput} placeholder="Amount" >
+                                </Field>
+                            </div>
+                            <div className="eight wide field">
+                                <button className="mini ui red button" type="button" onClick={() => fields.remove(index)}>Remove</button>
+                            </div>
+                        </div>
+                    </li>)}
+                    <li>
+                        <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Expense</button>
+                        {submitFailed && error && <span style={{ color: "red" }}>{error}</span>}
+                    </li>
+                </ul>
+            </div>
+        )
+    }
+    renderGrnForm() {
+        return (
+            <div>
+                <div>
+                    <h4>Create new GRN</h4>
+                    <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                        <div className="fields">
+                            <div className="six wide field">
+                                Supplier Invoice Number
+                                <Field name="invoiceNumber" type="text" required component={this.renderInput} placeholder="Supplier Invoice Number">
+                                </Field>
+                            </div>
+                            <div className="four wide field">
+                                Invoice Date
+                                <Field name="invoiceDate" type="date" required component={this.renderInput} placeholder="Supplier Invoice Number">
+                                </Field>
+                            </div>
+                            <div className="six wide field">
+                                Remarks (Optional)
+                                <Field name="remarks" type="text" required component={this.renderInput} placeholder="Remarks">
+                                </Field>
+                            </div>
+                        </div>
+                        <div className="fields">
+                            <div className="sixteen wide field">
+                                <label>Raw Materials- </label>
+                                <FieldArray name="packingMaterials" component={this.renderPackingMaterialsDropDown} />
+                            </div>
+                        </div>
+                        <div className="fields">
+                            <div className="sixteen wide field">
+                                Additional Charges
+                                <FieldArray name="additionalCharges" component={this.renderAdditionalChargesDropDown} />
+                            </div>
+                        </div>
+                        <div className="field">
+                            <button type="submit" className="ui primary button">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )
+    }
     rederGrn() {
         if (this.props.order.order_state === "Pending") {
             return (
@@ -303,24 +435,7 @@ class SinglePurchaseOrderPacking extends React.Component {
             return (
                 <div>
                     <div>
-                        <h4>Create new GRN</h4>
-                        <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                            <div className="fields">
-                                <div className="five wide field">
-                                    <Field name="invoiceNumber" type="text" required component={this.renderInput} placeholder="Supplier Invoice Number">
-                                    </Field>
-                                </div>
-                            </div>
-                            <div className="fields">
-                                <div className="sixteen wide field">
-                                    <label>Raw Materials- </label>
-                                    <FieldArray name="packingMaterials" component={this.renderPackingMaterialsDropDown} />
-                                </div>
-                            </div>
-                            <div className="field">
-                                <button type="submit" className="ui primary button">Submit</button>
-                            </div>
-                        </form>
+                        {this.renderGrnForm()}
                     </div>
                     <div>
                         {this.renderAllGrn()}
@@ -347,13 +462,19 @@ class SinglePurchaseOrderPacking extends React.Component {
     onSubmit = (formValues) => {
         for (let i = 0; i < formValues.packingMaterials.length; i++) {
             formValues.packingMaterials[i].date = moment().format('DD/MM/YYYY, h:mm:ss a');
+            formValues.packingMaterials[i].materialName = formValues.packingMaterialsList[i].materialName
+            formValues.packingMaterials[i].materialCode = formValues.packingMaterialsList[i].materialCodeRm
+            formValues.packingMaterials[i].materialGroup = formValues.packingMaterialsList[i].materialGroup
             formValues.packingMaterials[i].remainingQuantity = formValues.packingMaterials[i].quantity
             formValues.packingMaterials[i].supplierId = formValues.supplierId
+            formValues.packingMaterials[i].companyName = formValues.supplier[0].companyName
             formValues.packingMaterials[i].purchaseOrderId = formValues.id
             formValues.packingMaterials[i].purchaseOrderNumber = formValues.orderNumber
+            formValues.packingMaterials[i].invoiceNumber = formValues.invoiceNumber
+            formValues.packingMaterials[i].invoiceDate = formValues.invoiceDate
         }
         console.log(formValues)
-        this.props.createNewGrnPm(formValues)
+        this.props.grnPurchaseOrderPacking(formValues._id, formValues)
     }
 
     render() {
@@ -448,4 +569,4 @@ const formWrapped = reduxForm({
     form: 'purchaseOrderPackingGrn'
 })(SinglePurchaseOrderPacking);
 
-export default connect(mapStateToProps, { fetchPurchaseOrderPacking, printPurchaseOrderPacking, fetchSuppliers, fetchPackingMaterials, createNewGrnPm, fetchGrnByPurchaseOrderPm, printGrnPm, viewSupplierInvoicePacking })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderPacking, printPurchaseOrderPacking, fetchSuppliers, grnPurchaseOrderPacking, fetchPackingMaterials })(formWrapped);

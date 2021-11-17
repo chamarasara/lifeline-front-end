@@ -7,13 +7,14 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import NewBankPaymentFormRaw from '../purchaseorders/NewBankPaymentFormRaw';
 import NewCashPaymentFormRaw from "../purchaseorders/NewCashPaymentFormRaw";
-import { fetchRawMaterials,fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw } from '../../../actions';
+import NewAdditionalBankPaymentFormRaw from '../purchaseorders/NewAdditionalBankPaymentFormRaw';
+import NewAdditionalCashPaymentFormRaw from '../purchaseorders/NewAdditionalCashPaymentFormRaw';
+import { fetchRawMaterials, fetchPurchaseOrderRaw, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw } from '../../../actions';
 
 class SinglePurchaseOrderRaw extends React.Component {
 
     componentDidMount() {
         this.props.fetchPurchaseOrderRaw(this.props.match.params.id)
-        this.props.fetchGrnByPurchaseOrder(this.props.match.params.id)
         this.props.fetchRawMaterials()
     }
     renderError({ error, touched }) {
@@ -158,10 +159,9 @@ class SinglePurchaseOrderRaw extends React.Component {
         )
     }
     rederGrnForm() {
-
         return (
             <div>
-                <div>
+                <div className="ui segment" style={{ paddingBottom: "15px", paddingTop: "15px", paddingLeft: "15px", paddingRight: "15px" }}>
                     <h4>Create new GRN</h4>
                     <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                         <div className="fields">
@@ -560,8 +560,16 @@ class SinglePurchaseOrderRaw extends React.Component {
     rederGrn() {
         if (this.props.order.order_state === "Pending") {
             return (
-                <div>
-                    <h4>Pending Purchase Order</h4>
+                <div style={{ paddingTop: "0px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Pending Purchase Order
+                            </div>
+                            <p>Waiting for approval!</p>
+                        </div>
+                    </div>
                 </div>
             )
         } else if (this.props.order.order_state === "Approved") {
@@ -577,26 +585,34 @@ class SinglePurchaseOrderRaw extends React.Component {
     }
     getBankPaymentsTotal() {
         const array = []
-        const totalArray = this.props.order.bankPaymentsDetails.map(data => {            
+        const totalArray = this.props.order.bankPaymentsDetails.map(data => {
             let amount = Number(data.amount)
             for (let i = 0; i < array.length; i++) {
                 array[i] = amount
             }
             return amount
         })
-        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)   
+        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)
         return this.formatNumber(sumOfArray.toFixed(2))
     }
     rederPaymentsFormTab() {
         if (this.props.order.order_state === "Pending") {
             return (
-                <div style={{ paddingBottom: "15px", paddingTop: "15px", paddingLeft: "0px" }}>
-                    <h4>Pending Purchase Order</h4>
+                <div style={{ paddingTop: "0px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Pending Purchase Order
+                            </div>
+                            <p>Waiting for approval!</p>
+                        </div>
+                    </div>
                 </div>
             )
         } else if (this.props.order.order_state === "Approved") {
             return (
-                <div>
+                <div style={{ paddingTop: "15px" }}>
                     <div className="ui placeholder segment">
                         <div className="ui two column stackable center aligned grid">
                             <div className="ui vertical divider">Or</div>
@@ -608,6 +624,39 @@ class SinglePurchaseOrderRaw extends React.Component {
                                     <NewCashPaymentFormRaw data={this.props.order} msgCash={this.props.sucessMessege} />
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    }
+    rederAdditionalPaymentsFormTab() {
+        if (this.props.order.order_state === "Pending") {
+            return (
+                <div style={{ paddingTop: "0px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Pending Purchase Order
+                            </div>
+                            <p>Waiting for approval!</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else if (this.props.order.order_state === "Approved") {
+            return (
+                <div>
+                    <div className="ui segment">
+                        <div className="">
+                            <NewAdditionalBankPaymentFormRaw data={this.props.order} msgBank={this.props.sucessMessege} />
+                        </div>
+                        <div className="ui horizontal divider">
+                            Or
+                        </div>
+                        <div className="">
+                            <NewAdditionalCashPaymentFormRaw data={this.props.order} msgCash={this.props.sucessMessege} />
                         </div>
                     </div>
                 </div>
@@ -715,9 +764,140 @@ class SinglePurchaseOrderRaw extends React.Component {
                     </thead>
                     {this.renderBankPaymentsDetails()}
                     <tfoot>
-                        <tr colSpan="16">
+                        <tr colSpan="6">
                             <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
-                            <th colSpan="8" style={{ textAlign: "right" }}>{this.getBankPaymentsTotal()}</th>
+                            <th colSpan="1" style={{ textAlign: "right" }}>{this.getBankPaymentsTotal()}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            )
+        }
+    }
+    renderAdditionalChargesBankPaymentsDetails() {
+        if (!this.props.order.additionalChargesChequePayments) {
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>
+                </div>
+            )
+        }
+        return (
+            <tbody>
+                <tr>
+                    <td>
+                        {this.props.order.additionalChargesChequePayments.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.date).format('DD/MM/YYYY, h:mm a')}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.additionalChargesChequePayments.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.reason}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.bankAccountsAdditionalCharges.map(bank => {
+                            return (
+                                <p key={bank.id}>{bank.bankName}-{bank.branch}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.additionalChargesChequePayments.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.chequeNumber}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.additionalChargesChequePayments.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.chequeDate).format('DD/MM/YYYY')}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.additionalChargesChequePayments.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.remarks}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.additionalChargesChequePayments.map(payment => {
+                            let amount = Number(payment.amount)
+                            return (
+                                <p key={payment.id} style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</p>
+                            )
+                        })
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        )
+
+    }
+
+    getAdditionalChargesBankPaymentsTotal() {
+        const array = []
+        const totalArray = this.props.order.additionalChargesChequePayments.map(data => {
+            let amount = Number(data.amount)
+            for (let i = 0; i < array.length; i++) {
+                array[i] = amount
+            }
+            return amount
+        })
+        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)
+        return this.formatNumber(sumOfArray.toFixed(2))
+    }
+    renderAdditionalChargesBankPaymentsTable() {
+        if (!this.props.order.additionalChargesChequePayments) {
+            return (
+                <div style={{ paddingTop: "20px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Sorry
+                            </div>
+                            <p>No any cheque payments found!.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
+                    <thead className="full-width">
+                        <tr>
+                            <th colSpan="12" style={{ color: "red" }}><h4>Cheque Payments Details</h4></th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Expense</th>
+                            <th>Bank Name</th>
+                            <th>Cheque Number</th>
+                            <th>Cheque Date</th>
+                            <th>Remarks</th>
+                            <th style={{ textAlign: "right" }}>Amount</th>
+                        </tr>
+                    </thead>
+                    {this.renderAdditionalChargesBankPaymentsDetails()}
+                    <tfoot>
+                        <tr colSpan="16">
+                            <th colSpan="6" style={{ textAlign: "right" }}>Subtotal</th>
+                            <th colSpan="8" style={{ textAlign: "right" }}>{this.getAdditionalChargesBankPaymentsTotal()}</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -726,7 +906,7 @@ class SinglePurchaseOrderRaw extends React.Component {
     }
     getCashPaymentsTotal() {
         const array = []
-        const totalArray = this.props.order.cashPaymentsDetails.map(data => {            
+        const totalArray = this.props.order.cashPaymentsDetails.map(data => {
             let amount = Number(data.amount)
             for (let i = 0; i < array.length; i++) {
                 array[i] = amount
@@ -756,7 +936,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                             )
                         })
                         }
-                    </td>                    
+                    </td>
                     <td>
                         {this.props.order.cashPaymentsDetails.map(payment => {
                             return (
@@ -810,17 +990,119 @@ class SinglePurchaseOrderRaw extends React.Component {
                     </thead>
                     {this.renderCashPaymentsDetails()}
                     <tfoot>
-                        <tr colSpan="12">
-                            <th colSpan="" style={{ textAlign: "right" }}></th>
-                            <th colSpan="" style={{ textAlign: "right" }}>Subtotal</th>
-                            <th colSpan="" style={{ textAlign: "right" }}>{this.getCashPaymentsTotal()}</th>
+                        <tr colSpan="3">
+                            <th colSpan="2" style={{ textAlign: "right" }}>Subtotal</th>
+                            <th colSpan="1" style={{ textAlign: "right" }}>{this.getCashPaymentsTotal()}</th>
                         </tr>
                     </tfoot>
                 </table>
             )
         }
     }
+    getAdditionalChargesCashPaymentsTotal() {
+        const array = []
+        const totalArray = this.props.order.additionalChargesCashPayments.map(data => {
+            let amount = Number(data.amount)
+            for (let i = 0; i < array.length; i++) {
+                array[i] = amount
+            }
+            return amount
+        })
+        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)
+        return this.formatNumber(sumOfArray.toFixed(2))
+    }
+    renderAdditionalChargesCashPaymentsDetails() {
+        if (!this.props.order.additionalChargesCashPayments) {
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>
+                </div>
+            )
+        }
+        return (
+            <tbody>
+                <tr>
+                    <td>
+                        {this.props.order.additionalChargesCashPayments.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.date).format('DD/MM/YYYY, h:mm a')}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.additionalChargesCashPayments.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.reason}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.additionalChargesCashPayments.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.remarks}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.order.additionalChargesCashPayments.map(payment => {
+                            let amount = Number(payment.amount)
+                            return (
+                                <p key={payment.id} style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</p>
+                            )
+                        })
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        )
 
+    }
+
+    renderAdditionalChargesCashPaymentsTable() {
+        if (!this.props.order.additionalChargesCashPayments) {
+            return (
+                <div style={{ paddingTop: "20px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Sorry
+                            </div>
+                            <p>No any cash payments found!.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
+                    <thead className="full-width">
+                        <tr>
+                            <th colSpan="12" style={{ color: "red" }}><h4>Cash Payments Details</h4></th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Expense</th>
+                            <th>Remarks</th>
+                            <th style={{ textAlign: "right" }}>Amount</th>
+                        </tr>
+                    </thead>
+                    {this.renderAdditionalChargesCashPaymentsDetails()}
+                    <tfoot>
+                        <tr colSpan="4">
+                            <th colSpan="3" style={{ textAlign: "right" }}>Subtotal</th>
+                            <th colSpan="1" style={{ textAlign: "right" }}>{this.getAdditionalChargesCashPaymentsTotal()}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            )
+        }
+    }
     render() {
         if (!this.props.order) {
             return (
@@ -875,7 +1157,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                     </Tab.Pane>
             },
             {
-                menuItem: 'Payments', render: () =>
+                menuItem: 'Order Payments', render: () =>
                     <Tab.Pane attached={false}>
                         <div>
                             <div>
@@ -886,6 +1168,22 @@ class SinglePurchaseOrderRaw extends React.Component {
                             </div>
                             <div>
                                 {this.renderCashPaymentsTable()}
+                            </div>
+                        </div>
+                    </Tab.Pane>
+            },
+            {
+                menuItem: 'Additional Payments', render: () =>
+                    <Tab.Pane attached={false}>
+                        <div>
+                            <div>
+                                {this.rederAdditionalPaymentsFormTab()}
+                            </div>
+                            <div>
+                                {this.renderAdditionalChargesBankPaymentsTable()}
+                            </div>
+                            <div>
+                                {this.renderAdditionalChargesCashPaymentsTable()}
                             </div>
                         </div>
                     </Tab.Pane>
@@ -964,4 +1262,4 @@ const formWrapped = reduxForm({
     validate: validate
 })(SinglePurchaseOrderRaw);
 
-export default connect(mapStateToProps, { fetchRawMaterials, fetchPurchaseOrderRaw, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchRawMaterials, fetchPurchaseOrderRaw, printGrnRaw, printPurchaseOrderRaw, grnPurchaseOrderRaw })(formWrapped);

@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, reduxForm, formValueSelector, FieldArray } from 'redux-form';
 import moment from 'moment'
 import { connect } from 'react-redux';
-import { fetchPurchaseOrderRaw, fetchPurchaseOrdersRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw } from '../../../../actions';
+import { fetchPurchaseOrderRaw, fetchPurchaseOrdersRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, printGrnRaw } from '../../../../actions';
 import { Link } from 'react-router-dom'
 
 class NewGrnRaw extends React.Component {
@@ -194,8 +194,7 @@ class NewGrnRaw extends React.Component {
             formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
             formValues.rawMaterials[i].invoiceDate = formValues.invoiceDate
         }
-        console.log(formValues)
-        this.props.createNewGrn(formValues)
+        console.log(formValues)  
     }
     render() {
         return (
@@ -269,4 +268,4 @@ const mapStateToProps = (state, ownPorps) => {
     };
 }
 
-export default connect(mapStateToProps, { fetchPurchaseOrderRaw, fetchPurchaseOrdersRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, createNewGrn, fetchGrnByPurchaseOrder, printGrnRaw })(formWrapped);
+export default connect(mapStateToProps, { fetchPurchaseOrderRaw, fetchPurchaseOrdersRaw, printPurchaseOrderRaw, fetchSuppliers, fetchRawMaterials, printGrnRaw })(formWrapped);
