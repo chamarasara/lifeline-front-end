@@ -66,7 +66,6 @@ class NewPurchaseOrderRaw extends React.Component {
     }
 
     onSubmit = (formValues) => {
-        console.log(formValues)
         this.props.createPurchaseOrderPacking(formValues)
     }
     renderSuccessMessage() {

@@ -61,6 +61,7 @@ import {
     FETCH_PURCHASE_ORDERS_RAW,
     NEW_GRN_PURCHASE_ORDER_RAW,
     NEW_BANK_PAYMENT_PURCHASE_ORDER_RAW,
+    NEW_CASH_PAYMENT_PURCHASE_ORDER_RAW,
     NEW_ADDITIONAL_BANK_PAYMENT_PURCHASE_ORDER_RAW,
     NEW_ADDITIONAL_CASH_PAYMENT_PURCHASE_ORDER_RAW,
     SEARCH_PURCHASE_ORDERS_RESULT_RAW,
@@ -69,7 +70,10 @@ import {
     FETCH_PURCHASE_ORDER_PACKING,
     FETCH_PURCHASE_ORDERS_PACKING,
     NEW_GRN_PURCHASE_ORDER_PACKING,
-    NEW_CASH_PAYMENT_PURCHASE_ORDER_RAW,    
+    NEW_BANK_PAYMENT_PURCHASE_ORDER_PACKING,
+    NEW_CASH_PAYMENT_PURCHASE_ORDER_PACKING,
+    NEW_ADDITIONAL_BANK_PAYMENT_PURCHASE_ORDER_PACKING,
+    NEW_ADDITIONAL_CASH_PAYMENT_PURCHASE_ORDER_PACKING,
     SEARCH_PURCHASE_ORDERS_RESULT_PACKING,
     CREATE_INVOICE,
     EDIT_INVOICE,
@@ -111,15 +115,7 @@ import {
     FETCH_SALARIES,
     DELETE_SALARY,
     SEARCH_SALARIES_RESULT,
-    NEW_GRN_RM_INVENTORY,
-    NEW_GRN_RM_INVENTORY_ERROR,
-    FETCH_GRN_RM_INVENTORY,
-    FETCH_GRNS_RM_INVENTORY,
-    GRN_BY_PURCHASE_ORDER_RM,
-    NEW_GRN_PM_INVENTORY,
-    FETCH_GRN_PM_INVENTORY,
-    FETCH_GRNS_PM_INVENTORY,
-    GRN_BY_PURCHASE_ORDER_PM,
+
     NEW_BANK_ACCOUNT_MASTER,
     FETCH_ALL_BANK_ACCOUNTS,
     FETCH_SINGLE_BANK_ACCOUNT,
@@ -1327,11 +1323,71 @@ export const grnPurchaseOrderPacking = (id, formValues) => async dispatch => {
     };
     const response = await api.patch(`/api/sales/purchase-orders-packing/grn-purchase-order-packing/${id}`, { ...formValues }, header);
     dispatch({ type: NEW_GRN_PURCHASE_ORDER_PACKING, payload: response.status });
-    console.log(response.response)
+    console.log(response.status)
     setTimeout(function () {
-        //window.location.reload()
+        window.location.reload()
     }, 2000);
 
+};
+export const bankPaymentsPurchaseOrderPacking = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-packing/bank-payments-purchase-order-packing/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_BANK_PAYMENT_PURCHASE_ORDER_PACKING, payload: response.status });
+    console.log(response.status)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
+export const cashPaymentsPurchaseOrderPacking = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-packing/cash-payments-purchase-order-packing/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_CASH_PAYMENT_PURCHASE_ORDER_PACKING, payload: response.status });
+    console.log(response.status)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
+export const additionalChargesBankPaymentsPurchaseOrderPacking = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-packing/additional-charges-bank-payments-purchase-order-packing/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_ADDITIONAL_BANK_PAYMENT_PURCHASE_ORDER_PACKING, payload: response.status });
+    console.log(response.data)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
+export const additionalChargesCashPaymentsPurchaseOrderPacking = (id, formValues) => async dispatch => {
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/purchase-orders-packing/additional-charges-cash-payments-purchase-order-packing/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_ADDITIONAL_CASH_PAYMENT_PURCHASE_ORDER_PACKING, payload: response.status });
+    console.log(response.data)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
 };
 export const deletePurchaseOrderStatePacking = (id, formValues) => async dispatch => {
     console.log(formValues)
@@ -2198,7 +2254,7 @@ export const deleteBankAccount = (id, deleted) => async dispatch => {
             'Authorization': token
         }
     };
-  
+
     const response = await api.patch(`/api/master-data/bank-accounts-master/delete-bank-account/${id}`, { deleted }, header);
     dispatch({ type: DELETE_BANK_ACCOUNT, payload: response.data });
     console.log(response.data)

@@ -311,6 +311,9 @@ class SinglePurchaseOrderRaw extends React.Component {
                 <p>
                     <strong>Order State:</strong> {this.props.order.order_state}
                 </p>
+                <p>
+                    <strong>Created By:</strong> {this.props.order.userName}
+                </p>
             </div>
         )
 
@@ -470,16 +473,9 @@ class SinglePurchaseOrderRaw extends React.Component {
                         <tr>
                             <th colSpan="8">
                                 <tr><h4 style={{ color: "red" }}>{data.grnNumber}</h4></tr>
-                                <tr><p>Date-{moment(data.date).format('MM/DD/YYYY, h:mm A')}</p></tr>
-                                <tr>Invoice Number-{data.data.map(data => {
-                                    console.log(data.invoiceNumber)
-                                    return data.invoiceNumber
-                                }
-                                )}</tr>
-                                <tr><p>Invoice Date-{data.data.map(data => {
-                                    return moment(data.invoiceDate).format('MM/DD/YYYY')
-                                }
-                                )}</p></tr>
+                                <tr><p>Date-{moment(data.date).format('MM/DD/YYYY, h:mm A')}</p></tr>                                
+                                <tr><p>Invoice Number-{data.invoiceNumber}</p></tr>
+                                <tr><p>Invoice Date-{data.invoiceDate}</p></tr>
                                 <tr><p>Remarks-{data.remarks}</p></tr>
                             </th>
                         </tr>
@@ -1157,7 +1153,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                     </Tab.Pane>
             },
             {
-                menuItem: 'Order Payments', render: () =>
+                menuItem: 'Payments', render: () =>
                     <Tab.Pane attached={false}>
                         <div>
                             <div>
