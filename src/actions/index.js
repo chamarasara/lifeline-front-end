@@ -79,6 +79,8 @@ import {
     EDIT_INVOICE,
     FETCH_INVOICES,
     FETCH_INVOICE,
+    NEW_BANK_PAYMENT_INVOICE,
+    NEW_CASH_PAYMENT_INVOICE,
     DELETE_INVOICE,
     SEARCH_INVOICES_RESULT,
     CREATE_RETURN_INVOICE,
@@ -1472,10 +1474,10 @@ export const createInvoice = formValues => async dispatch => {
         }
     };
     const response = await api.post('api/sales/invoices/new-invoice', { ...formValues, user }, header);
-    dispatch({ type: CREATE_INVOICE, payload: response.data });
-    console.log(response)
-    window.location.reload()
-
+    dispatch({ type: CREATE_INVOICE, payload: response.status });  
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
 };
 //List all invoice
 export const fetchInvoices = () => async dispatch => {
@@ -1515,6 +1517,41 @@ export const editInvoice = (id, formValues) => async dispatch => {
     dispatch({ type: EDIT_INVOICE, payload: response.data });
     window.location.reload()
 };
+//New bank payments
+export const bankPaymentsInvoice = (id, formValues) => async dispatch => {
+    console.log(id)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/invoices/bank-payments-invoice/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_BANK_PAYMENT_INVOICE, payload: response.status });
+    console.log(response)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
+//Cash payments
+export const cashPaymentsInvoice = (id, formValues) => async dispatch => {
+    console.log(id)
+    const token = sessionStorage.getItem('user');
+    const header = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    };
+    const response = await api.patch(`/api/sales/invoices/cash-payments-invoice/${id}`, { ...formValues }, header);
+    dispatch({ type: NEW_CASH_PAYMENT_INVOICE, payload: response.status });
+    console.log(response)
+    setTimeout(function () {
+        window.location.reload()
+    }, 2000);
+};
+
 //Update dispatch note
 export const updateDispatchNote = (id, formValues) => async dispatch => {
     console.log(formValues)

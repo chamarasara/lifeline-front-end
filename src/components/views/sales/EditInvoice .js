@@ -6,6 +6,8 @@ import moment from 'moment';
 import _ from 'lodash';
 import { Link } from 'react-router-dom'
 import NewDispatchNote from "./dispatchNotes/NewDispatchNote";
+import NewBankPaymentFormInvoice from "./invoicePayments/NewBankPaymentFormInvoice";
+import NewCashPaymentFormInvoice from "./invoicePayments/NewCashPaymentFormInvoice";
 import { fetchCustomers, fetchProductsMaster, fetchInvoice, editInvoice, printInvoice, printReturnInvoice, fetchReturnInvoice, printDispatchNote } from '../../../actions';
 
 class EditInvoice extends React.Component {
@@ -160,7 +162,25 @@ class EditInvoice extends React.Component {
             //return totalValue
         }
 
-        return this.formatNumber(totalValue.reduce((a, b) => a + b, 0).toFixed(2))
+        return totalValue.reduce((a, b) => a + b, 0)
+    }
+    getAdditionalChargesTotal() {
+        const array = []
+        if (!this.props.invoice.additionalCharges) {
+            return 0
+        }
+        const totalArray = this.props.invoice.additionalCharges.map(data => {
+            let amount = Number(data.amount)
+            for (let i = 0; i < array.length; i++) {
+                array[i] = amount
+            }
+            console.log(amount)
+            return amount
+        })
+        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)
+        console.log(sumOfArray)
+        return sumOfArray
+
     }
     getSubTotalWithTransportCost() {
         if (!this.props.invoice.products) {
@@ -171,7 +191,6 @@ class EditInvoice extends React.Component {
         let quantities = this.props.invoice.products.map(product => {
             return product
         })
-        let transportCost = this.props.invoice.transportCost
         let rates = this.props.invoice.products.map(rate => {
             return rate
         })
@@ -180,12 +199,9 @@ class EditInvoice extends React.Component {
             let quantity = quantities[i]
             let rate = rates[i]
             totalValue[i] = (quantity.quantity * rate.sellingPrice) / 100 * (100 - quantity.discount);
-
-            console.log(totalValue.reduce((a, b) => a + b, 0))
-            //return totalValue
         }
         const total = totalValue.reduce((a, b) => a + b, 0)
-        const subtotal = total + this.renderTransportCost()
+        const subtotal = total + this.getAdditionalChargesTotal()
         return this.formatNumber(subtotal.toFixed(2))
     }
     getReturnsSubTotal() {
@@ -500,170 +516,70 @@ class EditInvoice extends React.Component {
     }
     renderCustomerDetails() {
         return (
-            <div style={{ paddingBottom: "30px" }} className="ui one column doubling stackable grid container">
-                <div>
-                    <div className="ui list">
-                        <div className="item">
-                            <strong>Quotation Number:</strong>{this.props.invoice.quotation.map(quotation => {
-                                return (
-                                    <span key={quotation.id}>{quotation.quotationNumber}</span>
-                                )
-                            })}
-                        </div>
-                        <div className="item">
-                            <strong>Company Name:</strong>{this.props.invoice.customer.map(customer => {
-                                return (
-                                    <span key={customer.id}>{customer.companyName}</span>
-                                )
-                            })
-                            }
-                        </div>
-                        <div className="item">
-                            <strong>Remarks:</strong>{this.props.invoice.remarks}
-                        </div>
-                        <div className="item">
-                            <strong>Customer Reference: </strong>{this.props.invoice.reference}
-                        </div>
-                        <div className="item">
-                            <strong>Address:</strong> {this.props.invoice.customer.map(customer => {
-                                return (
-                                    <span key={customer.id}>
-                                        {customer.communicationAddress.no},
-                                        {customer.communicationAddress.lane},
-                                        {customer.communicationAddress.city},
-                                        {customer.communicationAddress.country},
-                                        {customer.communicationAddress.postalCode}.
-                                    </span>
-                                )
-                            })
-                            }
-                        </div>
-                        <div className="item">
-                            <strong>Email: </strong>{this.props.invoice.customer.map(customer => {
-                                return (
-                                    <span key={customer.id}>{customer.email} </span>
-                                )
-                            })
-                            }
-                            <strong>Contact Number: </strong>{this.props.invoice.customer.map(customer => {
-                                return (
-                                    <span key={customer.id}> {customer.mobileNo}</span>
-                                )
-                            })
-                            }
-                        </div>
-
-                        <div className="item">
-
-                        </div>
-                        <div className="item">
-                            <strong>Date: </strong>{moment(this.props.invoice.date).format('DD/MM/YYYY')} <strong>Created by :</strong> {this.props.invoice.userName}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-
-    }
-    renderCashPaymentsFields = ({ fields }) => {
-        return (
             <div>
-                <ul>
-                    {fields.map((cashPayments, index) => <li key={index}>
-                        <label htmlFor={cashPayments}>Cash Payment #{index + 1}</label>
-                        <div className="fields">
-                            <div className="five wide field">
-                                <Field name={`${cashPayments}.cashAmount`} type="number" required component="input" placeholder="Cash Amount" >
-                                </Field>
-                            </div>
-                            <div className="five wide field">
-                                <Field name={`${cashPayments}.remarks`} type="text" required component="input" placeholder="Remarks" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <button className="mini ui red button" type="button" onClick={() => window.location.reload()}>Cancel</button>
-                            </div>
-                        </div>
-                    </li>)}
-                </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Cash Payment</button>
-            </div>
-        )
-    }
-    renderChequePaymentsFields = ({ fields }) => {
-        return (
-            <div>
-                <ul>
-                    {fields.map((chequePayments, index) => <li key={index}>
-                        <label htmlFor={chequePayments}>Cheque Payment #{index + 1}</label>
-                        <div className="fields">
-                            <div className="six wide field">
-                                <Field name={`${chequePayments}.chequeAmount`} type="number" required component="input" placeholder="Cheque Amount" >
-                                </Field>
-                            </div>
-                            <div className="six wide field">
-                                <Field name={`${chequePayments}.chequeNumber`} type="text" required component="input" placeholder="Cheque Number" >
-                                </Field>
-                            </div>
-                            <div className="six wide field">
-                                <Field name={`${chequePayments}.bankName`} type="text" required component="input" placeholder="Bank Name" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <Field name={`${chequePayments}.chequeDate`} type="date" required component="input" placeholder="Cheque Date" >
-                                </Field>
-                            </div>
-                            <div className="four wide field">
-                                <button className="mini ui red button" type="button" onClick={() => window.location.reload()}>Cancel</button>
-                            </div>
-                        </div>
-                    </li>)}
-                    <li>
-                        <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Cheque Payment</button>
-                    </li>
-                </ul>
+                <p>
+                    <strong>Quotation Number:</strong>{this.props.invoice.quotation.map(quotation => {
+                        return (
+                            <span key={quotation.id}>{quotation.quotationNumber}</span>
+                        )
+                    })}
+                </p>
+                <p>
+                    <strong>Company Name:</strong>{this.props.invoice.customer.map(customer => {
+                        return (
+                            <span key={customer.id}>{customer.companyName}</span>
+                        )
+                    })
+                    }
+                </p>
+                <p>
+                    <strong>Remarks:</strong>{this.props.invoice.remarks}
+                </p>
+                <p>
+                    <strong>Customer Reference: </strong>{this.props.invoice.reference}
+                </p>
+                <p>
+                    <strong>Address:</strong> {this.props.invoice.customer.map(customer => {
+                        return (
+                            <span key={customer.id}>
+                                {customer.communicationAddress.no},
+                                {customer.communicationAddress.lane},
+                                {customer.communicationAddress.city},
+                                {customer.communicationAddress.country},
+                                {customer.communicationAddress.postalCode}.
+                            </span>
+                        )
+                    })
+                    }
+                </p>
+                <p>
+                    <strong>Email: </strong>{this.props.invoice.customer.map(customer => {
+                        return (
+                            <span key={customer.id}>{customer.email} </span>
+                        )
+                    })
+                    }
+                    <strong>Contact Number: </strong>{this.props.invoice.customer.map(customer => {
+                        return (
+                            <span key={customer.id}> {customer.mobileNo}</span>
+                        )
+                    })
+                    }
+                </p>
 
+                <p className="item">
+
+                </p>
+                <p className="item">
+                    <strong>Date: </strong>{moment(this.props.invoice.date).format('DD/MM/YYYY')} <strong>Created by :</strong> {this.props.invoice.userName}
+                </p>
             </div>
         )
+
     }
-    renderPaymentsFields = ({ fields }) => {
-        return (
-            <div>
-                <ul>
-                    {fields.map((payments, index) => <li key={index}>
-                        <label htmlFor={payments}>Payment #{index + 1}</label>
-                        <div className="fields">
-                            <div className="eight wide field">
-                                <FieldArray name={`${payments}.cashPayments`} component={this.renderCashPaymentsFields} />
-                            </div>
-                            <div className="ten wide field">
-                                <FieldArray name={`${payments}.chequePayments`} component={this.renderChequePaymentsFields} />
-                            </div>
-                        </div>
-                    </li>)}
-                </ul>
-                <button className="mini ui primary button" type="button" onClick={() => fields.push()}>Add Payment</button>
-            </div>
-        )
-    }
+
     onSubmit = (formValues) => {
         this.props.editInvoice(this.props.invoice._id, formValues)
-    }
-    renderPaymentsForm = () => {
-        return (
-            <form className="ui mini form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                <div className="fields">
-                    <div className="sixteen wide field">
-                        <label>Pay- </label>
-                        <FieldArray name="paymentsAll" component={this.renderPaymentsFields} />
-                    </div>
-                </div>
-                <div className="field">
-                    <Link to={"/invoice-dashboard"} type="button" className="ui button">Back</Link>
-                    <button type="submit" className="ui primary button">Submit</button>
-                </div>
-            </form>
-        )
     }
 
     renderPaidCashAmount() {
@@ -711,49 +627,7 @@ class EditInvoice extends React.Component {
             <span key={Math.random()}>{this.formatNumber(amount.reduce((a, b) => a + b, 0))}</span>
         )
     }
-    renderPaidBankAmount() {
-        let totalCash = this.props.invoice.paymentsAll.map(cheque => {
-            if (!cheque.chequePayments) {
-                return (
-                    <tr key={Math.random()}>
-                        <td>
-                            -
-                        </td>
-                        <td>
-                            -
-                        </td>
-                        <td>
-                            -
-                        </td>
-                        <td>
-                            -
-                        </td>
-                    </tr>
-                )
-            }
-            return cheque.chequePayments.map(ca => {
-                return (
-                    <tr key={Math.random()}>
-                        <td>
-                            {ca.bankName}
-                        </td>
-                        <td>
-                            {ca.chequeNumber}
-                        </td>
-                        <td>
-                            {ca.chequeDate}
-                        </td>
-                        <td>
-                            {ca.chequeAmount}
-                        </td>
-                    </tr>
-                )
-            })
-        })
-        console.log(typeof (totalCash))
-        console.log(totalCash)
-        return totalCash
-    }
+
     totalPaidCheque() {
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
         let amount = this.props.invoice.paymentsAll.map(cash => {
@@ -770,60 +644,366 @@ class EditInvoice extends React.Component {
             <span key={Math.random()}>{this.formatNumber(amount.reduce((a, b) => a + b, 0))}</span>
         )
     }
-    renderPayments = () => {
-        console.log(parseInt(this.getSubTotal()) - parseInt(this.getReturnsSubTotal()))
-        console.log(this.getSubTotal())
-        return (
-            <div>
-                <h4 style={{ paddingTop: "20px" }}>Payments: </h4>
-                <p><b>Total value:</b> {this.getSubTotal()}</p>
-                <p><b>Total returns:</b> {this.getReturnsSubTotal()}</p>
-                <div>
-                    <table className="ui small blue striped celled table">
-                        <thead>
-                            <tr>
-                                <th colSpan="4">Cheque Payments</th>
-                            </tr>
-                            <tr>
-                                <th>Bank Name</th>
-                                <th>Cheque Number</th>
-                                <th>Cheque Date</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.renderPaidBankAmount()}
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <table className="ui  structured celled table">
-                        <thead>
-                            <tr>
-                                <th colSpan="4">Cash Payments</th>
-                            </tr>
-                            <tr>
-                                <th colSpan="3">Remarks</th>
-                                <th colSpan="1">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.renderPaidCashAmount()}
-                        </tbody>
-                    </table>
-                </div>
-                {this.renderPaymentsForm()}
-            </div>
-        )
+
+    renderAdditionalCharges() {
+        if (!this.props.invoice.additionalCharges) {
+            return (
+                <tr colSpan="9">
+                    <th colSpan="8" style={{ textAlign: "left" }}><span style={{ color: "#2185d0" }}>(+)</span> Additional Charges</th>
+                    <th colSpan="1" style={{ textAlign: "right" }}>0.00</th>
+                </tr>
+            )
+        }
+        return this.props.invoice.additionalCharges.map(data => {
+            console.log(data)
+            let amount = Number(data.amount)
+            return (
+                <tr colSpan="9">
+                    <th colSpan="8" style={{ textAlign: "right" }}><span style={{ color: "#2185d0" }}>(+)</span> {data.reason}</th>
+                    <th colSpan="1" style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</th>
+                </tr>
+            )
+        })
     }
-    renderTransportCost() {
-        if (!this.props.invoice.transportCost) {
-            return 0
+    rederPaymentsFormTab() {
+        if (!this.props.invoice) {
+            return (
+                <div style={{ paddingTop: "0px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Loading
+                            </div>
+                            <p>Please be patient!</p>
+                        </div>
+                    </div>
+                </div>
+            )
         } else {
-            return this.props.invoice.transportCost
+            return (
+                <div style={{ paddingTop: "15px" }}>
+                    <div className="ui placeholder segment">
+                        <div className="ui two column stackable center aligned grid">
+                            <div className="ui vertical divider">Or</div>
+                            <div className="row">
+                                <div className="column">
+                                    <NewBankPaymentFormInvoice data={this.props.invoice} msgBank={this.props.sucessMessege} />
+                                </div>
+                                <div className="column">
+                                    <NewCashPaymentFormInvoice data={this.props.invoice} msgCash={this.props.sucessMessege} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        {this.renderSuccessMessage()}
+                    </div>
+                </div>
+            )
         }
     }
+    renderSuccessMessage() {
+        if (this.props.sucessMessege === 200) {
+            return (
+                <div style={{ paddingBottom: "30px" }}>
+                    <div className="ui success message">
+                        <div className="header" style={{ textAlign: "center" }}>Successfull !</div>
+                    </div>
+                </div>
 
+            )
+        }
+    }
+    renderBankPaymentsDetails() {
+        console.log(this.props.invoice.bankPaymentsDetails)
+        if (!this.props.invoice.bankPaymentsDetails) {
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>
+                </div>
+            )
+        }
+        return (
+            <tbody>
+                <tr>
+                    <td>
+                        {this.props.invoice.bankPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.date).format('DD/MM/YYYY, h:mm a')}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.invoice.bankAccounts.map(bank => {
+                            return (
+                                <p key={bank.id}>{bank.bankName}-{bank.branch}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.invoice.bankPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.chequeNumber}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.invoice.bankPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.chequeDate).format('DD/MM/YYYY')}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.invoice.bankPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.remarks}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.invoice.bankPaymentsDetails.map(payment => {
+                            let amount = Number(payment.amount)
+                            return (
+                                <p key={payment.id} style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</p>
+                            )
+                        })
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        )
+
+    }
+    getBankPaymentsTotal() {
+        if (!this.props.invoice.bankPaymentsDetails) {
+            return 0
+        }
+        const array = []
+        const totalArray = this.props.invoice.bankPaymentsDetails.map(data => {
+            let amount = Number(data.amount)
+            for (let i = 0; i < array.length; i++) {
+                array[i] = amount
+            }
+            return amount
+        })
+        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)
+        return sumOfArray
+    }
+    renderBankPaymentsTable() {
+        if (!this.props.invoice.bankPaymentsDetails) {
+            return (
+                <div style={{ paddingTop: "20px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Sorry
+                            </div>
+                            <p>No any cheque payments found!.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
+                    <thead className="full-width">
+                        <tr>
+                            <th colSpan="12" style={{ color: "red" }}><h4>Cheque Payments Details</h4></th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Bank Name</th>
+                            <th>Cheque Number</th>
+                            <th>Cheque Date</th>
+                            <th>Remarks</th>
+                            <th style={{ textAlign: "right" }}>Amount</th>
+                        </tr>
+                    </thead>
+                    {this.renderBankPaymentsDetails()}
+                    <tfoot>
+                        <tr colSpan="6">
+                            <th colSpan="5" style={{ textAlign: "right" }}>Subtotal</th>
+                            <th colSpan="1" style={{ textAlign: "right" }}>{this.formatNumber(this.getBankPaymentsTotal().toFixed(2))}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            )
+        }
+    }
+    renderCashPaymentsDetails() {
+        if (!this.props.invoice.cashPaymentsDetails) {
+            return (
+                <div className="pusher">
+                    <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
+                        <div className="ui active centered inline loader"></div>
+                    </div>
+                </div>
+            )
+        }
+        return (
+            <tbody>
+                <tr>
+                    <td>
+                        {this.props.invoice.cashPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{moment(payment.date).format('DD/MM/YYYY, h:mm a')}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.invoice.cashPaymentsDetails.map(payment => {
+                            return (
+                                <p key={payment.id}>{payment.remarks}</p>
+                            )
+                        })
+                        }
+                    </td>
+                    <td>
+                        {this.props.invoice.cashPaymentsDetails.map(payment => {
+                            let amount = Number(payment.amount)
+                            return (
+                                <p key={payment.id} style={{ textAlign: "right" }}>{this.formatNumber(amount.toFixed(2))}</p>
+                            )
+                        })
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        )
+
+    }
+    getCashPaymentsTotal() {
+        const array = []
+        const totalArray = this.props.invoice.cashPaymentsDetails.map(data => {
+            let amount = Number(data.amount)
+            for (let i = 0; i < array.length; i++) {
+                array[i] = amount
+            }
+            return amount
+        })
+        const sumOfArray = totalArray.reduce((partial_sum, a) => partial_sum + a, 0)
+        return sumOfArray
+    }
+    renderCashPaymentsTable() {
+        if (!this.props.invoice.cashPaymentsDetails) {
+            return (
+                <div style={{ paddingTop: "20px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Sorry
+                            </div>
+                            <p>No any cash payments found!.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
+                    <thead className="full-width">
+                        <tr>
+                            <th colSpan="12" style={{ color: "red" }}><h4>Cash Payments Details</h4></th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Remarks</th>
+                            <th style={{ textAlign: "right" }}>Amount</th>
+                        </tr>
+                    </thead>
+                    {this.renderCashPaymentsDetails()}
+                    <tfoot>
+                        <tr colSpan="3">
+                            <th colSpan="2" style={{ textAlign: "right" }}>Subtotal</th>
+                            <th colSpan="1" style={{ textAlign: "right" }}>{this.formatNumber(this.getCashPaymentsTotal().toFixed(2))}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            )
+        }
+    }
+    getTotalPayableAmount() {
+        const invoiceAmount = Number(this.getSubTotal())
+        const totalCheques = this.getBankPaymentsTotal()
+        const totalCash = this.getCashPaymentsTotal()
+        const totalPayable = invoiceAmount - (totalCheques + totalCash)
+        return totalPayable
+    }
+    renderTotalTable() {
+        if (!this.props.invoice) {
+            return (
+                <div style={{ paddingTop: "20px" }}>
+                    <div className="ui icon message">
+                        <i className="notched circle loading icon"></i>
+                        <div className="content">
+                            <div className="header">
+                                Sorry
+                            </div>
+                            <p>No any cash payments found!.</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <table className="ui small blue striped celled table" style={{ marginTop: "20px" }}>
+                    <thead className="full-width">
+                        <tr>
+                            <th colSpan="12" style={{ color: "red" }}><h4>Payments Summary</h4></th>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <th style={{ textAlign: "right" }}>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Invoice amount
+                            </td>
+                            <td style={{ textAlign: "right" }}>
+                                {this.formatNumber(this.getSubTotal().toFixed(2))}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                (-) Total cheques payments
+                            </td>
+                            <td style={{ textAlign: "right" }}>
+                                ( {this.formatNumber(this.getBankPaymentsTotal().toFixed(2))} )
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                (-) Total cash payments
+                            </td>
+                            <td style={{ textAlign: "right" }}>
+                                ( {this.formatNumber(this.getCashPaymentsTotal().toFixed(2))} )
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr colSpan="2">
+                            <th colSpan="1" style={{ textAlign: "right" }}>Total payable</th>
+                            <th colSpan="1" style={{ textAlign: "right" }}>{this.formatNumber(this.getTotalPayableAmount().toFixed(2))}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            )
+        }
+    }
     onClick = () => {
         this.props.printInvoice(this.props.invoice.id)
     }
@@ -868,24 +1048,25 @@ class EditInvoice extends React.Component {
                             {this.renderInvoiceDetails()}
                         </tbody>
                         <tfoot>
-                            <tr colSpan="16">
-                                <th colSpan="7" style={{ textAlign: "right" }}></th>
-                                <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotal()}</th>
+                            <tr colSpan="9">
+                                <th colSpan="8" style={{ textAlign: "right" }}></th>
+                                <th colSpan="1" style={{ textAlign: "right" }}>{this.formatNumber(this.getSubTotal().toFixed(2))}</th>
                             </tr>
-                            <tr colSpan="16">
-                                <th colSpan="7" style={{ textAlign: "right" }}>(+) Transport Cost:</th>
-                                <th colSpan="8" style={{ textAlign: "right" }}>{this.formatNumber(this.renderTransportCost().toFixed(2))}</th>
-                            </tr>
-                            <tr colSpan="16">
-                                <th colSpan="7" style={{ textAlign: "right" }}>Subtotal:</th>
-                                <th colSpan="8" style={{ textAlign: "right" }}>{this.getSubTotalWithTransportCost()}</th>
+                            {this.renderAdditionalCharges()}
+                            <tr colSpan="9">
+                                <th colSpan="8" style={{ textAlign: "right" }}>Subtotal:</th>
+                                <th colSpan="1" style={{ textAlign: "right" }}>{this.getSubTotalWithTransportCost()}</th>
                             </tr>
                         </tfoot>
                     </table>
-
                 </Tab.Pane>
             },
-            { menuItem: 'Returns Details', render: () => <Tab.Pane attached={false}>{this.renderReturnInvoiceDetails()}</Tab.Pane> },
+            {
+                menuItem: 'Returns Details', render: () =>
+                    <Tab.Pane attached={false}>
+                        {this.renderReturnInvoiceDetails()}
+                    </Tab.Pane>
+            },
             {
                 menuItem: 'Dispatch Details', render: () =>
                     <Tab.Pane attached={false}>
@@ -897,13 +1078,33 @@ class EditInvoice extends React.Component {
                         </div>
                     </Tab.Pane>
             },
-            { menuItem: 'Payments Details', render: () => <Tab.Pane attached={false}>{this.renderPayments()}</Tab.Pane> },
+            {
+                menuItem: 'Payments Details', render: () =>
+                    <Tab.Pane attached={false}>
+                        <div>
+                            <div>
+                                {this.renderTotalTable()}
+                            </div>
+                            <div>
+                                {this.rederPaymentsFormTab()}
+                            </div>
+                            <div>
+                                {this.renderBankPaymentsTable()}
+                            </div>
+                            <div>
+                                {this.renderCashPaymentsTable()}
+                            </div>
+                        </div>
+                    </Tab.Pane>
+            },
         ]
         return (
             <div className="pusher">
-                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "80px" }}>
-                    <h3>Invoice #{this.props.invoice.invoiceNumber}</h3>
-                    {this.renderCustomerDetails()}
+                <div className="ui basic segment" style={{ paddingLeft: "150px", paddingTop: "90px" }}>
+                    <div className="ui raised segment" style={{ paddingTop: "20px", paddingLeft: "30px", paddingBottom: "20px" }}>
+                        <h4><span style={{ color: "#2185d0" }}>Invoice #{this.props.invoice.invoiceNumber}</span></h4>
+                        {this.renderCustomerDetails()}
+                    </div>
                     <Tab style={{ paddingBottom: "20px" }} menu={{ pointing: true }} panes={panes} />
                     <div>
                         {this.renderButtons()}
@@ -918,7 +1119,16 @@ const mapStateToProps = (state, ownProps) => {
     const customers = Object.values(state.customer)
     const invoice = state.invoices[ownProps.match.params.id]
     const returnInvoice = state.returnInvoices[ownProps.match.params.id]
-    return { errorMessage: state, customers: customers, invoice: invoice, initialValues: invoice, returnInvoice };
+    const sucessMessege = state.invoices.undefined
+    console.log(sucessMessege)
+    return {
+        errorMessage: state,
+        customers: customers,
+        invoice: invoice,
+        sucessMessege: sucessMessege,
+        initialValues: invoice,
+        returnInvoice
+    };
 }
 const formWrapped = reduxForm({
     form: 'invoicePayments'

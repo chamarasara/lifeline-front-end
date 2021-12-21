@@ -273,7 +273,6 @@ class SinglePurchaseOrderRaw extends React.Component {
 
     }
     renderSupplierDetails() {
-
         return (
             <div>
                 <p><strong>Company Name:</strong>{this.props.order.supplier.map(Supplier => {
@@ -281,7 +280,8 @@ class SinglePurchaseOrderRaw extends React.Component {
                         <span key={Supplier.id}>{Supplier.companyName}</span>
                     )
                 })
-                }</p>
+                }
+                </p>
                 <p><strong>Address:</strong> {this.props.order.supplier.map(Supplier => {
                     return (
                         <span key={Supplier.id}>
@@ -473,7 +473,7 @@ class SinglePurchaseOrderRaw extends React.Component {
                         <tr>
                             <th colSpan="8">
                                 <tr><h4 style={{ color: "red" }}>{data.grnNumber}</h4></tr>
-                                <tr><p>Date-{moment(data.date).format('MM/DD/YYYY, h:mm A')}</p></tr>                                
+                                <tr><p>Date-{moment(data.date).format('MM/DD/YYYY, h:mm A')}</p></tr>
                                 <tr><p>Invoice Number-{data.invoiceNumber}</p></tr>
                                 <tr><p>Invoice Date-{data.invoiceDate}</p></tr>
                                 <tr><p>Remarks-{data.remarks}</p></tr>
@@ -685,7 +685,8 @@ class SinglePurchaseOrderRaw extends React.Component {
                             return (
                                 <p key={bank.id}>{bank.bankName}-{bank.branch}</p>
                             )
-                        })
+                        }
+                        )
                         }
                     </td>
                     <td>

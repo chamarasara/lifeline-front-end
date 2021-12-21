@@ -4,7 +4,9 @@ import {
     EDIT_INVOICE,
     FETCH_INVOICES,
     FETCH_INVOICE,
-    DELETE_INVOICE
+    DELETE_INVOICE,
+    NEW_BANK_PAYMENT_INVOICE,
+    NEW_CASH_PAYMENT_INVOICE
 
 } from '../../actions/types';
 
@@ -18,6 +20,10 @@ export default (state = {}, action) => {
             return { ...state, [action.payload.id]: action.payload };
         case EDIT_INVOICE:
             return { ...state, [action.payload._id]: action.payload };
+        case NEW_BANK_PAYMENT_INVOICE:
+            return { ...state, [action.payload.id]: action.payload };
+        case NEW_CASH_PAYMENT_INVOICE:
+            return { ...state, [action.payload.id]: action.payload };
         case DELETE_INVOICE:
             return _.omit(state.action);
         default:
