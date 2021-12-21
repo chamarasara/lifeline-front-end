@@ -885,6 +885,9 @@ class EditInvoice extends React.Component {
     }
     getCashPaymentsTotal() {
         const array = []
+        if (!this.props.invoice.cashPaymentsDetails) {
+            return 0
+        }
         const totalArray = this.props.invoice.cashPaymentsDetails.map(data => {
             let amount = Number(data.amount)
             for (let i = 0; i < array.length; i++) {
