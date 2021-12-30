@@ -561,7 +561,7 @@ class EditInvoice extends React.Component {
                     }
                     <strong>Contact Number: </strong>{this.props.invoice.customer.map(customer => {
                         return (
-                            <span key={customer.id}> {customer.mobileNo}</span>
+                            <span key={customer.id}> {customer.mobileNo1}</span>
                         )
                     })
                     }

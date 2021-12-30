@@ -198,13 +198,7 @@ class NewInvoice extends React.Component {
                                     Customer Reference (Optional)
                                     <Field name="reference" type="text" component="input" placeholder="Cusomer Reference" />
                                 </div>
-                            </div>
-                            <div className="fields">
-                                <div className="six wide field">
-                                    Transport Cost (Optional)
-                                    <Field name="transportCost" type="number" component="input" placeholder="Transport Cost" />
-                                </div>
-                            </div>
+                            </div>                            
                             <div className="fields">
                                 <div className="sixteen wide field">
                                     Products <span style={{ color: "red", fontSize: "18px" }}>*</span>
